@@ -12,10 +12,23 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/index', function () {
     return view('index');
 });
 
+Route::get('game', function () {
+    return view('index');
+});
+
+Route::get('game/{id}', function ($id) {
+    return view('game', ['id' => $id]);
+    // return 'Game '.$id;
+    // return view('index');
+});
+
+Route::get('game/{id}/edit', function ($id) {
+    return view('editGame', ['id' => $id]);
+});
+
+Route::get('members', function () {
+    return view('memberList');
+});
