@@ -32,3 +32,7 @@ Route::get('game/{id}/edit', function ($id) {
 Route::get('members', function () {
     return view('memberList');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
