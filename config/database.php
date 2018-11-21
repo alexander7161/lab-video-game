@@ -1,6 +1,7 @@
 <?php
 
-$url = parse_url("postgres://tnrhlkoxzwridn:104638cb00b6179062480b019ab5f07046f21c3f70e213087cce97dace1414cb@ec2-54-246-117-62.eu-west-1.compute.amazonaws.com:5432/d29im5voa9ehr3");
+// $url = parse_url(getenv("DATABASE_URL"));
+$url = parse_url("postgres://tnrhlkoxzwridn:104638cb00b6179062480b019ab5f07046f21c3f70e213087cce97dace1414cb@ec2-54-246-117-62.eu-west-1.compute.amazonaws.com:5432/d29im5voa9ehr3v");
 
 $host = $url["host"];
 $username = $url["user"];
