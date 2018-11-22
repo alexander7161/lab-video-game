@@ -16,8 +16,6 @@ class GameController extends Controller
     public function index()
     {
         $games = DB::select('select * from game');
-        info($games);
-
         return view('index', ['games' => $games]);
     }
 /*
