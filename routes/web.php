@@ -15,9 +15,11 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('game', function () {
-    return view('index');
-});
+// Route::get('game', function () {
+//     return view('index');
+// });
+Route::get('game', 'GameController@index');
+
 
 Route::get('game/{id}', function ($id) {
     return view('game', ['id' => $id]);

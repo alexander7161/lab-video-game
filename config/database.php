@@ -1,12 +1,32 @@
 <?php
 
-$url = parse_url(getenv("DATABASE_URL"));
-// $url = parse_url("postgres://tnrhlkoxzwridn:104638cb00b6179062480b019ab5f07046f21c3f70e213087cce97dace1414cb@ec2-54-246-117-62.eu-west-1.compute.amazonaws.com:5432/d29im5voa9ehr3v");
+// $url = parse_url(getenv("DATABASE_URL"));
+// $host = $url["host"];
+// $username = $url["user"];
+// $password = $url["pass"];
+// $database = substr($url["path"], 1);
 
-$host = $url["host"];
-$username = $url["user"];
-$password = $url["pass"];
-$database = substr($url["path"], 1);
+// $url = parse_url(getenv("DATABASE_URL"));
+// $host ="ec2-54-246-117-62.eu-west-1.compute.amazonaws.com&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+// $username = "tnrhlkoxzwridn";
+// $password = "104638cb00b6179062480b019ab5f07046f21c3f70e213087cce97dace1414cb";
+// $database = "d29im5voa9ehr3";
+
+$host = env('DB_HOST', '127.0.0.1');
+$database = env('DB_DATABASE', 'localdb');
+$username = env('DB_USERNAME', 'alexanderdavis');
+$password = env('DB_PASSWORD', '');
+
+
+if($databaseUrl = getenv('DATABASE_URL')) {
+
+    $url = parse_url($databaseUrl);
+
+    $host = $url['host'];
+    $username = $url['user'];
+    $password = $url['pass'];
+    $database = substr($url['path'], 1);
+}
 
 return [
 
@@ -74,7 +94,6 @@ return [
             'prefix'   => '',
             'schema'   => 'public',
         ),
-
         // 'pgsql' => [
         //     'driver' => 'pgsql',
         //     'host' => env('DB_HOST', '127.0.0.1'),
