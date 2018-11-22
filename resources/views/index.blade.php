@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- {{print_r($games)}} --}}
 
+@if ($games)
 @foreach ($games as $g)
 @if ($g->isavailable == 1)
     {{ $g->name }} available
@@ -11,5 +11,7 @@
 @endif
 
 @endforeach
+@endif
+
 
 @endsection
