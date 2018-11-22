@@ -11,13 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-
-// Route::get('game', function () {
-//     return view('index');
-// });
+Route::get('/', 'GameController@index');
 Route::get('game', 'GameController@index');
 
 
@@ -37,4 +31,4 @@ Route::get('members', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('index');
+// Route::get('members', 'HomeController@index')->name('index');
