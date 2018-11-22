@@ -1,6 +1,8 @@
 https://video-game-soc.herokuapp.com/
 
-`php artisan serve`
+Running dev server locally `php artisan serve`
+
+[Pulling database](https://devcenter.heroku.com/articles/heroku-postgresql#pg-pull)
 
 ## Learning Laravel
 
