@@ -18,6 +18,21 @@ class GameController extends Controller
         $games = DB::select('select * from game');
         return view('index', ['games' => $games]);
     }
+
+       /**
+     * Show a list of all of the application's users.
+     *
+     * @return Response
+     */
+    public function getGame(string $id)
+    {
+        if(ctype_digit($id)) {
+            $game = DB::select("select * from game where id={$id}");
+            return view('game', ['game' => $game]);    
+        } else {
+            return view('game', ['game' => array()]);    
+        }
+    }
 /*
     * Create a new user instance after a valid registration.
     *
