@@ -4,11 +4,12 @@
 
 @if ($games)
     @foreach ($games as $g)
-        <a href={{"/game/{$g->idgame}"}}>
+        <a href={{"/game/{$g->id}"}}>
+            {{ $g->name }}
             @if ($g->isavailable == 1)
-                {{ $g->name }} available
+                 available
             @else
-                {{ $g->name }} Not available
+                 Not available
             @endif
         </a>
     @endforeach

@@ -1,15 +1,11 @@
 <?php
 
-namespace Game;
+namespace App;
 
-class User
+use Illuminate\Database\Eloquent\Model;
+
+class Game extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'isavailable',
-    ];
+    protected $table = 'game';
+    //
 }

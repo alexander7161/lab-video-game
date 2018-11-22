@@ -1,8 +1,9 @@
 create database lab_project;
 use lab_project;
 
-create table Member (
-  idMember varchar(16) not null,
+create table users
+(
+  id serial primary key,
   name varchar(255) not null,
   surname varchar(255) not null,
   rentingGames int check (rentingGames between 0 and 2),
@@ -11,24 +12,27 @@ create table Member (
   firstViolation date,
   latestViolation date,
   banned boolean not null default true,
-  owingGame varchar(16),
+  owingGame int,
   primary key (idMember),
-  foreign key (owingGame) references Game (idGame)
+  foreign key (owingGame) references Game (id)
 );
 
-create table Game (
-  idGame varchar(16) not null,
+-- ALTER TABLE users ADD COLUMN owingGame int;
+
+create table game
+(
+  id serial primary key,
   name varchar(255),
-  isAvailable boolean not null default true,
-  primary key (idGame)
+  isAvailable boolean not null default true
 );
 
-create table Rentals (
-  idMember varchar(16) not null,
-  idGame varchar(16) not null,
+create table rentals
+(
+  idMember serial not null,
+  idGame serial not null,
   startDate date,
   endDate date,
   primary key (idMember, idGame),
-  foreign key (idMember) references Member (idMember),
-  foreign key (idGame) references Game (idGame)
+  foreign key (idMember) references users (id),
+  foreign key (idGame) references Game (id)
 );
