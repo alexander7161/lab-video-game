@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    editGame {{$id}}
+@guest
+Nothing here...
+@else
+{{ Auth::user()->volunteer }}
+{{ Form::open(array('url' => 'foo/bar')) }}
+
+{{ Form::close() }}
+editGame {{$id}}
+
+@endguest
 @endsection

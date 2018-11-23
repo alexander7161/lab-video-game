@@ -8,6 +8,12 @@ use App\Http\Controllers\Controller;
 
 class GameController extends Controller
 {
+    public function store()
+    {
+        //return view('addressee_dtls')->with('adrs_dtls', $adrs);
+        // print_r($request);
+    }
+
     /**
      * Show a list of all of the application's users.
      *
@@ -33,17 +39,6 @@ class GameController extends Controller
             return view('game', ['game' => array()]);    
         }
     }
-/*
-    * Create a new user instance after a valid registration.
-    *
-    * @param  array  $data
-    * @return \App\User
-    */
-   protected function create(array $data)
-   {
-       return Game::create([
-           'name' => $data['name'],
-           'isavailable' => $data['isavailable']
-       ]);
-   }
+
+    
 }
