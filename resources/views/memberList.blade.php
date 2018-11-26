@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    MemberList
+@guest
+Nothing here...
+@else
+MemberList 
+<br />
+{{print_r($users)}}
+@endguest
 @endsection
