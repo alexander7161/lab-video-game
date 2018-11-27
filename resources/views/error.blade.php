@@ -3,7 +3,7 @@
 @section('content')
     <div class="jumbotron">
         <h1 class="display-4">Oops!</h1>
-        <p class="lead">You're not allowed to do that.</p>
+        <p class="lead">There was a problem.</p>
         <hr class="my-4">
         @if(isset($info))
     <p>{{$info}}</p>
