@@ -16,13 +16,18 @@ Route::get('game', 'GameController@index');
 
 Route::get('game/{id}', 'GameController@getGame');
 
-Route::get('game/{id}/edit', function ($id) {
-    return view('editGame', ['id' => $id]);
-});
+Route::get('game/{id}/edit', 'GameController@editGame')->middleware('auth');
 
-Route::get('newGame', 'GameController@newGame');
+Route::get('newGame', 'GameController@newGame')->middleware('auth');
 
-Route::get('members', 'UserController@getUsers');
+Route::get('members', 'UserController@getUsers')->middleware('auth');
+
+Route::get('account', 'UserController@getCurrentUser')->middleware('auth');
+Route::get('account/{id}', 'UserController@getUser')->middleware('auth');
+
+Route::get('error/{id}', function ($id) {
+    return view('error', ['info' => __("errors.{$id}")]);
+})->name('error');
 
 Auth::routes();
 

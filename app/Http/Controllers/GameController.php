@@ -46,7 +46,15 @@ class GameController extends Controller
         if(Auth::user() && Auth::user()->volunteer) {
             return view('newGame');
         } else {
-            return index(); // TODO fix
+            return redirect()->route('error', ['id' => 1]);
+        }  
+    } 
+    public function editGame(string $id)
+    {
+        if(Auth::user() && Auth::user()->volunteer) {
+            return view('editGame', ['id' => $id]);
+        } else {
+            return redirect()->route('error', ['id' => 2]);
         }  
     } 
 }
