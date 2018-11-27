@@ -14,22 +14,15 @@
 Route::get('/', 'GameController@index');
 Route::get('game', 'GameController@index');
 
-
-// Route::get('game/{id}', function ($id) {
-//     return view('game', ['id' => $id]);
-//     // return 'Game '.$id;
-//     // return view('index');
-// });
-
-Route::get('/game/{id}', 'GameController@getGame');
+Route::get('game/{id}', 'GameController@getGame');
 
 Route::get('game/{id}/edit', function ($id) {
     return view('editGame', ['id' => $id]);
 });
 
-Route::get('members', function () {
-    return view('memberList');
-});
+Route::get('newGame', 'GameController@newGame');
+
+Route::get('members', 'UserController@getUsers');
 
 Auth::routes();
 
