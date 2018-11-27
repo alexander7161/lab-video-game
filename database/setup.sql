@@ -13,6 +13,7 @@ create table users
   latestViolation date,
   banned boolean not null default true,
   owingGame int,
+  volunteer boolean not null default false,
   primary key (idMember),
   foreign key (owingGame) references Game (id)
 );

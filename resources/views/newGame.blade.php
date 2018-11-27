@@ -2,9 +2,9 @@
 
 @section('content')
 
+{{ Auth::user()->volunteer }}
 {{ Form::open(array('url' => 'foo/bar')) }}
 
 {{ Form::close() }}
-editGame {{$id}}
 
 @endsection
