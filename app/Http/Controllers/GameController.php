@@ -35,9 +35,13 @@ class GameController extends Controller
     {
         if(ctype_digit($id)) {
             $game = DB::select("select * from game where id={$id}");
-            return view('game', ['game' => $game]);    
+            if(sizeof($game) > 0) {
+                return view('game', ['game' => $game[0]]);    
+            } else {
+                return redirect()->route('error', ['id' => 3]);
+            }
         } else {
-            return view('game', ['game' => array()]);    
+            return redirect()->route('error', ['id' => 3]);
         }
     }
 
