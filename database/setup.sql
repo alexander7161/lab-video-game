@@ -14,8 +14,22 @@ create table users
   banned boolean not null default true,
   owingGame int,
   volunteer boolean not null default false,
-  primary key (idMember),
   foreign key (owingGame) references Game (id)
+);
+
+create table roles
+(
+  id serial not null primary key,
+  name varchar(255) not null
+);
+
+create table user_roles
+(
+  idUser serial not null,
+  idRole serial not null,
+  primary key (idUser, idRole),
+  foreign key (idUser) references users (id),
+  foreign key (idRole) references roles (id)
 );
 
 -- ALTER TABLE users ADD COLUMN owingGame int;
@@ -29,11 +43,11 @@ create table game
 
 create table rentals
 (
-  idMember serial not null,
+  idUser serial not null,
   idGame serial not null,
   startDate date,
   endDate date,
-  primary key (idMember, idGame),
-  foreign key (idMember) references users (id),
+  primary key (idUser, idGame),
+  foreign key (idUser) references users (id),
   foreign key (idGame) references Game (id)
 );

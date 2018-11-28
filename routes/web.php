@@ -13,15 +13,10 @@
 
 Route::get('/', 'GameController@index');
 Route::get('game', 'GameController@index');
-
 Route::get('game/{id}', 'GameController@getGame');
-
 Route::get('game/{id}/edit', 'GameController@editGame')->middleware('auth');
-
 Route::get('newGame', 'GameController@newGame')->middleware('auth');
-
 Route::get('members', 'UserController@getUsers')->middleware('auth');
-
 Route::get('account', 'UserController@getCurrentUser')->middleware('auth');
 Route::get('account/{id}', 'UserController@getUser')->middleware('auth');
 
@@ -30,5 +25,3 @@ Route::get('error/{id}', function ($id) {
 })->name('error');
 
 Auth::routes();
-
-// Route::get('members', 'HomeController@index')->name('index');

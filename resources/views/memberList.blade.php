@@ -18,6 +18,7 @@
                     <td>{{$u->email}}</td>
                     <td 
                     class={{$u->volunteer? "table-success" : ""}}>
+                    {{-- <a class="btn btn-info" role="button" onClick={{action('UserController@toggleVolunteer',$u->$u)}}>{{$u->id}}</a> --}}
                         {{$u->volunteer? "T" : "F"}}
                     </td>
                 </tr>

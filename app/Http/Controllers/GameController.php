@@ -53,6 +53,7 @@ class GameController extends Controller
             return redirect()->route('error', ['id' => 1]);
         }  
     } 
+    
     public function editGame(string $id)
     {
         if(Auth::user() && Auth::user()->volunteer) {
