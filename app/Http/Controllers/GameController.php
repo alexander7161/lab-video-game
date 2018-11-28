@@ -57,8 +57,14 @@ class GameController extends Controller
 
     public function editGame(string $id)
     {
+
         if(Auth::user() && Auth::user()->volunteer) {
-            return view('editGame', ['id' => $id]);
+            $game = DB::select("select * from game where id={$id}");
+            if(sizeof($game) > 0) {
+                return view('editGame', ['game' => $game[0]]);
+            } else {
+                return redirect()->route('error', ['id' => 2]);
+            }
         } else {
             return redirect()->route('error', ['id' => 2]);
         }  
