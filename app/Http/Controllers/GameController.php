@@ -64,14 +64,6 @@ class GameController extends Controller
         }  
     } 
 
-
-    // public function createGame(array $data)
-    // {
-    //     return Game::create([
-    //         'name' => $data['name'],
-    //     ]);
-    // }
-
     public function createGame(Request $request)
 {
     $data = $request->all();
@@ -80,7 +72,12 @@ class GameController extends Controller
         'name' => $data['name']
     ]);
     return redirect()->route('index');
+}
 
+public function deleteGame($id)
+{
+    Game::destroy($id);
+    return redirect()->route('index');
 }
 
 
