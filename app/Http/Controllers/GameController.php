@@ -6,6 +6,7 @@ use App\Game;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
@@ -53,6 +54,7 @@ class GameController extends Controller
             return redirect()->route('error', ['id' => 1]);
         }  
     } 
+
     public function editGame(string $id)
     {
         if(Auth::user() && Auth::user()->volunteer) {
@@ -61,4 +63,25 @@ class GameController extends Controller
             return redirect()->route('error', ['id' => 2]);
         }  
     } 
+
+
+    // public function createGame(array $data)
+    // {
+    //     return Game::create([
+    //         'name' => $data['name'],
+    //     ]);
+    // }
+
+    public function createGame(Request $request)
+{
+    $data = $request->all();
+
+    Game::create([
+        'name' => $data['name']
+    ]);
+    return redirect()->route('index');
+
+}
+
+
 }

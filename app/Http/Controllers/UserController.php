@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class UserController extends Controller
 {
@@ -20,7 +21,7 @@ class UserController extends Controller
         return view('memberList', ['users' => $users]);
     }
 
-    public function getUser(string $id)
+    public function getUser($id)
     {
         if(ctype_digit($id) &&(Auth::user()->volunteer || $id ==Auth::user()->id)) {
         $user = DB::select("select * from users where id={$id}");
@@ -35,5 +36,16 @@ class UserController extends Controller
         $id = Auth::user()->id;
         $user = DB::select("select * from users where id={$id}");
         return view('accountPage', ['user' => $user]);
+    }
+
+    public function toggleVolunteer($user)
+    {
+        Log::debug($user->id);
+        if(ctype_digit($user->id)) {
+            print("hello");
+            DB::table('users')
+            ->where('id', $user->id)
+            ->update(['volunteer' => !$user->volunteer]);  
+        }
     }
 }
