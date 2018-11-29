@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2eb6eae3f4fbceab2042f935010a1a7c",
+    "content-hash": "162dfe30a83fb8c002771c57da3776e9",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -890,6 +890,43 @@
                 "psr-3"
             ],
             "time": "2018-11-05T09:00:11+00:00"
+        },
+        {
+            "name": "mpociot/laravel-composite-key",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mpociot/laravel-composite-key.git",
+                "reference": "520e33c6ed01be0ed377e56ab2706d9e1c56bd60"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mpociot/laravel-composite-key/zipball/520e33c6ed01be0ed377e56ab2706d9e1c56bd60",
+                "reference": "520e33c6ed01be0ed377e56ab2706d9e1c56bd60",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "5.*",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mpociot\\HasCompositeKey\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Pociot",
+                    "email": "m.pociot@gmail.com"
+                }
+            ],
+            "description": "Support composite keys in your laravel app.",
+            "time": "2016-05-17T20:11:04+00:00"
         },
         {
             "name": "nesbot/carbon",

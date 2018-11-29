@@ -23,7 +23,12 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games = DB::select('select * from game');
+        $games = DB::select('select id, (CASE
+        WHEN idmember is not null THEN
+        false
+        ELSE
+        true
+        END) as isavailable, name from game left join rentals on game.id = rentals.idgame;');
         sort($games);
         return view('index', ['games' => $games]);
     }

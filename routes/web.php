@@ -14,6 +14,8 @@
 Route::get('/', 'GameController@index')->name('index');
 Route::get('game', 'GameController@index');
 Route::get('game/{id}', 'GameController@getGame');
+Route::post('game', 'RentController@createRent')->name('rentgame');
+Route::post('unrent', 'RentController@deleteRent')->name('unrentgame');
 Route::get('game/{id}/edit', 'GameController@editGame')->middleware('auth')->middleware('volunteer');
 Route::get('game/{id}/delete', 'GameController@deleteGame')->middleware('auth')->middleware('volunteer');
 Route::get('newGame', 'GameController@newGame')->middleware('auth')->middleware('volunteer');
