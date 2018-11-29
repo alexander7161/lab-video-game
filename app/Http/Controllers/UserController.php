@@ -34,7 +34,7 @@ class UserController extends Controller
 
     private function getUserById($id) {
         $user = DB::select("select * from users where id={$id}");
-        $rentedGames = DB::select("select game.name as name, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.idmember=4");
+        $rentedGames = DB::select("select game.name as name, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.idmember={$id}");
         $data = [
             'user'  => $user,
             'games'   => $rentedGames
