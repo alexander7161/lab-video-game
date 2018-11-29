@@ -38,7 +38,14 @@ create table game
 (
   id serial primary key,
   name varchar(255),
-  isAvailable boolean not null default true
+  releaseYear INT,
+  type varchar(255),
+  description varchar(1000),
+  platform varchar(255),
+  rating DECIMAL(1,1)，
+  ratingURL varchar(255),
+  isAvailable boolean not null default true,
+  primary key (idGame)
 );
 
 create table rentals
