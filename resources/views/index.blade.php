@@ -19,14 +19,30 @@
 </div>
 <div class="col-md-9">
 <form name="form" action="" method="get">
-<input type="text" name="myInput" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Search all Video Games .. ">
+<input type="text" name="myInput" id="myInput" class="form-control" placeholder="Search all Video Games .. ">
+<input type="submit" value="Submit">
+
 </form>
+
+<?php    
+    $message = $_GET['myInput'];  
+    
+?>
+
+
+
 <h1 id="demo"></h1>
 
 <script>
 function myFunction() {
     var input = document.getElementById("myInput").value;
     document.getElementById("demo").innerHTML = input;
+    
+    $games.forEach(function($entry) {
+        document.getElementById("demo").innerHTML += "s";
+});
+
+
 }
 </script>
 
@@ -51,7 +67,8 @@ var newGames= ("$games").filter(function () {
                                 </tr>
                                 </thead>
             @foreach ($games as $g)
-            @if (1)
+          
+            @if (stripos(strtolower($g->gamename), strtolower($message)) === 0 || $message === "")
                <tbody>
 
                                 <tr>
