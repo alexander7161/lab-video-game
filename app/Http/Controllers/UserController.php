@@ -24,19 +24,27 @@ class UserController extends Controller
 
     public function getUser($id)
     {
-        if(ctype_digit($id) &&(Auth::user()->volunteer || $id ==Auth::user()->id)) {
-        $user = DB::select("select * from users where id={$id}");
-        return view('accountPage', ['user' => $user]); }
-        else {
+        Log::info($id);
+        if(ctype_digit($id) && (Auth::user()->volunteer || $id == Auth::user()->id)) {
+        return self::getUserById($id);
+    } else {
             return redirect()->route('error', ['id' => 0]);
         }
     }
 
+    private function getUserById($id) {
+        $user = DB::select("select * from users where id={$id}");
+        $rentedGames = DB::select("select game.name as name, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.idmember={$id}");
+        $data = [
+            'user'  => $user,
+            'games'   => $rentedGames
+        ];
+        return view('accountPage', ['data' => $data]);
+    }
+
     public function getCurrentUser()
     {
-        $id = Auth::user()->id;
-        $user = DB::select("select * from users where id={$id}");
-        return view('accountPage', ['user' => $user]);
+        return self::getUserById(Auth::user()->id);
     }
 
     public function setVolunteer(Request $request)

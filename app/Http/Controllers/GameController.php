@@ -37,8 +37,13 @@ class GameController extends Controller
     {
         if(ctype_digit($id)) {
             $game = DB::select("select * from game where id={$id}");
+            $renting = DB::select("select idmember as membername, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.idgame={$id}");
             if(sizeof($game) > 0) {
-                return view('game', ['game' => $game[0]]);    
+                $data = [
+                    'game' => $game[0],
+                    'rents' => $renting
+                ];
+                return view('game', ['data' => $data]);    
             } else {
                 return redirect()->route('error', ['id' => 3]);
             }
@@ -86,6 +91,5 @@ public function deleteGame($id)
     Game::destroy($id);
     return redirect()->route('index');
 }
-
 
 }

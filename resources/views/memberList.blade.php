@@ -18,12 +18,13 @@
                     <td>{{$u->email}}</td>
                     <td 
                     class={{$u->volunteer? "table-success" : ""}}>
-                    <form method="POST" action="{{ route('members', ['data' => array("id"=>$u->id, "volunteer"=>$u->volunteer)] ) }}">
+                    <form method="POST" 
+                    action="{{ route('members', ['data' => array("id"=>$u->id, "volunteer"=>$u->volunteer)] ) }}"
+                    >
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
        
-                            <input class="btn {{$u->volunteer? "btn-dark" : "btn-outline-dark"}} " type = 'submit' value = "Toggle" />
+                            <input class="btn {{$u->volunteer? "btn-dark" : "btn-outline-dark"}} " type = 'submit' value = "{{$u->volunteer? "Remove Volunteer" : "Make Volunteer"}}" />
                     </form>
-                        {{-- {{$u->volunteer? "T" : "F"}} --}}
                     </td>
                 </tr>
             @endforeach
@@ -33,3 +34,4 @@
       </table>
 
 @endsection
+
