@@ -13905,13 +13905,7 @@ module.exports = __webpack_require__(48);
 
 /***/ }),
 /* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Example__ = __webpack_require__(39);
+/***/ (function(module, exports, __webpack_require__) {
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -13919,7 +13913,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * building robust, powerful web applications using React + Laravel.
  */
 
-
+__webpack_require__(15);
 
 /**
  * Next, we will create a fresh React component instance and attach it to
@@ -13927,7 +13921,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-
+__webpack_require__(39);
 
 /***/ }),
 /* 15 */
@@ -36166,6 +36160,7 @@ module.exports = function spread(callback) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(42);
@@ -36191,29 +36186,29 @@ var Example = function (_Component) {
     }
 
     _createClass(Example, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'container' },
+                "div",
+                { className: "container" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'row justify-content-center' },
+                    "div",
+                    { className: "row justify-content-center" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-8' },
+                        "div",
+                        { className: "col-md-8" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'card' },
+                            "div",
+                            { className: "card" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'card-header' },
-                                'Example Component'
+                                "div",
+                                { className: "card-header" },
+                                "Example Component"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'card-body' },
-                                'I\'m an example component!'
+                                "div",
+                                { className: "card-body" },
+                                "I'm an example component!"
                             )
                         )
                     )
@@ -36225,11 +36220,11 @@ var Example = function (_Component) {
     return Example;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-/* unused harmony default export */ var _unused_webpack_default_export = (Example);
+/* harmony default export */ __webpack_exports__["default"] = (Example);
 
 
-if (document.getElementById('example')) {
-    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Example, null), document.getElementById('example'));
+if (document.getElementById("example")) {
+    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Example, null), document.getElementById("example"));
 }
 
 /***/ }),

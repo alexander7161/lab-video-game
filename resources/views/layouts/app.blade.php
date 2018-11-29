@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name') }}
@@ -55,6 +55,20 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" 
+                                        href="/account">
+                                         {{ __('My Account') }}
+                                     </a>
+@if(Auth::user()->volunteer)
+                                        <a class="dropdown-item" 
+                                        href="/newGame">
+                                         {{ __('New Game') }}
+                                     </a>
+                                        <a class="dropdown-item" 
+                                        href="/members">
+                                         {{ __('Manage Users') }}
+                                     </a>
+@endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -72,7 +86,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 container">
             @yield('content')
         </main>
     </div>
