@@ -9,7 +9,6 @@
 
 @section('content')
 
-
     {{-- <div id="example"></div> --}}
 
     @if ($games)

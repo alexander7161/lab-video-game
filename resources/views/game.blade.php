@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<?php
+$isavailable = sizeof($data['rents']) == 0;
+?>
 <div class="container">
      <!-- Left Column / Game Image -->
      <div class="col-lg-7">
@@ -19,7 +22,7 @@
             <dd class="col-sm-9">{{ $data['game']->name }}</dd>
 
             <dt class="col-sm-3">Availability</dt>
-            @if ($data['game']->isavailable == 1)
+            @if ($isavailable)
                 <dd class="col-sm-9">available</dd>
             @else
                 <dd class="col-sm-9">unavailable</dd>
@@ -28,7 +31,8 @@
             <dt class="col-sm-3">Currently being rented:</dt>
             <dd class="col-sm-9">{{sizeof($data['rents'])}}</dd>
 
-            @if(isset($data['game']->type))
+            @if(isset($data['game']->type)) 
+            {{-- TODO add to database --}}
 
             <dt class="col-sm-3">Release Year:</dt>
             <dd class="col-sm-9">{{ $$data['game']->releaseYear }}</dd>
@@ -46,15 +50,24 @@
             <dd class="col-sm-9"><span id=stars></span><a href="/game/{{$data['game']->ratingURL}}">Reputable Medias</a></dd>
         @endif
           </dl>
-        @if ($data['game']->isavailable == 1)
-            <button type="button" class="btn btn-info">Book it!</button>
-        @else
-            <button type="button" class="btn btn-info" disabled>Book it!</button>
-        @endif
-
+          @guest
+             @else 
+             @if($isavailable)
+            <form method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input class="btn btn-info" {{(!$isavailable? "disabled":"")}} type = 'submit' value = "Rent it!" />
+            </form>
+            @else
+            <form method="POST" action="{{ route('unrentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input class="btn btn-info"  type = 'submit' value = "Send Back!" />
+            </form>
+            @endif
+            @endguest
      </div>
      <!-- Scripts -->
      @if(isset($data['game']->type))
+     {{-- TODO add to database --}}
      <script>
         document.getElementById("stars").innerHTML = getStars({{ $game->rating}});
 

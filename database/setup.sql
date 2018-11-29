@@ -50,7 +50,7 @@ create table game
 create table rentals
 (
   idUser serial not null,
-  idGame serial not null,
+  idgame serial not null,
   startDate date,
   endDate date,
   primary key (idUser, idGame),
