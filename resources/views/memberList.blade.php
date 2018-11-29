@@ -18,8 +18,12 @@
                     <td>{{$u->email}}</td>
                     <td 
                     class={{$u->volunteer? "table-success" : ""}}>
-                    {{-- <a class="btn btn-info" role="button" onClick={{action('UserController@toggleVolunteer',$u->$u)}}>{{$u->id}}</a> --}}
-                        {{$u->volunteer? "T" : "F"}}
+                    <form method="POST" action="{{ route('members', ['data' => array("id"=>$u->id, "volunteer"=>$u->volunteer)] ) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+       
+                            <input class="btn {{$u->volunteer? "btn-dark" : "btn-outline-dark"}} " type = 'submit' value = "Toggle" />
+                    </form>
+                        {{-- {{$u->volunteer? "T" : "F"}} --}}
                     </td>
                 </tr>
             @endforeach
