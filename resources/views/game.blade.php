@@ -16,7 +16,7 @@
         <!-- Game descritions -->
         <dl class="row">
             <dt class="col-sm-3">Name Of Game:</dt>
-            <dd class="col-sm-9">{{ $game->gamename }}</dd>
+            <dd class="col-sm-9">{{ $game->name }}</dd>
 
             <dt class="col-sm-3">Availability</dt>
             @if ($game->isavailable == 1)
