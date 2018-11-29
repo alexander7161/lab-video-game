@@ -22,7 +22,6 @@
                     action="{{ route('members', ['data' => array("id"=>$u->id, "volunteer"=>$u->volunteer)] ) }}"
                     >
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-       
                             <input class="btn {{$u->volunteer? "btn-dark" : "btn-outline-dark"}} " type = 'submit' value = "{{$u->volunteer? "Remove Volunteer" : "Make Volunteer"}}" />
                     </form>
                     </td>

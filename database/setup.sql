@@ -6,15 +6,12 @@ create table users
   id serial primary key,
   name varchar(255) not null,
   surname varchar(255) not null,
-  rentingGames int check (rentingGames between 0 and 2),
   extensions int,
   violations int check (violations between 0 and 3),
   firstViolation date,
   latestViolation date,
   banned boolean not null default true,
-  owingGame int,
   volunteer boolean not null default false,
-  foreign key (owingGame) references Game (id)
 );
 
 create table roles
@@ -43,8 +40,7 @@ create table game
   description varchar(1000),
   platform varchar(255),
   rating DECIMAL(1,1),
-  ratingURL varchar(255),
-  isAvailable boolean not null default true
+  ratingURL varchar(255)
 );
 
 create table rentals
