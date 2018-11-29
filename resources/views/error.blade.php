@@ -6,7 +6,7 @@
         <p class="lead">There was a problem.</p>
         <hr class="my-4">
         @if(isset($info))
-    <p>{{$info}}</p>
+            <p>{{$info}}</p>
         @endif
         <a class="btn btn-primary btn-lg" href="/" role="button">Return Home</a>
     </div>
