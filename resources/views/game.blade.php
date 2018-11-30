@@ -31,6 +31,18 @@ $isavailable = sizeof($data['rents']) == 0;
             <dt class="col-sm-3">Currently being rented:</dt>
             <dd class="col-sm-9">{{sizeof($data['rents'])}}</dd>
 
+          @if(Auth::user() && $data['rents'] && $data['rents'][0]->idmember==Auth::id())
+            <dt class="col-sm-3">Rented by:</dt>
+            <dd class="col-sm-9">You</dd>
+          @elseif($data['rents'] && Auth::user() && Auth::user()->volunteer)
+            <dt class="col-sm-3">Rented by:</dt>
+            <dd class="col-sm-9">
+                 <a href="/account/{{$data['rents'][0]->idmember}}">
+                 {{$data['rents'][0]->username}}
+                 </a>
+               </dd>
+          @endif
+
             @if(isset($data['game']->type)) 
             {{-- TODO add to database --}}
 
@@ -57,7 +69,7 @@ $isavailable = sizeof($data['rents']) == 0;
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input class="btn btn-info" {{(!$isavailable? "disabled":"")}} type = 'submit' value = "Rent it!" />
             </form>
-            @else
+            @elseif($data['rents'][0]->idmember==Auth::id())
             <form method="POST" action="{{ route('unrentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input class="btn btn-info"  type = 'submit' value = "Send Back!" />

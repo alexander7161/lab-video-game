@@ -42,7 +42,7 @@ class GameController extends Controller
     {
         if(ctype_digit($id)) {
             $game = DB::select("select * from game where id={$id}");
-            $renting = DB::select("select idmember as membername, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.idgame={$id}");
+            $renting = DB::select("select idmember, startdate, enddate, users.name as username from rentals inner join game on rentals.idgame=game.id inner join  users on rentals.idmember =users.id where rentals.idgame={$id}");
             if(sizeof($game) > 0) {
                 $data = [
                     'game' => $game[0],
