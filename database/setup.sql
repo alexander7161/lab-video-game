@@ -40,7 +40,7 @@ create table game
   description varchar(1000),
   platform varchar(255),
   rating DECIMAL(1,1),
-  ratingURL varchar(255)
+  imageURL varchar(255)
 );
 
 create table rentals
