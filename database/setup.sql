@@ -45,11 +45,12 @@ create table game
 
 create table rentals
 (
-  idUser serial not null,
+  id serial primary key,
+  iduser serial not null,
   idgame serial not null,
-  startDate date,
-  endDate date,
-  primary key (idUser, idGame),
-  foreign key (idUser) references users (id),
-  foreign key (idGame) references Game (id)
+  startdate timestamp DEFAULT NOW(),
+  enddate timestamp,
+  foreign key (iduser) references users (id),
+  foreign key (idgame) references Game (id)
 );
+

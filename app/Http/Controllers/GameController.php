@@ -23,12 +23,17 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games = DB::select('select id, (CASE
-        WHEN idmember is not null THEN
+        $games = DB::select("SELECT game.id, name, startdate, enddate, idmember, (CASE
+        WHEN idmember is not null and enddate is null THEN
         false
         ELSE
         true
-        END) as isavailable, name from game left join rentals on game.id = rentals.idgame;');
+        END) as isavailable
+FROM 
+game
+LEFT JOIN
+    (select * from rentals where enddate is null) currentrentals
+ON (game.id = currentrentals.idgame)");
         sort($games);
         return view('index', ['games' => $games]);
     }
@@ -42,7 +47,7 @@ class GameController extends Controller
     {
         if(ctype_digit($id)) {
             $game = DB::select("select * from game where id={$id}");
-            $renting = DB::select("select idmember, startdate, enddate, users.name as username from rentals inner join game on rentals.idgame=game.id inner join  users on rentals.idmember =users.id where rentals.idgame={$id}");
+            $renting = DB::select("select idmember, startdate, enddate, users.name as username from rentals inner join game on rentals.idgame=game.id inner join  users on rentals.idmember=users.id where rentals.idgame={$id} and enddate is null ");
             if(sizeof($game) > 0) {
                 $data = [
                     'game' => $game[0],
