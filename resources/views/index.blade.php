@@ -1,15 +1,8 @@
-@extends('layouts.app') {{-- 
-@section('script')
-<script type="text/javascript">
-    ReactDOM.render(<Example/>, document.getElementById('example'));
-</script>
-@endsection
- --}} 
-@section('content') {{--
-<div id="example"></div> --}} @if ($games)
+@extends('layouts.app') 
+@section('content') @if ($games)
 <div class="card-columns">
     @foreach ($games as $g)
-    <div class="card" style="max-width: 22rem;">
+    <div class="card">
         {{-- <img class="card-img-top" src=".../100px180/" alt="Card image cap"> --}}
         <div class="card-body">
             <h5 class="card-title"> {{ $g->name }}</h5>
