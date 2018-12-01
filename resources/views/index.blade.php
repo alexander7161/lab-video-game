@@ -24,9 +24,11 @@
             <div class="card-body" style="padding-bottom: 8px;">
                 <h5 class="card-title"> {{ $g->name }}</h5>
                 <div style="position: absolute; top: 4px; right: 4px;">
-                    @if ($g->isavailable)
-                    <span class="badge badge-success">Available</span> @else
-                    <span class="badge badge-secondary">Not Available</span> @endif
+                    <h6>
+                        @if ($g->isavailable)
+                        <span class="badge badge-success">Available</span> @else
+                        <span class="badge badge-secondary">Not Available</span> @endif
+                    </h6>
                 </div>
                 {{--
                 <p class="card-text">
