@@ -70,7 +70,7 @@ $isavailable = sizeof($data['rents']) == 0;
 
         </div>
         <!-- Scripts -->
-        @if($data['game']->rating) {{-- TODO add to database --}}
+        @if($data['game']->rating)
         <script>
             document.getElementById("stars").innerHTML = getStars({{ $data['game']->rating}});
 
