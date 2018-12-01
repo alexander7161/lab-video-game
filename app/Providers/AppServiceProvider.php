@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Blade::if('volunteer', function () {
+            return auth()->check() && auth()->user()->volunteer;
+        });
+
+        Blade::if('member', function () {
+            return auth()->check();
+        });
+
+        Blade::if('useridequals', function ($userid) {
+            return auth()->check() && $userid==Auth::id();
+        });
+
+        Blade::if('secretary', function () {
+            return auth()->check() && auth()->user()->isAdmin();
+        });
     }
 
     /**
