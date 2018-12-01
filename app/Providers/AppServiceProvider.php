@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
             return auth()->check() && auth()->user()->volunteer;
         });
 
+        Blade::if('member', function () {
+            return auth()->check();
+        });
+
+        Blade::if('useridequals', function ($userid) {
+            return auth()->check() && $userid==Auth::id();
+        });
+
         Blade::if('secretary', function () {
             return auth()->check() && auth()->user()->isAdmin();
         });

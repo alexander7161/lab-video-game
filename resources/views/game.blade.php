@@ -28,17 +28,17 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dt class="col-sm-3">Currently being rented:</dt>
                 <dd class="col-sm-9">{{sizeof($data['rents'])}}</dd>
 
-                @if(Auth::user() && $data['rents'] && $data['rents'][0]->idmember==Auth::id())
+                @if($data['rents']) @useridequals($data['rents'][0]->idmember==Auth::id())
                 <dt class="col-sm-3">Rented by:</dt>
                 <dd class="col-sm-9">You</dd>
-                @elseif($data['rents'] && Auth::user() && Auth::user()->volunteer)
+                @else @volunteer
                 <dt class="col-sm-3">Rented by:</dt>
                 <dd class="col-sm-9">
                     <a href="/account/{{$data['rents'][0]->idmember}}">
                  {{$data['rents'][0]->username}}
                  </a>
                 </dd>
-                @endif @if($data['game']->releaseyear)
+                @endvolunteer @enduseridequals @endif @if($data['game']->releaseyear)
 
                 <dt class="col-sm-3">Release Year:</dt>
                 <dd class="col-sm-9">{{ $data['game']->releaseyear }}</dd>
@@ -55,17 +55,17 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dt class="col-sm-3">Rating:</dt>
                 <dd class="col-sm-9"><span id=stars></span><a>Reputable Medias</a></dd> @endif
             </dl>
-            @guest @else @if($isavailable)
+            @member @if($isavailable)
             <form method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input class="btn btn-info" {{(!$isavailable? "disabled": "")}} type='submit' value="Rent it!" />
             </form>
-            @elseif($data['rents'][0]->idmember==Auth::id())
+            @else @useridequals($data['rents'][0]->idmember)
             <form method="POST" action="{{ route('unrentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input class="btn btn-info" type='submit' value="Send Back!" />
             </form>
-            @endif @endguest
+            @enduseridequals @endif @endmember
 
 
         </div>
