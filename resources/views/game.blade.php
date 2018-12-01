@@ -57,13 +57,13 @@ $isavailable = sizeof($data['rents']) == 0;
             </dl>
             @member @if($isavailable)
             <form method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input class="btn btn-info" {{(!$isavailable? "disabled": "")}} type='submit' value="Rent it!" />
+                @csrf
+                <input class="btn btn-outline-success" {{(!$isavailable? "disabled": "")}} type='submit' value="Rent it!" />
             </form>
             @else @useridequals($data['rents'][0]->idmember)
-            <form method="POST" action="{{ route('unrentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input class="btn btn-info" type='submit' value="Send Back!" />
+            <form onSubmit="return confirm('Are you sure you want to return this item?');" method="POST" action="{{ route('unrentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
+                @csrf
+                <input class="btn btn-outline-danger" type='submit' value="Send Back!" />
             </form>
             @enduseridequals @endif @endmember
 
