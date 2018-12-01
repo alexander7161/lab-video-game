@@ -1,6 +1,4 @@
 @extends('layouts.app') 
-@section('content') {{-- {{ Auth::user()->volunteer }} {{ Form::open(array('url' => 'foo/bar')) }}
-{{ Form::close() }} --}} 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -29,7 +27,7 @@
 
                             <div class="col-md-6">
                                 <input id="releaseyear" type="number" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="releaseyear"
-                                    value="{{ old('name') }}" required autofocus> @if ($errors->has('name'))
+                                    value="{{ old('releaseyear', date('Y')) }}" required> @if($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span> @endif
@@ -39,8 +37,8 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Type') }}</label>
 
                             <div class="col-md-6">
-                                <input id="type" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="type" value="{{ old('name') }}"
-                                    required autofocus> @if ($errors->has('name'))
+                                <input id="type" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="type" value="{{ old('type') }}"
+                                    required> @if ($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span> @endif
@@ -50,8 +48,8 @@
                             <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
 
                             <div class="col-md-6">
-                                <input id="description" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="description"
-                                    value="{{ old('name') }}" required autofocus> @if ($errors->has('name'))
+                                <textarea style="min-height: calc(2.19rem + 2px); height: calc(8.19rem + 2px);" id="description" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                    name="description" value="{{ old('description') }}" required rows="3"> </textarea>                                @if($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span> @endif
@@ -61,8 +59,8 @@
                             <label for="platform" class="col-md-4 col-form-label text-md-right">{{ __('Platform') }}</label>
 
                             <div class="col-md-6">
-                                <input id="platform" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="platform" value="{{ old('name') }}"
-                                    required autofocus> @if ($errors->has('name'))
+                                <input id="platform" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="platform" value="{{ old('platform') }}"
+                                    required> @if ($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span> @endif
@@ -72,8 +70,8 @@
                             <label for="rating" class="col-md-4 col-form-label text-md-right">{{ __('Rating') }}</label>
 
                             <div class="col-md-6">
-                                <input id="rating" type="number" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="rating" value="{{ old('name') }}"
-                                    required autofocus> @if ($errors->has('name'))
+                                <input id="rating" type="number" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="rating" value="{{ old('rating') }}"
+                                    required> @if ($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span> @endif
@@ -83,8 +81,8 @@
                             <label for="imageurl" class="col-md-4 col-form-label text-md-right">{{ __('Image URL') }}</label>
 
                             <div class="col-md-6">
-                                <input id="imageurl" type="url" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="imageurl" value="{{ old('name') }}"
-                                    required autofocus> @if ($errors->has('name'))
+                                <input id="imageurl" type="url" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="imageurl" value="{{ old('imageurl') }}"
+                                    required> @if ($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span> @endif

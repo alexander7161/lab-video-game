@@ -50,7 +50,7 @@ create table rentals
   idgame serial,
   startdate timestamp DEFAULT NOW(),
   enddate timestamp,
-  foreign key (iduser) references users (id),
-  foreign key (idgame) references Game (id)
+  foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
+  foreign key (idgame) references Game (id) on delete set null on update CASCADE
 );
 
