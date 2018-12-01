@@ -11,11 +11,12 @@
             <p class="card-text">
 
             </p> --}}
+
         </div>
-        @guest @else @if(Auth::user()->volunteer)
+        @volunteer
         <a href={{ "/game/{$g->id}/edit"}}>
                                         <button  type="button" class="btn">Edit</button>
-</a> @endif @endguest
+</a> @endvolunteer
         <a href={{ "/game/{$g->id}"}} style="text-decoration:  none; color: black;">
 
                             @if ($g->isavailable == 1)

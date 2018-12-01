@@ -10,10 +10,10 @@ $isavailable = sizeof($data['rents']) == 0;
         </div>
         <!-- Right Column -->
         <div class="col-lg-5">
-            @if(Auth::user() && Auth::user()->volunteer)
+            @volunteer
             <a href={{ "/game/{$data['game']->id}/edit"}}>
                <button  type="button" class="btn">Edit</button>
-          </a> @endif
+          </a> @endvolunteer
             <!-- Game descritions -->
             <dl class="row">
                 <dt class="col-sm-3">Name Of Game:</dt>
