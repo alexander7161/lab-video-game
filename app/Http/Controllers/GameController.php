@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Log;
 
 class GameController extends Controller
 {
@@ -89,8 +90,16 @@ ON (game.id = currentrentals.idgame)");
     {
         $data = $request->all();
 
+        Log::info(print_r($data));
+
         Game::create([
-        'name' => $data['name']
+        'name' => $data['name'],
+        'releaseyear'=> $data['releaseyear'],
+         'type'=> $data['type'],
+          'description'=> $data['description'],
+           'platform'=> $data['platform'],
+            'rating'=> $data['rating'],
+             'imageurl'=> $data['imageurl']
     ]);
         return redirect()->route('index');
     }

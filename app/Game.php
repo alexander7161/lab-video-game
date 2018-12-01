@@ -10,6 +10,8 @@ class Game extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = [
-        'name'
+        'name', 'releaseyear', 'type',
+        'description', 'platform',
+        'rating', 'imageurl'
     ];
 }
