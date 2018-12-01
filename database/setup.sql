@@ -39,7 +39,7 @@ create table game
   type varchar(255),
   description varchar(1000),
   platform varchar(255),
-  rating DECIMAL(1,1),
+  rating int CHECK (rating<=10 and rating>0),
   imageURL varchar(255)
 );
 
@@ -47,7 +47,7 @@ create table rentals
 (
   id serial primary key,
   iduser serial not null,
-  idgame serial not null,
+  idgame serial,
   startdate timestamp DEFAULT NOW(),
   enddate timestamp,
   foreign key (iduser) references users (id),

@@ -38,10 +38,10 @@ $isavailable = sizeof($data['rents']) == 0;
                  {{$data['rents'][0]->username}}
                  </a>
                 </dd>
-                @endif @if(isset($data['game']->type)) {{-- TODO add to database --}}
+                @endif @if($data['game']->releaseyear)
 
                 <dt class="col-sm-3">Release Year:</dt>
-                <dd class="col-sm-9">{{ $$data['game']->releaseYear }}</dd>
+                <dd class="col-sm-9">{{ $data['game']->releaseyear }}</dd>
 
                 <dt class="col-sm-3">Type:</dt>
                 <dd class="col-sm-9">{{ $data['game']->type }}</dd>
@@ -53,8 +53,7 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dd class="col-sm-9">{{ $data['game']->description }}</dd>
 
                 <dt class="col-sm-3">Rating:</dt>
-                <dd class="col-sm-9"><span id=stars></span><a href="/game/{{$data['game']->ratingURL}}">Reputable Medias</a></dd>
-                @endif
+                <dd class="col-sm-9"><span id=stars></span><a>Reputable Medias</a></dd> @endif
             </dl>
             @guest @else @if($isavailable)
             <form method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
@@ -67,11 +66,13 @@ $isavailable = sizeof($data['rents']) == 0;
                 <input class="btn btn-info" type='submit' value="Send Back!" />
             </form>
             @endif @endguest
+
+
         </div>
         <!-- Scripts -->
-        @if(isset($data['game']->type)) {{-- TODO add to database --}}
+        @if($data['game']->rating) {{-- TODO add to database --}}
         <script>
-            document.getElementById("stars").innerHTML = getStars({{ $game->rating}});
+            document.getElementById("stars").innerHTML = getStars({{ $data['game']->rating}});
 
         function getStars(rating) {
 
