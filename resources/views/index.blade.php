@@ -16,45 +16,47 @@
 
 <div class="card-columns">
     @foreach ($games as $g)
-    <div class="card">
-        {{-- <img class="card-img-top" src=".../100px180/" alt="Card image cap"> --}}
-        <div class="card-body" style="padding-bottom: 8px;">
-            <h5 class="card-title"> {{ $g->name }}</h5>
-            {{--
-            <p class="card-text">
+    <?php
+    $buttonStyle =  $g->isavailable? "btn-outline-light" : "btn-outline-dark";
+    ?>
+        <div class="card">
+            {{-- <img class="card-img-top" src=".../100px180/" alt="Card image cap"> --}}
+            <div class="card-body" style="padding-bottom: 8px;">
+                <h5 class="card-title"> {{ $g->name }}</h5>
+                <div style="position: absolute; top: 4px; right: 4px;">
+                    @if ($g->isavailable)
+                    <span class="badge badge-success">Available</span> @else
+                    <span class="badge badge-secondary">Not Available</span> @endif
+                </div>
+                {{--
+                <p class="card-text">
 
-            </p> --}}
+                </p> --}}
 
+            </div>
+            <div class="card-footer @if ($g->isavailable) bg-success text-white @endif" style="padding-right: 8px; padding-left: 8px;">
+                {{--
+                <h6>
+                    @if ($g->isavailable) Available @else Not available @endif
+                </h6> --}}
+                <div class=" d-flex flex-row justify-content-around">
 
-            <div class=" d-flex flex-row justify-content-around" style="padding-top:4px;">
+                    <a class="link-button-container" href={{ "/game/{$g->id}"}}>
+                            <button type="button" class="btn {{$buttonStyle }} link-button-button"  >More Information</button>
+                    </a> @member @if($g->isavailable)
+                    <form class="link-button-container" method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$g->id)] ) }}">
+                        @csrf
+                        <input type="submit" class="btn {{$buttonStyle }} link-button-button" value="Rent it!" />
+                    </form>
+                    @endif @endmember @volunteer
+                    <a class="link-button-container" class="align-items-stretch" href={{ "/game/{$g->id}/edit"}}>
+                        <button type="button" class="btn {{$buttonStyle }} link-button-button"  >Edit</button>
+                    </a> @endvolunteer
+                </div>
 
-                <a class="link-button-container" href={{ "/game/{$g->id}"}}>
-                    <button type="button" class="btn btn-outline-dark link-button-button"  >More Information</button>
-            </a> @member @if($g->isavailable)
-                <form class="link-button-container" method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$g->id)] ) }}">
-                    @csrf
-                    <input type="submit" class="btn btn-outline-dark link-button-button" value="Rent it!" />
-                </form>
-                @endif @endmember @volunteer
-                <a class="link-button-container" class="align-items-stretch" href={{ "/game/{$g->id}/edit"}}>
-                <button type="button" class="btn btn-outline-dark link-button-button"  >Edit</button>
-            </a> @endvolunteer
             </div>
         </div>
-        <a href={{ "/game/{$g->id}"}} style="text-decoration: none; color: @if ($g->isavailable) white @else black @endif;">
-            <div class="card-footer @if ($g->isavailable) bg-success text-white @endif">
-                <h6>
-                    @if ($g->isavailable)
-                        Available
-                    @else
-                        Not available
-                    @endif
-                </h6>
-                                    
-            </div>
-        </a>
-    </div>
-    @endforeach
+        @endforeach
 </div>
 
 
