@@ -17,8 +17,8 @@
                 <td><a style="color:black;" href="/account/{{$u->id}}">{{$u->name}}</a></td>
                 <td>{{$u->email}}</td>
                 <td class={{$u->volunteer? "table-success" : ""}}>
-                    <form method="POST" action="{{ route('members', ['data' => array(" id "=>$u->id, "volunteer "=>$u->volunteer)] ) }}">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <form method="POST" action="{{ route('members', ['data' => array('id'=>$u->id, 'volunteer'=>$u->volunteer)] ) }}">
+                        @csrf
                         <input class="btn {{$u->volunteer? " btn-dark " : "btn-outline-dark "}} " type='submit' value="{{$u->volunteer? " Remove
                             Volunteer " : "Make Volunteer "}}" />
                     </form>
