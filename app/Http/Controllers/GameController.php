@@ -72,7 +72,7 @@ ON (game.id = currentrentals.idgame)");
         }
     }
 
-    public function editGame(string $id)
+    public function editGameView(string $id)
     {
         if (Auth::user() && Auth::user()->volunteer) {
             $game = DB::select("select * from game where id={$id}");
@@ -90,23 +90,46 @@ ON (game.id = currentrentals.idgame)");
     {
         $data = $request->all();
 
-        Log::info(print_r($data));
+        // Log::info(print_r($data));
 
         Game::create([
         'name' => $data['name'],
         'releaseyear'=> $data['releaseyear'],
-         'type'=> $data['type'],
-          'description'=> $data['description'],
-           'platform'=> $data['platform'],
-            'rating'=> $data['rating'],
-             'imageurl'=> $data['imageurl']
+        'type'=> $data['type'],
+        'description'=> $data['description'],
+        'platform'=> $data['platform'],
+        'rating'=> $data['rating'],
+        'imageurl'=> $data['imageurl']
     ]);
         return redirect()->route('index');
     }
 
     public function deleteGame($id)
     {
+        DB::update("UPDATE rentals set enddate=now() where idgame={$id}"); // End all rentals with game to delete.
         Game::destroy($id);
+        return redirect()->route('index');
+    }
+
+    public function editGame(Request $request)
+    {
+        $data = $request->all();
+        $game = Game::find($data['id']);
+
+        
+        // Log::info(print_r($data));
+        $game->fill([
+            'name' => $data['name'],
+            'releaseyear'=> $data['releaseyear'],
+            'type'=> $data['type'],
+            'description'=> $data['description'],
+            'platform'=> $data['platform'],
+            'rating'=> $data['rating'],
+            'imageurl'=> $data['imageurl']
+        ]);
+
+        $game->save();
+
         return redirect()->route('index');
     }
 }

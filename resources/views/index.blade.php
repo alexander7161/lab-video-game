@@ -14,8 +14,11 @@
     }
 </style>
 
+@foreach ($games as $g) @if($loop->index%3==0) @if($loop->index!=0)
+</div>
+@endif
 <div class="card-columns">
-    @foreach ($games as $g)
+    @endif
     <?php
     $buttonStyle =  $g->isavailable? "btn-outline-light" : "btn-outline-dark";
     ?>
@@ -58,11 +61,6 @@
 
             </div>
         </div>
-        @endforeach
-</div>
-
-
-
-
-@else No Games Found. @endif
+        @if($loop->remaining==0)
+</div>@endif @endforeach @else No Games Found. @endif
 @endsection
