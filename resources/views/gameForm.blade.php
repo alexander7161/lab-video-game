@@ -41,7 +41,7 @@
 
         <div class="col-md-6">
             <textarea style="min-height: calc(2.19rem + 2px); height: calc(8.19rem + 2px);" id="description" type="text" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
-                name="description" value="{{ old('description', isset($game)? $game->description : '') }}" required rows="3"> </textarea>            @if($errors->has('description'))
+                name="description" required rows="3">{{old('description', isset($game)? $game->description : '')}}</textarea>            @if($errors->has('description'))
             <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('description') }}</strong>
                                     </span> @endif
