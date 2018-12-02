@@ -23,18 +23,15 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dd class="col-sm-9">available</dd>
                 @else
                 <dd class="col-sm-9">unavailable</dd>
-                @endif
-
-                <dt class="col-sm-3">Currently being rented:</dt>
-                <dd class="col-sm-9">{{sizeof($data['rents'])}}</dd>
-
-                @if($data['rents']) @useridequals($data['rents'][0]->idmember==Auth::id())
+                @endif {{-- <dt class="col-sm-3">Currently being rented:</dt>
+                <dd class="col-sm-9">{{sizeof($data['rents'])}}</dd> --}} @if($data['rents']) @useridequals($data['rents'][0]->idmember==Auth::id())
                 <dt class="col-sm-3">Rented by:</dt>
-                <dd class="col-sm-9">You</dd>
+                <dd class="col-sm-9"> <a style="color:black;" href="/account">
+                    You</a></dd>
                 @else @volunteer
                 <dt class="col-sm-3">Rented by:</dt>
                 <dd class="col-sm-9">
-                    <a href="/account/{{$data['rents'][0]->idmember}}">
+                    <a style="color:black;" href="/account/{{$data['rents'][0]->idmember}}">
                  {{$data['rents'][0]->username}}
                  </a>
                 </dd>

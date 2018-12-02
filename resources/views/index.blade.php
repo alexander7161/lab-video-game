@@ -6,11 +6,23 @@
         flex: 1;
         margin-right: 4px;
         margin-left: 4px;
-
     }
 
     .link-button-button {
         width: 100%;
+    }
+
+    .button-container {}
+
+    @media all and (min-width: 0px) and (max-width: 1024px) {
+        .button-container {
+            flex-direction: column !important;
+        }
+        .link-button-container {
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+        }
     }
 </style>
 
@@ -44,7 +56,7 @@
                 <h6>
                     @if ($g->isavailable) Available @else Not available @endif
                 </h6> --}}
-                <div class=" d-flex flex-row justify-content-around">
+                <div class="d-flex flex-row justify-content-around button-container">
 
                     <a class="link-button-container" href={{ "/game/{$g->id}"}}>
                             <button type="button" class="btn {{$buttonStyle }} link-button-button"  >More Information</button>
