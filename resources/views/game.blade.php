@@ -50,7 +50,7 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dd class="col-sm-9">{{ $data['game']->description }}</dd>
 
                 <dt class="col-sm-3">Rating:</dt>
-                <dd class="col-sm-9"><span id=stars></span><a>Reputable Medias</a></dd> @endif
+                <dd class="col-sm-9"><span id=stars></span></dd> @endif
             </dl>
             @member @if($isavailable)
             <form method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
@@ -82,10 +82,10 @@ $isavailable = sizeof($data['rents']) == 0;
             output.push('<i class="fa fa-star" aria-hidden="true" style="color: gold;"></i>&nbsp;');
 
             // If there is a half a star, append it
-             if (i == .5) output.push('<i class="fa fa-star-half-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
+             if (i == .10) output.push('<i class="fa fa-star-half-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
 
             // Fill the empty stars
-            for (let i = (5 - rating); i >= 1; i--)
+            for (let i = (10 - rating); i >= 1; i--)
             output.push('<i class="fa fa-star-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
 
             return output.join('');
