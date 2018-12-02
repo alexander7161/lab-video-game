@@ -57,12 +57,17 @@ class UserController extends Controller
     {
         $data = $request->all()['data'];
         if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id !=$data["id"]) {
-            print($data['volunteer']);
+            // print($data['volunteer']);
             DB::table('users')
             ->where('id', $data["id"])  // find your user by their email
             ->limit(1)  // optional - to ensure only one record is updated.
             ->update(array('volunteer' => !$data['volunteer']));  // update the record in the DB.
             return redirect()->route('members');
+        } else {
+            return redirect()->route(
+                'error'
+            // ['id' => 0]
+        );
         }
     }
 }
