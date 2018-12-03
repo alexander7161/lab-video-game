@@ -63,24 +63,11 @@ ON (game.id = currentrentals.idgame)");
         }
     }
 
-    public function newGame()
-    {
-        if (Auth::user() && Auth::user()->volunteer) {
-            return view('newGame');
-        } else {
-            return redirect()->route('error', ['id' => 1]);
-        }
-    }
-
     public function editGameView(string $id)
     {
-        if (Auth::user() && Auth::user()->volunteer) {
-            $game = DB::select("select * from game where id={$id}");
-            if (sizeof($game) > 0) {
-                return view('editGame', ['game' => $game[0]]);
-            } else {
-                return redirect()->route('error', ['id' => 2]);
-            }
+        $game = DB::select("select * from game where id={$id}");
+        if (sizeof($game) > 0) {
+            return view('editGame', ['game' => $game[0]]);
         } else {
             return redirect()->route('error', ['id' => 2]);
         }
