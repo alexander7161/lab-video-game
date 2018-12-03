@@ -25,11 +25,9 @@ create table user_roles
   idUser serial not null,
   idRole serial not null,
   primary key (idUser, idRole),
-  foreign key (idUser) references users (id),
+  foreign key (idUser) references users (id) on delete CASCADE on update CASCADE,
   foreign key (idRole) references roles (id)
 );
-
--- ALTER TABLE users ADD COLUMN owingGame int;
 
 create table game
 (
