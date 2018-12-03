@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Secretary
 {
@@ -15,6 +17,14 @@ class Secretary
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        return app(Authenticate::class)->handle($request, function ($request) use ($next) {
+            $id = Auth::user()->id;
+            $secretary = DB::select("select * from user_roles where iduser={$id} and idrole=1 LIMIT 1");
+            if (sizeof($secretary)>0) {
+                return $next($request);
+            } else {
+                return redirect()->route('error', ['id' => 4]);
+            }
+        });
     }
 }
