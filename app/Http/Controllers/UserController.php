@@ -40,7 +40,7 @@ class UserController extends Controller
 
     public function getUser($id)
     {
-        if (ctype_digit($id) && (self::getVolunteer($id) || $id == Auth::user()->id)) {
+        if (ctype_digit($id) && (self::getVolunteer(Auth::user()->id) || $id == Auth::user()->id)) {
             return self::getUserById($id);
         } else {
             return redirect()->route('error', ['id' => 0]);
