@@ -28,14 +28,15 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dt class="col-sm-3">Rented by:</dt>
                 <dd class="col-sm-9"> <a style="color:black;" href="/account">
                     You</a></dd>
-                @else @volunteer
+                @else
                 <dt class="col-sm-3">Rented by:</dt>
                 <dd class="col-sm-9">
-                    <a style="color:black;" href="/account/{{$data['rents'][0]->idmember}}">
+
+                    @volunteer <a style="color:black;" href="/account/{{$data['rents'][0]->idmember}}">@endvolunteer
                  {{$data['rents'][0]->username}}
-                 </a>
+                 @volunteer </a>@endvolunteer
                 </dd>
-                @endvolunteer @enduseridequals @endif @if($data['game']->releaseyear)
+                @enduseridequals @endif @if($data['game']->releaseyear)
 
                 <dt class="col-sm-3">Release Year:</dt>
                 <dd class="col-sm-9">{{ $data['game']->releaseyear }}</dd>
