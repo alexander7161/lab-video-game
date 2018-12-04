@@ -27,6 +27,8 @@ Route::post('members', 'UserController@setVolunteer')->name('members')->middlewa
 Route::post('makeSecretary', 'UserController@makeSecretary')->name('makeSecretary')->middleware('secretary');
 Route::get('account', 'UserController@getCurrentUser')->middleware('auth');
 Route::get('account/{id}', 'UserController@getUser')->middleware('auth');
+Route::get('rules', 'RulesController@index')->middleware('secretary')->name('rules');
+Route::post('rules', 'RulesController@edit')->middleware('secretary')->name('editRules');
 
 Route::get('error/{id?}', function ($id = 7) {
     return view('error', ['info' => __("errors.{$id}")]);
