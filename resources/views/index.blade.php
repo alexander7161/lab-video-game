@@ -1,5 +1,15 @@
 @extends('layouts.app') 
-@section('content') @if ($games)
+@section('content')
+<form class="input-group mb-3" method="POST" action="{{ route('indexFilter') }}">
+    @csrf
+    <input name="filter" id="filter" type="text" class="form-control" value="{{ isset($filter)? $filter:'' }}" placeholder="Search Games...
+        " aria-label="Search Games " aria-describedby="button-addon2 ">
+    <div class="input-group-append ">
+        <button class="btn btn-outline-secondary " type="submit " id="button-addon2 "><i class="fa fa-search "></i></button>
+    </div>
+
+</form>
+@if ($games)
 
 <style>
     .link-button-container {
@@ -27,42 +37,35 @@
 </style>
 
 
-<form class="input-group mb-3" method="POST" action="{{ route('indexFilter') }}">
-    @csrf
-  <input name="filter" id="filter" type="text" class="form-control" placeholder="Recipient's username" aria-label="Search Games ... " aria-describedby="button-addon2">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
-  </div>
 
-</form>
 
 @foreach ($games as $g) @if($loop->index%3==0) @if($loop->index!=0)
 </div>
 @endif
-<div class="card-columns">
+<div class="card-columns ">
     @endif
     <?php
-    $buttonStyle =  $g->isavailable? "btn-outline-light" : "btn-outline-dark";
+    $buttonStyle =  $g->isavailable? "btn-outline-light " : "btn-outline-dark ";
     ?>
-        <div class="card">
-            {{-- <img class="card-img-top" src=".../100px180/" alt="Card image cap"> --}}
-            <div class="card-body" style="padding-bottom: 8px;">
-                <h5 class="card-title"> {{ $g->name }}</h5>
-                <div style="position: absolute; top: 4px; right: 4px;">
+        <div class="card ">
+            {{-- <img class="card-img-top " src=".../100px180/ " alt="Card image cap "> --}}
+            <div class="card-body " style="padding-bottom: 8px; ">
+                <h5 class="card-title "> {{ $g->name }}</h5>
+                <div style="position: absolute; top: 4px; right: 4px; ">
                     <h6>
                         @if ($g->isavailable)
-                        <span class="badge badge-success">Available</span> @else
-                        <span class="badge badge-secondary">Not Available</span> @endif
+                        <span class="badge badge-success ">Available</span> @else
+                        <span class="badge badge-secondary ">Not Available</span> @endif
                     </h6>
                 </div>
                 {{--
-                <p class="card-text">
+                <p class="card-text ">
 
                 </p> --}}
 
             </div>
-            <div class="card-footer @if ($g->isavailable) bg-success text-white @endif" style="padding-right: 8px; padding-left: 8px;">
-                {{--
+            <div class="card-footer @if ($g->isavailable) bg-success text-white @endif" style="padding-right: 8px;
+    padding-left: 8px;"> {{--
                 <h6>
                     @if ($g->isavailable) Available @else Not available @endif
                 </h6> --}}

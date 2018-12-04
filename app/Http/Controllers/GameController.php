@@ -11,12 +11,6 @@ use Log;
 
 class GameController extends Controller
 {
-    public function store()
-    {
-        //return view('addressee_dtls')->with('adrs_dtls', $adrs);
-        // print_r($request);
-    }
-
     /**
      * Show a list of all of the application's users.
      *
@@ -24,17 +18,11 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games = DB::select("SELECT game.id, name, startdate, enddate, idmember, (CASE
-        WHEN idmember is not null and enddate is null THEN
-        false
-        ELSE
-        true
-        END) as isavailable
-FROM 
-game
-LEFT JOIN
-    (select * from rentals where enddate is null) currentrentals
-ON (game.id = currentrentals.idgame)");
+        $games = DB::select("SELECT game.id, name, startdate, enddate, idmember, 
+        (CASE WHEN idmember is not null and enddate is null THEN false ELSE true END) as isavailable FROM game
+        LEFT JOIN
+        (select * from rentals where enddate is null) currentrentals
+        ON (game.id = currentrentals.idgame)");
         sort($games);
         return view('index', ['games' => $games]);
     }
@@ -45,18 +33,14 @@ ON (game.id = currentrentals.idgame)");
 
         $filter = $data['filter'];
 
-        $games = DB::select("SELECT game.id, name, startdate, enddate, idmember, (CASE
-        WHEN idmember is not null and enddate is null THEN
-        false
-        ELSE
-        true
-        END) as isavailable
-FROM 
-game 
-LEFT JOIN
-    (select * from rentals where enddate is null ) currentrentals
-ON (game.id = currentrentals.idgame) where LOWER(game.name) like LOWER('{$filter}%') ");
+        $games = DB::select("SELECT game.id, name, startdate, enddate, idmember, 
+        (CASE WHEN idmember is not null and enddate is null THEN false ELSE true END) as isavailable FROM game 
+        LEFT JOIN
+        (select * from rentals where enddate is null ) currentrentals
+        ON (game.id = currentrentals.idgame) 
+        where LOWER(game.name) like concat('%',LOWER('{$filter}'),'%')");
         sort($games);
+        return view('index', compact('games', 'filter'));
         return view('index', ['games' => $games]);
     }
 
@@ -69,8 +53,13 @@ ON (game.id = currentrentals.idgame) where LOWER(game.name) like LOWER('{$filter
     public function getGame(string $id)
     {
         if (ctype_digit($id)) {
-            $game = DB::select("select * from game where id={$id}");
-            $renting = DB::select("select idmember, startdate, enddate, users.name as username from rentals inner join game on rentals.idgame=game.id inner join  users on rentals.idmember=users.id where rentals.idgame={$id} and enddate is null ");
+            $game = DB::select("SELECT * from game where id={$id}");
+            $renting = DB::select("SELECT idmember, startdate, enddate, users.name as username
+            from rentals inner join game on rentals.idgame=game.id
+            inner join
+            users
+            on rentals.idmember=users.id
+            where rentals.idgame={$id} and enddate is null ");
             if (sizeof($game) > 0) {
                 $data = [
                     'game' => $game[0],
@@ -87,7 +76,7 @@ ON (game.id = currentrentals.idgame) where LOWER(game.name) like LOWER('{$filter
 
     public function editGameView(string $id)
     {
-        $game = DB::select("select * from game where id={$id}");
+        $game = DB::select("SELECT * from game where id={$id}");
         if (sizeof($game) > 0) {
             return view('editGame', ['game' => $game[0]]);
         } else {

@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'GameController@index')->name('index');
-Route::post('index', 'GameController@indexFiltered')->name('indexFilter');
+Route::post('/', 'GameController@indexFiltered')->name('indexFilter');
 Route::get('game', 'GameController@index');
 Route::get('game/{id}', 'GameController@getGame');
 Route::post('game', 'RentController@createRent')->name('rentgame');
