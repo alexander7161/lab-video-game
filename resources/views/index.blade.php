@@ -26,6 +26,16 @@
     }
 </style>
 
+
+<form class="input-group mb-3" method="POST" action="{{ route('indexFilter') }}">
+    @csrf
+  <input name="filter" id="filter" type="text" class="form-control" placeholder="Recipient's username" aria-label="Search Games ... " aria-describedby="button-addon2">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+  </div>
+
+</form>
+
 @foreach ($games as $g) @if($loop->index%3==0) @if($loop->index!=0)
 </div>
 @endif

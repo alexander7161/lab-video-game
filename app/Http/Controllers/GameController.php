@@ -39,6 +39,28 @@ ON (game.id = currentrentals.idgame)");
         return view('index', ['games' => $games]);
     }
 
+    public function indexFiltered(Request $request)
+    {
+        $data = $request->all();
+
+        $filter = $data['filter'];
+
+        $games = DB::select("SELECT game.id, name, startdate, enddate, idmember, (CASE
+        WHEN idmember is not null and enddate is null THEN
+        false
+        ELSE
+        true
+        END) as isavailable
+FROM 
+game 
+LEFT JOIN
+    (select * from rentals where enddate is null ) currentrentals
+ON (game.id = currentrentals.idgame) where LOWER(game.name) like LOWER('{$filter}%') ");
+        sort($games);
+        return view('index', ['games' => $games]);
+    }
+
+
     /**
      * Show a list of all of the application's users.
      *
