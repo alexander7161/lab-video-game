@@ -66,7 +66,10 @@
                                      </a>
                                 <a class="dropdown-item" href="/members">
                                          {{ __('Manage Users') }}
-                                     </a> @endvolunteer
+                                     </a> @endvolunteer @secretary
+                                <a class="dropdown-item" href="/rules">
+                                        {{ __('Edit Rules') }}
+                                    </a> @endsecretary
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}

@@ -41,7 +41,6 @@ class GameController extends Controller
         where LOWER(game.name) like concat('%',LOWER('{$filter}'),'%')");
         sort($games);
         return view('index', compact('games', 'filter'));
-        return view('index', ['games' => $games]);
     }
 
 
