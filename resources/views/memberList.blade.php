@@ -15,7 +15,7 @@
         <tbody>
             @foreach ($users as $u)
             <tr class={{ $u->volunteer ? $u->secretary? "table-warning": "table-success" : ""}}>
-                <th scope="row"><a class="btn btn-outline-dark" role="button" href="/account/{{$u->id}}">{{$u->id}}</a></th>
+                <th scope="row"><a class="btn btn-outline-dark" role="button" href="/account/{{$u->id}}">ID: {{$u->id}}</a></th>
                 <td><a style="color:black;" href="/account/{{$u->id}}">{{$u->name}} </a> @if($u->volunteer)<span class="badge badge-success">Volunteer</span>@endif
                     @if($u->secretary)
                     <span class="badge badge-warning">Secretary</span>@endif</td>
