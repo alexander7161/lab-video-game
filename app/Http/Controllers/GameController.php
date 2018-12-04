@@ -16,33 +16,22 @@ class GameController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $games = DB::select("SELECT game.id, name, startdate, enddate, idmember, 
+        $query = "SELECT game.id, name, startdate, enddate, idmember, 
         (CASE WHEN idmember is not null and enddate is null THEN false ELSE true END) as isavailable FROM game
         LEFT JOIN
         (select * from rentals where enddate is null) currentrentals
-        ON (game.id = currentrentals.idgame)");
-        sort($games);
-        return view('index', ['games' => $games]);
-    }
+        ON (game.id = currentrentals.idgame)";
 
-    public function indexFiltered(Request $request)
-    {
-        $data = $request->all();
-
-        $filter = $data['filter'];
-
-        $games = DB::select("SELECT game.id, name, startdate, enddate, idmember, 
-        (CASE WHEN idmember is not null and enddate is null THEN false ELSE true END) as isavailable FROM game 
-        LEFT JOIN
-        (select * from rentals where enddate is null ) currentrentals
-        ON (game.id = currentrentals.idgame) 
-        where LOWER(game.name) like concat('%',LOWER('{$filter}'),'%')");
+        $filter = urldecode($request->query('filter'));
+        if ($filter) {
+            $query .= " where LOWER(game.name) like concat('%',LOWER('{$filter}'),'%')";
+        }
+        $games = DB::select($query);
         sort($games);
         return view('index', compact('games', 'filter'));
     }
-
 
     /**
      * Show a list of all of the application's users.

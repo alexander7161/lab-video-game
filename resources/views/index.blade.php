@@ -1,7 +1,6 @@
 @extends('layouts.app') 
 @section('content')
-<form class="input-group mb-3" method="POST" action="{{ route('indexFilter') }}">
-    @csrf
+<form class="input-group mb-3" method="GET" action="{{ route('index') }}">
     <input name="filter" id="filter" type="text" class="form-control" value="{{ isset($filter)? $filter:'' }}" placeholder="Search Games...
         " aria-label="Search Games " aria-describedby="button-addon2 ">
     <div class="input-group-append ">
