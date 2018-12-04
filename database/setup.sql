@@ -52,3 +52,14 @@ create table rentals
   foreign key (idgame) references Game (id) on delete set null on update CASCADE
 );
 
+create table rules
+(
+  rentGameLimit int not null,
+  rentalPeriod interval not null,
+  extensionLimit int not null,
+  ruleVioLimitPerPeriod int not null,
+  ruleVioPeriod interval not null,
+  banPeriod interval not null
+);
+
+insert into rules values(2, '3 weeks', 2, 3, '1 year', '6 months');
