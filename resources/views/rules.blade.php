@@ -15,7 +15,7 @@
   
 
     @foreach ($rules as $k=>$v) 
-     {{($v)}}
+
     <div class="form-group row">
         <label for="{{$k}}" class="col-md-4 col-form-label text-md-right">{{ __("rules." . $k) }}</label>
 
