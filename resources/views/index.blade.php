@@ -1,15 +1,5 @@
 @extends('layouts.app') 
 @section('content')
-<form class="input-group mb-3" method="GET" action="{{ route('index') }}">
-    <input name="filter" id="filter" type="text" class="form-control" value="{{ isset($filter)? $filter:'' }}" placeholder="Search Games...
-        " aria-label="Search Games " aria-describedby="button-addon2 ">
-    <div class="input-group-append ">
-        <button class="btn btn-outline-secondary " type="submit " id="button-addon2 "><i class="fa fa-search "></i></button>
-    </div>
-
-</form>
-@if ($games)
-
 <style>
     .link-button-container {
         flex: 1;
@@ -21,8 +11,6 @@
         width: 100%;
     }
 
-    .button-container {}
-
     @media all and (min-width: 0px) and (max-width: 1024px) {
         .button-container {
             flex-direction: column !important;
@@ -33,12 +21,30 @@
 
         }
     }
+
+    .search-bar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: white;
+    }
+
+    @media all and (min-width: 0px) and (max-width: 1024px) {
+        .search-bar {
+            width: 100%;
+        }
+    }
 </style>
 
+<form class="input-group mb-3 search-bar" method="GET" action="{{ route('index') }}">
+    <input name="filter" id="filter" type="text" class="form-control" value="{{ isset($filter)? $filter:'' }}" placeholder="Search Games...
+        " aria-label="Search Games " aria-describedby="button-addon2 ">
+    <div class="input-group-append ">
+        <button class="btn btn-outline-secondary " type="submit " id="button-addon2 "><i class="fa fa-search "></i></button>
+    </div>
 
-
-
-@foreach ($games as $g) @if($loop->index%3==0) @if($loop->index!=0)
+</form>
+@if ($games) @foreach ($games as $g) @if($loop->index%3==0) @if($loop->index!=0)
 </div>
 @endif
 <div class="card-columns ">
@@ -73,7 +79,7 @@
                     <a class="link-button-container" href={{ "/game/{$g->id}"}}>
                             <button type="button" class="btn {{$buttonStyle }} link-button-button"  >More Information</button>
                     </a> @member @if($g->isavailable)
-                    <form class="link-button-container" method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$g->id)] ) }}">
+                    <form class="link-button-container" method="GET" action="{{ route('rentgame', ['data' => array('idgame'=>$g->id)] ) }}">
                         @csrf
                         <input type="submit" class="btn {{$buttonStyle }} link-button-button" value="Rent it!" />
                     </form>

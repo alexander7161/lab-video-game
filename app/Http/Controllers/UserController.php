@@ -35,6 +35,12 @@ class UserController extends Controller
         false
         END) as secretary from users left join user_roles on users.id=iduser');
         sort($users);
+        usort($users, function ($item1, $item2) {
+            return $item2->secretary <=> $item1->secretary;
+        });
+        usort($users, function ($item1, $item2) {
+            return $item2->volunteer <=> $item1->volunteer;
+        });
         return view('memberList', ['users' => $users]);
     }
 
@@ -49,7 +55,7 @@ class UserController extends Controller
     
     private function getUserById($id)
     {
-        $user = DB::select("select name, email, created_at, updated_at, extensions, violations, firstviolation,latestviolation,banned,  (CASE
+        $user = DB::select("select id, name, email, created_at, updated_at, extensions, violations, firstviolation,latestviolation,banned,  (CASE
         WHEN iduser is null THEN
         false
         ELSE
@@ -59,19 +65,14 @@ class UserController extends Controller
         true
         ELSE
         false
-        END) as secretary from users left join user_roles on users.id=iduser where id={$id}");
-        $rentedGames = DB::select("SELECT (CASE
+        END) as secretary from users left join user_roles on users.id=iduser where id={$id}")[0];
+        $games = DB::select("SELECT (CASE
         WHEN idmember is not null and enddate is null THEN
         true
         ELSE
         false
         END) as currentlyBorrowed, game.name as name, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.idmember={$id}");
-
-        $data = [
-            'user'  => $user,
-            'games'   => $rentedGames
-        ];
-        return view('accountPage', ['data' => $data]);
+        return view('accountPage', compact('games', 'user'));
     }
 
     public function getCurrentUser()
@@ -111,6 +112,60 @@ class UserController extends Controller
             ->where('iduser', Auth::user()->id)
             ->update(['idrole' => 2]);
             return redirect()->route('members');
+        } else {
+            return redirect()->route(
+                'error'
+            // ['id' => 0]
+        );
+        }
+    }
+
+    public function createViolation(Request $request)
+    {
+        $data = $request->all()['data'];
+        if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id !=$data["id"]) {
+        } else {
+            return redirect()->route(
+                'error'
+            // ['id' => 0]
+        );
+        }
+    }
+
+    public function removeViolation(Request $request)
+    {
+        $data = $request->all()['data'];
+        if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id !=$data["id"]) {
+        } else {
+            return redirect()->route(
+                'error'
+            // ['id' => 0]
+        );
+        }
+    }
+
+    public function banUser($id)
+    {
+        if (isset($id) && ctype_digit($id) && Auth::user()->id !=$id) {
+            DB::table('users')
+            ->where('id', $id)
+            ->update(['banned' => true]);
+            return redirect()->back();
+        } else {
+            return redirect()->route(
+                'error'
+            // ['id' => 0]
+        );
+        }
+    }
+
+    public function unBanUser($id)
+    {
+        if (isset($id) && ctype_digit($id) && Auth::user()->id !=$id) {
+            DB::table('users')
+            ->where('id', $id)
+            ->update(['banned' => false]);
+            return redirect()->back();
         } else {
             return redirect()->route(
                 'error'

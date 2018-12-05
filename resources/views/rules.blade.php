@@ -27,7 +27,7 @@
                                                 <option  value ="months" @if($type=="mons") selected @endif>months</option>
                                                 <option value ="years" @if($type=="year") selected @endif>years</option>
                                             </select> @else
-                                        <input id="{{$k}}" type="text" class="form-control{{ $errors->has($k) ? ' is-invalid' : '' }}" name="{{$k}}" value="{{ old($k, $v) }}"
+                                        <input id="{{$k}}" type="number" class="form-control{{ $errors->has($k) ? ' is-invalid' : '' }}" name="{{$k}}" value="{{ old($k, $v) }}"
                                             required autofocus> @if ($errors->has($k))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first($k) }}</strong>

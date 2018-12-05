@@ -17,7 +17,7 @@ class Secretary
      */
     public function handle($request, Closure $next)
     {
-        return app(Authenticate::class)->handle($request, function ($request) use ($next) {
+        return app(Authenticated::class)->handle($request, function ($request) use ($next) {
             $id = Auth::user()->id;
             $secretary = DB::select("select * from user_roles where iduser={$id} and idrole=1 LIMIT 1");
             if (sizeof($secretary)>0) {
