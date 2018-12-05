@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Rules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,5 +34,15 @@ class RulesController extends Controller
         ruleviolimitperperiod= {$data['ruleviolimitperperiod']}");
      
         return redirect()->route('rules');
+    }
+
+    public static function getRentGameLimit()
+    {
+        return DB::select("SELECT rentgamelimit from rules")[0]->rentgamelimit;
+    }
+
+    public static function getExtensionLimit()
+    {
+        return DB::select("SELECT extensionlimit from rules")[0]->extensionlimit;
     }
 }
