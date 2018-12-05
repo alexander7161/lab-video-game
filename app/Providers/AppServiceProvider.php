@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::if('member', function () {
-            return auth()->check();
+            return auth()->check() && !Auth::user()->banned;
         });
 
         Blade::if('useridequals', function ($userid) {

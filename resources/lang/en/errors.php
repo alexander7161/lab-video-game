@@ -10,5 +10,6 @@ return [
     5 => 'You can only rent 2 games.',
     6 => 'You do not own that game.',
     7 => '',
+    8 => "You have been banned."
 
 ];
