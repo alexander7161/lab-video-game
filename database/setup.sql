@@ -35,9 +35,10 @@ create table game
   releaseYear INT,
   type varchar(255),
   description varchar(1000),
+  rating decimal(1,1) CHECK (rating<=5.0 and rating>0.0),
+  imageURL varchar(255),
+  recommendedURL varchar(255)
   onplatform platform,
-  rating int CHECK (rating<=10 and rating>0),
-  imageURL varchar(255)
 );
 
 create table rentals
