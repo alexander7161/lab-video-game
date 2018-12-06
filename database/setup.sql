@@ -10,6 +10,7 @@ create table users
   violations int check (violations between 0 and 3),
   firstViolation date,
   latestViolation date,
+  renting int check (renting<=2),
   banned boolean not null default true,
   volunteer boolean not null default false,
 );
@@ -30,7 +31,7 @@ create table user_roles
 );
 
 -- ALTER TABLE users ADD COLUMN owingGame int;
-
+CREATE TYPE platform AS ENUM ('PC', 'PS4', 'Xbox One', 'Nintendo Switch');
 create table game
 (
   id serial primary key,
@@ -38,7 +39,7 @@ create table game
   releaseYear INT,
   type varchar(255),
   description varchar(1000),
-  platform varchar(255),
+  onplatform platform,
   rating int CHECK (rating<=10 and rating>0),
   imageURL varchar(255)
 );
@@ -50,7 +51,26 @@ create table rentals
   idgame serial,
   startdate timestamp DEFAULT NOW(),
   enddate timestamp,
+  extended boolean default false,
   foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
   foreign key (idgame) references Game (id) on delete set null on update CASCADE
+);
+
+create table violations 
+(
+  idgame serial not null,
+  iduser serial not null,
+  violationdate date,
+  primary key (idgame, iduser),
+  foreign key (idgame) references game (id) on delete cascade on update cascade,
+  foreign key (iduser) references users (id) on delete cascade on update cascade
+);
+
+create table bannedmembers 
+( 
+  iduser serial not null,
+  datebanned date,
+  primary key (iduser),
+  foreign key (iduser) references users (id) on delete set null on update cascade
 );
 
