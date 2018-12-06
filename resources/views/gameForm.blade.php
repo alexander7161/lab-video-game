@@ -51,14 +51,7 @@
         <label for="platform" class="col-md-4 col-form-label text-md-right">{{ __('Platform') }}</label>
 
         <div class="col-md-6">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
             <select id="platform" class="form-control" name="platform">
->>>>>>> 4aee0a9dc79ca370058a8de6274ca488af1e5502
-=======
-        <select id="platform" class="form-control" name="platform">
->>>>>>> e7356f14b5d34f44e9bb3ab1e0211434358e3d02
                     @if(isset($platforms))@foreach($platforms as $p)
                         <option  value ="{{$p->unnest}}" @if(isset($game) && $game->onplatform==$p->unnest) selected @endif>{{$p->unnest}}</option>
                         @endforeach @endif
