@@ -7,6 +7,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
+                <th scope="col">Currently Renting</th>
                 <th scope="col">Banned</th>
                 <th scope="col">Volunteer</th>
                 @secretary
@@ -21,6 +22,7 @@
                     @if($u->secretary)
                     <span class="badge badge-warning">Secretary</span>@endif</td>
                 <td>{{$u->email}}</td>
+                <td>{{$u->currentrentals}}</td>
                 <td>@if(!$u->volunteer)
                     <form action="/account/{{$u->id}}/{{$u->banned?'unban':'ban'}}" method="GET">
                         <button type="submit" class="btn {{$u->banned? " btn-outline-danger ":"btn-outline-dark "}}">{{$u->banned?"Unban" : "Ban" }}</button></form>@endif</td>
