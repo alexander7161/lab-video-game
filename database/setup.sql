@@ -57,6 +57,7 @@ create table violations
 (
   iduser serial not null,
   violationdate date,
+  timesviolated int check (timesviolated <= 3) default (1),
   primary key (iduser),
   foreign key (iduser) references users (id) on delete set null on update cascade
 );
@@ -65,6 +66,7 @@ create table bannedmembers
 ( 
   iduser serial not null,
   datebanned date,
+  banneduntil date,
   primary key (iduser),
   foreign key (iduser) references users (id) on delete set null on update cascade
 );
