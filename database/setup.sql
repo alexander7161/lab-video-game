@@ -35,7 +35,7 @@ create table game
   releaseYear INT,
   type varchar(255),
   description varchar(1000),
-  rating decimal(1,1) CHECK (rating<=5.0 and rating>0.0),
+  rating decimal(1,1) CHECK (rating<=10.0 and rating>0.0),
   recommendedURL varchar(255),
   onplatform platform,
 );
