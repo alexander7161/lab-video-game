@@ -65,8 +65,10 @@ class GameController extends Controller
     public function editGameView(string $id)
     {
         $game = DB::select("SELECT * from game where id={$id}");
+        $platforms = DB::select("SELECT unnest(enum_range(NULL::platform))");
         if (sizeof($game) > 0) {
-            return view('editGame', ['game' => $game[0]]);
+            $game = $game[0];
+            return view('editGame', compact('game', 'platforms'));
         } else {
             return redirect()->route('error', ['id' => 2]);
         }
@@ -83,7 +85,7 @@ class GameController extends Controller
         'releaseyear'=> $data['releaseyear'],
         'type'=> $data['type'],
         'description'=> $data['description'],
-        'platform'=> $data['platform'],
+        'onplatform'=> $data['platform'],
         'rating'=> $data['rating'],
         'imageurl'=> $data['imageurl']
     ]);
@@ -109,7 +111,7 @@ class GameController extends Controller
             'releaseyear'=> $data['releaseyear'],
             'type'=> $data['type'],
             'description'=> $data['description'],
-            'platform'=> $data['platform'],
+            'onplatform'=> $data['platform'],
             'rating'=> $data['rating'],
             'imageurl'=> $data['imageurl']
         ]);
