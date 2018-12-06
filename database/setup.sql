@@ -26,7 +26,6 @@ create table user_roles
   foreign key (idRole) references roles (id)
 );
 
--- ALTER TABLE users ADD COLUMN owingGame int;
 CREATE TYPE platform AS ENUM
 ('PC', 'PS4', 'Xbox One', 'Nintendo Switch');
 create table game
@@ -36,9 +35,8 @@ create table game
   releaseYear INT,
   type varchar(255),
   description varchar(1000),
-  rating decimal(1,1) CHECK (rating<=5.0 and rating>0.0),
-  imageURL varchar(255),
-  recommendedURL varchar(255)
+  rating decimal(1,1) CHECK (rating<=10.0 and rating>0.0),
+  recommendedURL varchar(255),
   onplatform platform,
 );
 
