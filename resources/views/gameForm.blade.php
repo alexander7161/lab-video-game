@@ -51,7 +51,7 @@
         <label for="platform" class="col-md-4 col-form-label text-md-right">{{ __('Platform') }}</label>
 
         <div class="col-md-6">
-            <select id="platform" class="form-control" name="platform">
+        <select id="platform" class="form-control" name="platform">
                     @if(isset($platforms))@foreach($platforms as $p)
                         <option  value ="{{$p->unnest}}" @if(isset($game) && $game->onplatform==$p->unnest) selected @endif>{{$p->unnest}}</option>
                         @endforeach @endif

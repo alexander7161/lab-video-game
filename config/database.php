@@ -28,7 +28,6 @@ if($databaseUrl = getenv('DATABASE_URL')) {
     $database = substr($url['path'], 1);
 }
 
-
 return [
 
     /*
