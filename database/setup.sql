@@ -39,8 +39,9 @@ create table game
   type varchar(255),
   description varchar(1000),
   platform varchar(255),
-  rating int CHECK (rating<=10 and rating>0),
-  imageURL varchar(255)
+  rating decimal(1,1) CHECK (rating<=5.0 and rating>0.0),
+  imageURL varchar(255),
+  recommendedURL varchar(255)
 );
 
 create table rentals
