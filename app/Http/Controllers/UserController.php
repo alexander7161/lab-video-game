@@ -55,7 +55,7 @@ class UserController extends Controller
     
     private function getUserById($id)
     {
-        $user = DB::select("select id, name, email, created_at, updated_at, violations, firstviolation,latestviolation,banned,  (CASE
+        $user = DB::select("select id, name, email, created_at, updated_at, banned,  (CASE
         WHEN iduser is null THEN
         false
         ELSE
