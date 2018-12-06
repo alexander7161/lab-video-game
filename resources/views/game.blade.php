@@ -6,7 +6,7 @@ $isavailable = sizeof($data['rents']) == 0;
     <div class="container">
         <!-- Left Column / Game Image -->
         <div class="col-lg-7">
-            <img class="img-thumbnail" src="{{asset('img/'.$data['game']->id.'.jpg')}}">
+            <img class="img-thumbnail" src="{{asset('img/'.urlencode($data['game']->name).'.jpg')}}">
         </div>
         <!-- Right Column -->
         <div class="col-lg-5">
@@ -46,7 +46,7 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dd class="col-sm-9">{{ $data['game']->type }}</dd>
 
                 <dt class="col-sm-3">Platform:</dt>
-                <dd class="col-sm-9">{{ $data['game']->platform }}</dd>
+                <dd class="col-sm-9">{{ $data['game']->onplatform }}</dd>
 
                 <dt class="col-sm-3">Description:</dt>
                 <dd class="col-sm-9">{{ $data['game']->description }}</dd>
