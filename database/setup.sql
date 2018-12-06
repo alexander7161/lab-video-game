@@ -56,7 +56,7 @@ create table rentals
 create table violations 
 (
   iduser serial not null,
-  violationdate date,
+  violationdate timestamp,
   primary key (iduser),
   foreign key (iduser) references users (id) on delete set null on update cascade
 );
@@ -64,7 +64,8 @@ create table violations
 create table bannedmembers 
 ( 
   iduser serial not null,
-  datebanned date,
+  datebanned timestamp,
+  banperiod interval,
   primary key (iduser),
   foreign key (iduser) references users (id) on delete set null on update cascade
 );
