@@ -70,21 +70,3 @@ create table rules
 
 insert into rules
 values(2, '3 weeks', 2, 3, '1 years', '6 months');
-/*
-create table rules
-(
-  name varchar primary key,
-  friendlyName varchar not null,
-  maxLimit int,
-  period interval
-
-);
-
-insert into rules values('rentGameLimit', 'Max number of games users can rent', 2, null);
-insert into rules values('rentalPeriod', 'Rental period', null, '3 weeks');
-insert into rules values('extensionLimit', 'Max number of 1 week extensions', 2, null);
-insert into rules values('ruleVioLimitPerPeriod', 'Max rule violations in period', 3, null);
-insert into rules values('ruleVioPeriod', 'Rule violation period', null, '1 year');
-insert into rules values('banPeriod', 'Ban period', null, '6 months');
-
-*/

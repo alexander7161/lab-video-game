@@ -64,9 +64,10 @@ class GameController extends Controller
 
     public function editGameView(string $id)
     {
-        $game = DB::select("SELECT * from game where id={$id}");
+        $game = DB::select("SELECT * from game where id={$id}")[0];
+        $platforms = DB::select("SELECT unnest(enum_range(NULL::platform))");
         if (sizeof($game) > 0) {
-            return view('editGame', ['game' => $game[0]]);
+            return view('editGame', compact('game', 'platforms'));
         } else {
             return redirect()->route('error', ['id' => 2]);
         }

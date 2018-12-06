@@ -45,7 +45,7 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dd class="col-sm-9">{{ $data['game']->type }}</dd>
 
                 <dt class="col-sm-3">Platform:</dt>
-                <dd class="col-sm-9">{{ $data['game']->platform }}</dd>
+                <dd class="col-sm-9">{{ $data['game']->onplatform }}</dd>
 
                 <dt class="col-sm-3">Description:</dt>
                 <dd class="col-sm-9">{{ $data['game']->description }}</dd>
