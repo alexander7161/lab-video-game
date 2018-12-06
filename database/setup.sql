@@ -7,8 +7,8 @@ create table users
   name varchar(255) not null,
   email varchar(255) not null,
   password varchar(255) not null,
-  extensions int,
-  banned boolean not null default false,
+  volunteer boolean not null default false,
+  banned boolean not null default false
 );
 
 create table roles
@@ -26,14 +26,8 @@ create table user_roles
   foreign key (idRole) references roles (id)
 );
 
-create table violations
-(
-  id serial not null primary key,
-  iduser serial not null,
-  date datetime not null,
-  foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
-);
-
+-- ALTER TABLE users ADD COLUMN owingGame int;
+CREATE TYPE platform AS ENUM ('PC', 'PS4', 'Xbox One', 'Nintendo Switch');
 create table game
 (
   id serial primary key,
@@ -41,10 +35,10 @@ create table game
   releaseYear INT,
   type varchar(255),
   description varchar(1000),
-  platform varchar(255),
   rating decimal(1,1) CHECK (rating<=5.0 and rating>0.0),
   imageURL varchar(255),
   recommendedURL varchar(255)
+  onplatform platform,
 );
 
 create table rentals
@@ -54,13 +48,29 @@ create table rentals
   idgame serial,
   startdate timestamp DEFAULT NOW(),
   enddate timestamp,
+  extended boolean default false,
   foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
   foreign key (idgame) references Game (id) on delete set null on update CASCADE
 );
 
+create table violations 
+(
+  iduser serial not null,
+  violationdate date,
+  primary key (iduser),
+  foreign key (iduser) references users (id) on delete set null on update cascade
+);
+
+create table bannedmembers 
+( 
+  iduser serial not null,
+  datebanned date,
+  primary key (iduser),
+  foreign key (iduser) references users (id) on delete set null on update cascade
+);
+
 create table rules
 (
-
   rentGameLimit int not null,
   rentalPeriod interval not null,
   extensionLimit int not null,
@@ -71,21 +81,3 @@ create table rules
 
 insert into rules
 values(2, '3 weeks', 2, 3, '1 years', '6 months');
-/*
-create table rules
-(
-  name varchar primary key,
-  friendlyName varchar not null,
-  maxLimit int,
-  period interval
-
-);
-
-insert into rules values('rentGameLimit', 'Max number of games users can rent', 2, null);
-insert into rules values('rentalPeriod', 'Rental period', null, '3 weeks');
-insert into rules values('extensionLimit', 'Max number of 1 week extensions', 2, null);
-insert into rules values('ruleVioLimitPerPeriod', 'Max rule violations in period', 3, null);
-insert into rules values('ruleVioPeriod', 'Rule violation period', null, '1 year');
-insert into rules values('banPeriod', 'Ban period', null, '6 months');
-
-*/
