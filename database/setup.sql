@@ -5,13 +5,10 @@ create table users
 (
   id serial primary key,
   name varchar(255) not null,
-  surname varchar(255) not null,
+  email varchar(255) not null,
+  password varchar(255) not null,
   extensions int,
-  violations int check (violations between 0 and 3),
-  firstViolation date,
-  latestViolation date,
-  banned boolean not null default true,
-  volunteer boolean not null default false,
+  banned boolean not null default false,
 );
 
 create table roles
@@ -25,11 +22,17 @@ create table user_roles
   idUser serial not null,
   idRole serial not null,
   primary key (idUser, idRole),
-  foreign key (idUser) references users (id),
+  foreign key (idUser) references users (id) on delete CASCADE on update CASCADE,
   foreign key (idRole) references roles (id)
 );
 
--- ALTER TABLE users ADD COLUMN owingGame int;
+create table violations
+(
+  id serial not null primary key,
+  iduser serial not null,
+  date datetime not null,
+  foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
+);
 
 create table game
 (
@@ -51,7 +54,38 @@ create table rentals
   idgame serial,
   startdate timestamp DEFAULT NOW(),
   enddate timestamp,
-  foreign key (iduser) references users (id),
-  foreign key (idgame) references Game (id)
+  foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
+  foreign key (idgame) references Game (id) on delete set null on update CASCADE
 );
 
+create table rules
+(
+
+  rentGameLimit int not null,
+  rentalPeriod interval not null,
+  extensionLimit int not null,
+  ruleVioLimitPerPeriod int not null,
+  ruleVioPeriod interval not null,
+  banPeriod interval not null
+);
+
+insert into rules
+values(2, '3 weeks', 2, 3, '1 years', '6 months');
+/*
+create table rules
+(
+  name varchar primary key,
+  friendlyName varchar not null,
+  maxLimit int,
+  period interval
+
+);
+
+insert into rules values('rentGameLimit', 'Max number of games users can rent', 2, null);
+insert into rules values('rentalPeriod', 'Rental period', null, '3 weeks');
+insert into rules values('extensionLimit', 'Max number of 1 week extensions', 2, null);
+insert into rules values('ruleVioLimitPerPeriod', 'Max rule violations in period', 3, null);
+insert into rules values('ruleVioPeriod', 'Rule violation period', null, '1 year');
+insert into rules values('banPeriod', 'Ban period', null, '6 months');
+
+*/

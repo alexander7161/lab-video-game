@@ -14,7 +14,7 @@
 
 $host = env('DB_HOST', '127.0.0.1');
 $database = env('DB_DATABASE', 'localdb');
-$username = env('DB_USERNAME', 'alexanderdavis');
+$username = env('DB_USERNAME', 'tanisha');
 $password = env('DB_PASSWORD', '');
 
 
@@ -28,10 +28,6 @@ if($databaseUrl = getenv('DATABASE_URL')) {
     $database = substr($url['path'], 1);
 }
 
-    $username="postgres";
-    $database="localdb";
-    $host="127.0.0.1";
-    $password="999259";
 
 return [
 

@@ -1,3 +1,4 @@
+
 insert into game('id','name','releaseYear','type','description','platform','rating','recommendedURL') values(2018001,'Overwatch',2016,'FPS','In a time of global crisis, an international task force of heroes banded together to restore peace to a war-torn world: OVERWATCH. It ended the crisis and helped to maintain peace in the decades that followed, inspiring an era of exploration, innovation, and discovery.','PC, XBox One, PS4',4.55,'https://www.metacritic.com/game/pc/overwatch',)
 insert into game('id','name','releaseYear','type','description','platform','rating','recommendedURL') values(2018002,'PUBG',2017,'PUBG','BATTLEGROUNDS is a competitive survival shooter. Players are dropped into a wide, open area, and they must fight to the death - all while the battlefield shrinks, adding pressure to all in its grip. Use a variety of interesting weapons and vehicles amid the BATTLEGROUNDS.','PC, XBox One, PS4 and Mobile',4.0,'https://www.commonsensemedia.org/game-reviews/playerunknowns-battlegrounds/user-reviews/adult')
 insert into game('id','name','releaseYear','type','description','platform','rating','recommendedURL') values(2018003,'League of Legends',2009,'MOBA','League of Legends is a fast-paced, competitive online game that blends the speed and intensity of an RTS with RPG elements. Two teams of powerful champions, each with a unique design and playstyle, battle head-to-head across multiple battlefields and game modes.','PC',3.9,'https://www.metacritic.com/game/pc/league-of-legends')
@@ -8,3 +9,15 @@ insert into game('id','name','releaseYear','type','description','platform','rati
 insert into game('id','name','releaseYear','type','description','platform','rating','recommendedURL') values(2018008,'Minecraft',2011,'Single-Player Game','Minecraft is a 2011 sandbox video game created by Swedish game developer Markus Persson and later developed by Mojang. The game allows players to build with a variety of different blocks in a 3D procedurally generated world, requiring creativity from players.','PC, PS4, XBox One',4.65,'https://www.metacritic.com/game/pc/minecraft')
 insert into game('id','name','releaseYear','type','description','platform','rating','recommendedURL') values(2018009,'Hearthstone',2014,'CAG','The game is a turn-based card game between two opponents, using constructed decks of 30 cards along with a selected hero with a unique power. Players use their limited mana crystals to play abilities or summon minions to attack the opponent, with the goal of destroying the opponents hero.','PC, Mobile',4,'https://www.commonsensemedia.org/game-reviews/hearthstone')
 insert into game('id','name','releaseYear','type','description','platform','rating','recommendedURL') values(2018010,'Monster Hunter',2004,'ARPG','Astera acts as a central hub where the player can buy and sell goods, manage their inventory, craft new equipment, and gain new quests. A core facet of Monster Hunter games is the construction and upgrading of armor and weapons at a forge using the monster parts and resources the player has gained from combat.','PC, PS2, PS3, Mobile',4.5,'https://www.metacritic.com/game/playstation-4/monster-hunter-world')
+=======
+-- insert into ...
+
+
+
+-- Roles
+INSERT INTO roles
+VALUES
+    (1, 'Volunteer');
+INSERT INTO roles
+VALUES
+    (2, 'Secretary');
