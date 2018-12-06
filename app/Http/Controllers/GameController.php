@@ -84,7 +84,7 @@ class GameController extends Controller
         'releaseyear'=> $data['releaseyear'],
         'type'=> $data['type'],
         'description'=> $data['description'],
-        'platform'=> $data['platform'],
+        'onplatform'=> $data['platform'],
         'rating'=> $data['rating'],
         'imageurl'=> $data['imageurl']
     ]);
@@ -110,7 +110,7 @@ class GameController extends Controller
             'releaseyear'=> $data['releaseyear'],
             'type'=> $data['type'],
             'description'=> $data['description'],
-            'platform'=> $data['platform'],
+            'onplatform'=> $data['platform'],
             'rating'=> $data['rating'],
             'imageurl'=> $data['imageurl']
         ]);
