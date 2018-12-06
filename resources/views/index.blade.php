@@ -79,7 +79,7 @@
                     <a class="link-button-container" href={{ "/game/{$g->id}"}}>
                             <button type="button" class="btn {{$buttonStyle }} link-button-button"  >More Information</button>
                     </a> @member @if($g->isavailable)
-                    <form class="link-button-container" method="GET" action="{{ route('rentgame', ['data' => array('idgame'=>$g->id)] ) }}">
+                    <form class="link-button-container" method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$g->id)] ) }}">
                         @csrf
                         <input type="submit" class="btn {{$buttonStyle }} link-button-button" value="Rent it!" />
                     </form>

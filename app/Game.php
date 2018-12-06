@@ -11,7 +11,7 @@ class Game extends Model
     public $timestamps = false;
     protected $fillable = [
         'name', 'releaseyear', 'type',
-        'description', 'platform',
+        'description', 'onplatform',
         'rating', 'imageurl'
     ];
 }
