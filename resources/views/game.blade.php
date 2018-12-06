@@ -6,7 +6,7 @@ $isavailable = sizeof($data['rents']) == 0;
     <div class="container">
         <!-- Left Column / Game Image -->
         <div class="col-lg-7">
-            <img class="img-thumbnail" src="{{asset('img/'.urlencode($data['game']->name).'.jpg')}}">
+            <img class="img-thumbnail" src="{{asset('img/'.urlencode($data['game']->name).'.jpg')}}" width = "500" height = "500" >
         </div>
         <!-- Right Column -->
         <div class="col-lg-5">
@@ -16,21 +16,21 @@ $isavailable = sizeof($data['rents']) == 0;
           </a> @endvolunteer
             <!-- Game descritions -->
             <dl class="row">
-                <dt class="col-sm-3">Name Of Game:</dt>
+                <dt class="col-sm-5">Name Of Game:</dt>
                 <dd class="col-sm-9">{{ $data['game']->name }}</dd>
 
-                <dt class="col-sm-3">Availability</dt> 
+                <dt class="col-sm-5">Availability</dt> 
                 @if ($isavailable)
                 <dd class="col-sm-9">available</dd>
                 @else
                 <dd class="col-sm-9">unavailable</dd>
-                @endif {{-- <dt class="col-sm-3">Currently being rented:</dt>
+                @endif {{-- <dt class="col-sm-5">Currently being rented:</dt>
                 <dd class="col-sm-9">{{sizeof($data['rents'])}}</dd> --}} @if($data['rents']) @useridequals($data['rents'][0]->idmember==Auth::id())
-                <dt class="col-sm-3">Rented by:</dt>
+                <dt class="col-sm-5">Rented by:</dt>
                 <dd class="col-sm-9"> <a style="color:black;" href="/account">
                     You</a></dd>
                 @else
-                <dt class="col-sm-3">Rented by:</dt>
+                <dt class="col-sm-5">Rented by:</dt>
                 <dd class="col-sm-9">
 
                     @volunteer <a style="color:black;" href="/account/{{$data['rents'][0]->idmember}}">@endvolunteer
@@ -39,19 +39,19 @@ $isavailable = sizeof($data['rents']) == 0;
                 </dd>
                 @enduseridequals @endif @if($data['game']->releaseyear)
 
-                <dt class="col-sm-3">Release Year:</dt>
+                <dt class="col-sm-5">Release Year:</dt>
                 <dd class="col-sm-9">{{ $data['game']->releaseyear }}</dd>
 
-                <dt class="col-sm-3">Type:</dt>
+                <dt class="col-sm-5">Type:</dt>
                 <dd class="col-sm-9">{{ $data['game']->type }}</dd>
 
-                <dt class="col-sm-3">Platform:</dt>
+                <dt class="col-sm-5">Platform:</dt>
                 <dd class="col-sm-9">{{ $data['game']->onplatform }}</dd>
 
-                <dt class="col-sm-3">Description:</dt>
+                <dt class="col-sm-5">Description:</dt>
                 <dd class="col-sm-9">{{ $data['game']->description }}</dd>
 
-                <dt class="col-sm-3">Rating:</dt>
+                <dt class="col-sm-5">Rating:</dt>
                 <dd class="col-sm-9"><span id=stars></span></dd> @endif
             </dl>
             @member @if($isavailable)
