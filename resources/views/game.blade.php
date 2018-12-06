@@ -6,7 +6,7 @@ $isavailable = sizeof($data['rents']) == 0;
     <div class="container">
         <!-- Left Column / Game Image -->
         <div class="col-lg-7">
-            <img class="img-thumbnail" src="{{$data['game']->imageurl}}">
+            <img class="img-thumbnail" src="../../public/img/{$game->id}.jpg">
         </div>
         <!-- Right Column -->
         <div class="col-lg-5">
@@ -19,7 +19,8 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dt class="col-sm-3">Name Of Game:</dt>
                 <dd class="col-sm-9">{{ $data['game']->name }}</dd>
 
-                <dt class="col-sm-3">Availability</dt> @if ($isavailable)
+                <dt class="col-sm-3">Availability</dt> 
+                @if ($isavailable)
                 <dd class="col-sm-9">available</dd>
                 @else
                 <dd class="col-sm-9">unavailable</dd>
