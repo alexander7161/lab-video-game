@@ -27,7 +27,8 @@ create table user_roles
 );
 
 -- ALTER TABLE users ADD COLUMN owingGame int;
-CREATE TYPE platform AS ENUM ('PC', 'PS4', 'Xbox One', 'Nintendo Switch');
+CREATE TYPE platform AS ENUM
+('PC', 'PS4', 'Xbox One', 'Nintendo Switch');
 create table game
 (
   id serial primary key,
@@ -41,43 +42,52 @@ create table game
   onplatform platform,
 );
 
-create table rentals
-(
-  id serial primary key,
-  iduser serial not null,
-  idgame serial,
-  startdate timestamp DEFAULT NOW(),
-  enddate timestamp,
-  extended boolean default false,
-  foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
-  foreign key (idgame) references Game (id) on delete set null on update CASCADE
-);
+  create table rentals
+  (
+    id serial primary key,
+    iduser serial not null,
+    idgame serial,
+    startdate timestamp DEFAULT NOW(),
+    enddate timestamp,
+    extended boolean default false,
+    foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
+    foreign key (idgame) references Game (id) on delete set null on update CASCADE
+  );
 
-create table violations 
-(
-  iduser serial not null,
-  violationdate date,
-  primary key (iduser),
-  foreign key (iduser) references users (id) on delete set null on update cascade
-);
+  create table violations
+  (
+    iduser serial not null,
+    violationdate date,
+    primary key (iduser),
+    foreign key (iduser) references users (id) on delete set null on update cascade
+  );
 
-create table bannedmembers 
-( 
-  iduser serial not null,
-  datebanned date,
-  primary key (iduser),
-  foreign key (iduser) references users (id) on delete set null on update cascade
-);
+  create table bannedmembers
+  (
+    iduser serial not null,
+    datebanned date,
+    primary key (iduser),
+    foreign key (iduser) references users (id) on delete set null on update cascade
+  );
 
-create table rules
-(
-  rentGameLimit int not null,
-  rentalPeriod interval not null,
-  extensionLimit int not null,
-  ruleVioLimitPerPeriod int not null,
-  ruleVioPeriod interval not null,
-  banPeriod interval not null
-);
+  create table rules
+  (
+    rentGameLimit int not null,
+    rentalPeriod interval not null,
+    extensionLimit int not null,
+    ruleVioLimitPerPeriod int not null,
+    ruleVioPeriod interval not null,
+    banPeriod interval not null
+  );
 
-insert into rules
-values(2, '3 weeks', 2, 3, '1 years', '6 months');
+  create view currentrentals
+  as
+    (SELECT idmember, idgame, startdate, enddate, users.name as username
+    from rentals inner join game on rentals.idgame=game.id
+      inner join
+      users
+      on rentals.idmember=users.id
+    where enddate is null);
+
+  insert into rules
+  values(2, '3 weeks', 2, 3, '1 years', '6 months');
