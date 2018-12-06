@@ -52,7 +52,7 @@
 
         <div class="col-md-6">
             <input id="platform" type="text" class="form-control{{ $errors->has('platform') ? ' is-invalid' : '' }}" name="platform"
-                value="{{ old('platform', isset($game)? $game->platform : '') }}" required> @if ($errors->has('platform'))
+                value="{{ old('platform', isset($game)? $game->onplatform : '') }}" required> @if ($errors->has('platform'))
             <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('platform') }}</strong>
                                     </span> @endif
