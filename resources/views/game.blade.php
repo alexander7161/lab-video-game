@@ -6,14 +6,14 @@ $isavailable = sizeof($data['rents']) == 0;
     <div class="container">
         <!-- Left Column / Game Image -->
         <div class="col-lg-7">
-            <img class="img-thumbnail" src="../artworks/{$game->id}.jpg">
+            <img class="img-thumbnail" src="{{$data['game']->imageurl}}">
         </div>
         <!-- Right Column -->
         <div class="col-lg-5">
-            @if(Auth::user() && Auth::user()->volunteer)
+            @volunteer
             <a href={{ "/game/{$data['game']->id}/edit"}}>
                <button  type="button" class="btn">Edit</button>
-          </a> @endif
+          </a> @endvolunteer
             <!-- Game descritions -->
             <dl class="row">
                 <dt class="col-sm-3">Name Of Game:</dt>
@@ -23,22 +23,20 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dd class="col-sm-9">available</dd>
                 @else
                 <dd class="col-sm-9">unavailable</dd>
-                @endif
-
-                <dt class="col-sm-3">Currently being rented:</dt>
-                <dd class="col-sm-9">{{sizeof($data['rents'])}}</dd>
-
-                @if(Auth::user() && $data['rents'] && $data['rents'][0]->idmember==Auth::id())
+                @endif {{-- <dt class="col-sm-3">Currently being rented:</dt>
+                <dd class="col-sm-9">{{sizeof($data['rents'])}}</dd> --}} @if($data['rents']) @useridequals($data['rents'][0]->idmember==Auth::id())
                 <dt class="col-sm-3">Rented by:</dt>
-                <dd class="col-sm-9">You</dd>
-                @elseif($data['rents'] && Auth::user() && Auth::user()->volunteer)
+                <dd class="col-sm-9"> <a style="color:black;" href="/account">
+                    You</a></dd>
+                @else
                 <dt class="col-sm-3">Rented by:</dt>
                 <dd class="col-sm-9">
-                    <a href="/account/{{$data['rents'][0]->idmember}}">
+
+                    @volunteer <a style="color:black;" href="/account/{{$data['rents'][0]->idmember}}">@endvolunteer
                  {{$data['rents'][0]->username}}
-                 </a>
+                 @volunteer </a>@endvolunteer
                 </dd>
-                @endif @if($data['game']->releaseyear)
+                @enduseridequals @endif @if($data['game']->releaseyear)
 
                 <dt class="col-sm-3">Release Year:</dt>
                 <dd class="col-sm-9">{{ $data['game']->releaseyear }}</dd>
@@ -53,19 +51,19 @@ $isavailable = sizeof($data['rents']) == 0;
                 <dd class="col-sm-9">{{ $data['game']->description }}</dd>
 
                 <dt class="col-sm-3">Rating:</dt>
-                <dd class="col-sm-9"><span id=stars></span><a>Reputable Medias</a></dd> @endif
+                <dd class="col-sm-9"><span id=stars></span></dd> @endif
             </dl>
-            @guest @else @if($isavailable)
+            @member @if($isavailable)
             <form method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input class="btn btn-info" {{(!$isavailable? "disabled": "")}} type='submit' value="Rent it!" />
+                @csrf
+                <input class="btn btn-outline-success" {{(!$isavailable? "disabled": "")}} type='submit' value="Rent it!" />
             </form>
-            @elseif($data['rents'][0]->idmember==Auth::id())
-            <form method="POST" action="{{ route('unrentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input class="btn btn-info" type='submit' value="Send Back!" />
+            @else @useridequals($data['rents'][0]->idmember)
+            <form onSubmit="return confirm('Are you sure you want to return this item?');" method="POST" action="{{ route('unrentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
+                @csrf
+                <input class="btn btn-outline-danger" type='submit' value="Send Back!" />
             </form>
-            @endif @endguest
+            @enduseridequals @endif @endmember
 
 
         </div>
@@ -85,10 +83,10 @@ $isavailable = sizeof($data['rents']) == 0;
             output.push('<i class="fa fa-star" aria-hidden="true" style="color: gold;"></i>&nbsp;');
 
             // If there is a half a star, append it
-             if (i == .5) output.push('<i class="fa fa-star-half-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
+             if (i == .10) output.push('<i class="fa fa-star-half-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
 
             // Fill the empty stars
-            for (let i = (5 - rating); i >= 1; i--)
+            for (let i = (10 - rating); i >= 1; i--)
             output.push('<i class="fa fa-star-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
 
             return output.join('');

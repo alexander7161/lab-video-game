@@ -9,5 +9,7 @@ return [
     4 => 'You must be a volunteer to be able to do that.',
     5 => 'You can only rent 2 games.',
     6 => 'You do not own that game.',
+    7 => '',
+    8 => "You have been banned."
 
 ];
