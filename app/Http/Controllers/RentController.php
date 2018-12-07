@@ -25,7 +25,7 @@ class RentController extends Controller
                 'idmember' => $id
             ]);
         }
-        return redirect()->route('index');
+        return redirect()->back();
     }
 
     public function deleteRent(Request $request)
@@ -36,7 +36,7 @@ class RentController extends Controller
         $rentedGames = DB::select("select * from rentals inner join game on rentals.idgame=game.id where rentals.idmember={$memberid} and rentals.idgame= {$id} and enddate is null");
         if (sizeof($rentedGames) >0) {
             $affected = DB::update("UPDATE rentals SET enddate=NOW() WHERE idgame = ${id} and idmember = ${memberid} and enddate is null");
-            return redirect()->route('index');
+            return redirect()->back();
         } else {
             return redirect()->route('error', ['id' => 6]);
         }
