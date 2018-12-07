@@ -73,17 +73,6 @@
                                     </span> @endif
         </div>
     </div>
-    <div class="form-group row">
-        <label for="imageurl" class="col-md-4 col-form-label text-md-right">{{ __('Image URL') }}</label>
-
-        <div class="col-md-6">
-            <input id="imageurl" type="url" class="form-control{{ $errors->has('imageurl') ? ' is-invalid' : '' }}" name="imageurl" value="{{ old('imageurl', isset($game)? $game->imageurl : '') }}"
-                required> @if ($errors->has('imageurl'))
-            <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('imageurl') }}</strong>
-                                    </span> @endif
-        </div>
-    </div>
     <div class="form-group row mb-0">
         <div class="col-md-6 offset-md-4">
             <button type="submit" class="btn btn-primary">
