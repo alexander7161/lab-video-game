@@ -4,7 +4,7 @@
 $isavailable = sizeof($renting) == 0;
 ?>
     <div class="row">
-        <div class="col-sm">
+        <div class="col-6">
             <div class="card">
                 <img style="max-height:400px;" class="card-img-top" src="{{asset('img/'.str_replace(' ', '', $game->name).'.jpg')}}" alt="Card image cap">
                 <div class="card-body">
@@ -36,8 +36,7 @@ $isavailable = sizeof($renting) == 0;
                 </div>
             </div>
         </div>
-        <div class="col-sm">
-
+        <div class="col-6">
             <div class="card">
                 <div class="card-body">
 
@@ -100,7 +99,6 @@ $isavailable = sizeof($renting) == 0;
                                          ?> </td>
                             </tr>
                             @endforeach
-
                         </tbody>
                     </table>
                 </div>
