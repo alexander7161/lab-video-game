@@ -56,7 +56,7 @@ class GameController extends Controller
             });
             if (sizeof($game) > 0) {
                 $game = $game[0];
-                return view('game', compact('game', 'renting', 'rentalhistory'));
+                return view('game.index', compact('game', 'renting', 'rentalhistory'));
             } else {
                 return redirect()->route('error', ['id' => 3]);
             }
