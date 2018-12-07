@@ -45,7 +45,8 @@ class GameController extends Controller
             $renting = DB::select("SELECT idmember, startdate, enddate, username
                                     from currentrentals
                                     where idgame={$id} and enddate is null ");
-            $rentalhistory = DB::select("SELECT idmember, startdate, enddate, users.name as username
+            $rentalhistory = DB::select("SELECT idmember, startdate, enddate, users.name as username, startdate+ (extensions+1)* (SELECT rentalperiod
+            FROM rules) as duedate
                                     from rentals inner join game on rentals.idgame=game.id
                                     inner join
                                     users
