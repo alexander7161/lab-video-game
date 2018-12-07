@@ -1,77 +1,121 @@
 @extends('layouts.app') 
 @section('content')
 <?php
-$isavailable = sizeof($data['rents']) == 0;
+$isavailable = sizeof($renting) == 0;
 ?>
-    <div class="container">
-        <!-- Left Column / Game Image -->
-        <div class="col-lg-7">
-            <img class="img-thumbnail" src="{{asset('img/'.urlencode($data['game']->name).'.jpg')}}" height="500" width="500">
-        </div>
-        <!-- Right Column -->
-        <div class="col-lg-5">
-            @volunteer
-            <a href={{ "/game/{$data['game']->id}/edit"}}>
-               <button  type="button" class="btn">Edit</button>
-          </a> @endvolunteer
-            <!-- Game descritions -->
-            <dl class="row">
-                <dt class="col-sm-5">Name Of Game:</dt>
-                <dd class="col-sm-9">{{ $data['game']->name }}</dd>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="card">
+                            <img style="max-height:400px;" class="card-img-top" src="{{asset('img/'.str_replace(' ', '', $game->name).'.jpg')}}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $game->name }} <span id=stars></span></h5>
+                                <p class="card-text">{{ $game->description }}</p>
+                                <dl>
+                                    <dt>Availability</dt> @if ($isavailable)
+                                    <dd>available</dd>
+                                    @else
+                                    <dd>unavailable</dd>
+                                    @endif {{-- <dt class="col-sm-5">Currently being rented:</dt>
+                                    <dd class="col-sm-9">{{sizeof($renting)}}</dd> --}} @if($game->releaseyear)
 
-                <dt class="col-sm-5">Availability</dt> 
-                @if ($isavailable)
-                <dd class="col-sm-9">available</dd>
-                @else
-                <dd class="col-sm-9">unavailable</dd>
-                @endif {{-- <dt class="col-sm-5">Currently being rented:</dt>
-                <dd class="col-sm-9">{{sizeof($data['rents'])}}</dd> --}} @if($data['rents']) @useridequals($data['rents'][0]->idmember==Auth::id())
-                <dt class="col-sm-5">Rented by:</dt>
-                <dd class="col-sm-9"> <a style="color:black;" href="/account">
-                    You</a></dd>
-                @else
-                <dt class="col-sm-5">Rented by:</dt>
-                <dd class="col-sm-9">
+                                    <dt>Release Year:</dt>
+                                    <dd>{{ $game->releaseyear }}</dd>
 
-                    @volunteer <a style="color:black;" href="/account/{{$data['rents'][0]->idmember}}">@endvolunteer
-                 {{$data['rents'][0]->username}}
-                 @volunteer </a>@endvolunteer
-                </dd>
-                @enduseridequals @endif @if($data['game']->releaseyear)
+                                    <dt>Type:</dt>
+                                    <dd>{{ $game->type }}</dd>
 
-                <dt class="col-sm-5">Release Year:</dt>
-                <dd class="col-sm-9">{{ $data['game']->releaseyear }}</dd>
+                                    <dt>Platform:</dt>
+                                    <dd>{{ $game->onplatform }}</dd>
+                                    @endif
+                                </dl>
+                                @volunteer
+                                <div style="display:inline-block;">
+                                    <a href="{{ " /game/{$game->id}/edit"}}" class="btn btn-dark">Edit 
+                                    </a> @endvolunteer
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
 
-                <dt class="col-sm-5">Type:</dt>
-                <dd class="col-sm-9">{{ $data['game']->type }}</dd>
+                        <div class="card">
+                            <div class="card-body">
 
-                <dt class="col-sm-5">Platform:</dt>
-                <dd class="col-sm-9">{{ $data['game']->onplatform }}</dd>
+                                @if($renting) @useridequals($renting[0]->idmember==Auth::id())
+                                <dt>Rented by:</dt>
+                                <dd> <a style="color:black;" href="/account">
+                                    You</a></dd>
+                                @else
+                                <dt>Rented by:</dt>
+                                <dd>
 
-                <dt class="col-sm-5">Description:</dt>
-                <dd class="col-sm-9">{{ $data['game']->description }}</dd>
+                                    @volunteer <a style="color:black;" href="/account/{{$renting[0]->idmember}}">@endvolunteer
+                                 {{$renting[0]->username}}
+                                 @volunteer </a>@endvolunteer
+                                </dd>
+                                @enduseridequals @endif @member @if($isavailable)
+                                <form style="display: inline-block;" method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$game->id)] ) }}">
+                                    @csrf
+                                    <input class="btn btn-outline-success" {{(!$isavailable? "disabled": "")}} type='submit' value="Rent it!" />
+                                </form>
+                                @else @useridequals($renting[0]->idmember)
+                                <form style="display: inline-block;" onSubmit="return confirm('Are you sure you want to return this item?');" method="POST"
+                                    action="{{ route('unrentgame', ['data' => array('idgame'=>$game->id)] ) }}">
+                                    @csrf
+                                    <input class="btn btn-outline-danger" type='submit' value="Send Back!" />
+                                </form>
+                                @enduseridequals @endif @endmember
+                            </div>
+                        </div>
 
-                <dt class="col-sm-5">Rating:</dt>
-                <dd class="col-sm-9"><span id=stars></span></dd> @endif
-            </dl>
-            @member @if($isavailable)
-            <form method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
-                @csrf
-                <input class="btn btn-outline-success" {{(!$isavailable? "disabled": "")}} type='submit' value="Rent it!" />
-            </form>
-            @else @useridequals($data['rents'][0]->idmember)
-            <form onSubmit="return confirm('Are you sure you want to return this item?');" method="POST" action="{{ route('unrentgame', ['data' => array('idgame'=>$data['game']->id)] ) }}">
-                @csrf
-                <input class="btn btn-outline-danger" type='submit' value="Send Back!" />
-            </form>
-            @enduseridequals @endif @endmember
+                        <div class="card" style="margin-top:8px;">
+                            <div class="card-body">
+                                <h5 class="card-title">Rental History</h5>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Start Date</th>
+                                            <th scope="col">End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($rentalhistory as $r)
+                                        <tr>
+                                            <td> {{$r->username}}</td>
+                                            <td>
+                                                <?php 
+                                            $timestamp = strtotime($r->startdate);
+                                                echo date("Y/m/d - H:i", $timestamp); ?> </td>
+                                            <td>
+                                                <?php 
+                                            if($r->enddate)  {
+                                                $timestamp = strtotime($r->enddate);
+                                            echo date("d-m-Y", $timestamp);
+                                            }  else {
+                                                echo "Currently Renting";
+                                            }
+                                         ?> </td>
+                                        </tr>
+                                        @endforeach
 
-
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- Scripts -->
-        @if($data['game']->rating)
+        @if($game->rating)
         <script>
-            document.getElementById("stars").innerHTML = getStars({{ $data['game']->rating}});
+            document.getElementById("stars").innerHTML = getStars({{ $game->rating}});
 
         function getStars(rating) {
 
