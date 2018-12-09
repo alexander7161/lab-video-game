@@ -4,13 +4,13 @@
         <div class="card-body" style="display:inline-block;">
             @if($renting)
             <div style="display: inline-block; ">
-                @useridequals($renting[0]->idmember==Auth::id())
+                @useridequals($renting[0]->iduser==Auth::id())
                 <dt>Rented by:</dt>
                 <dd style="margin-bottom:0;"> <a style="color:black;" href="/account">You</a></dd>
                 @else
                 <dt>Rented by:</dt>
                 <dd style="margin-bottom:0;">
-                    @volunteer <a style="color:black;" href="/account/{{$renting[0]->idmember}}">@endvolunteer
+                    @volunteer <a style="color:black;" href="/account/{{$renting[0]->iduser}}">@endvolunteer
                          {{$renting[0]->username}}
                          @volunteer </a>@endvolunteer
                 </dd>
@@ -20,7 +20,7 @@
                 @csrf
                 <input class="btn btn-outline-success" {{(!$isavailable? "disabled": "")}} type='submit' value="Rent it!" />
             </form>
-            @else @useridequals($renting[0]->idmember)
+            @else @useridequals($renting[0]->iduser)
             <form style="display: inline-block;float:right;" onSubmit="return confirm('Are you sure you want to return this item?');"
                 method="POST" action="{{ route('unrentgame', ['data' => array('idgame'=>$game->id)] ) }}">
                 @csrf
