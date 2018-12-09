@@ -87,12 +87,12 @@ create table rules
 
 create or replace view currentrentals
 as
-(SELECT idmember, idgame, startdate, enddate, users.name as username, extensions, startdate+ (extensions+1)* (SELECT rentalperiod
+(SELECT iduser, idgame, startdate, enddate, users.name as username, extensions, startdate+ (extensions+1)* (SELECT rentalperiod
   FROM rules) as duedate
 from rentals inner join game on rentals.idgame=game.id
   inner join
   users
-  on rentals.idmember=users.id
+  on rentals.iduser=users.id
 where enddate is null);
 
 insert into rules

@@ -18,8 +18,8 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
-        $query = "SELECT game.id, name, startdate, enddate, idmember, 
-        (CASE WHEN idmember is not null and enddate is null THEN false ELSE true END) as isavailable FROM game
+        $query = "SELECT game.id, name, startdate, enddate, iduser, 
+        (CASE WHEN iduser is not null and enddate is null THEN false ELSE true END) as isavailable FROM game
         LEFT JOIN
         (select * from rentals where enddate is null) currentrentals
         ON (game.id = currentrentals.idgame)";
@@ -42,15 +42,15 @@ class GameController extends Controller
     {
         if (ctype_digit($id)) {
             $game = DB::select("SELECT * from game where id={$id}");
-            $renting = DB::select("SELECT idmember, startdate, enddate, username
+            $renting = DB::select("SELECT iduser, startdate, enddate, username
                                     from currentrentals
                                     where idgame={$id} and enddate is null ");
-            $rentalhistory = DB::select("SELECT idmember, startdate, enddate, users.name as username, startdate+ (extensions+1)* (SELECT rentalperiod
+            $rentalhistory = DB::select("SELECT iduser, startdate, enddate, users.name as username, startdate+ (extensions+1)* (SELECT rentalperiod
             FROM rules) as duedate
                                     from rentals inner join game on rentals.idgame=game.id
                                     inner join
                                     users
-                                    on rentals.idmember=users.id
+                                    on rentals.iduser=users.id
                                     where idgame={$id}");
             usort($rentalhistory, function ($item1, $item2) {
                 return strtotime($item2->startdate) <=> strtotime($item1->startdate);

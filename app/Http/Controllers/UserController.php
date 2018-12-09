@@ -38,9 +38,9 @@ class UserController extends Controller
         false
         END) as secretary from users left join user_roles on users.id=iduser) users
         LEFT JOIN
-        (select idmember,
-         count(*) as currentrentals from currentrentals group by idmember) rentals
-        ON (users.id = rentals.idmember)');
+        (select iduser,
+         count(*) as currentrentals from currentrentals group by iduser) rentals
+        ON (users.id = rentals.iduser)');
         sort($users);
         usort($users, function ($item1, $item2) {
             return $item2->secretary <=> $item1->secretary;
@@ -74,11 +74,11 @@ class UserController extends Controller
         false
         END) as secretary from users left join user_roles on users.id=iduser where id={$id}")[0];
         $games = DB::select("SELECT (CASE
-        WHEN idmember is not null and enddate is null THEN
+        WHEN iduser is not null and enddate is null THEN
         true
         ELSE
         false
-        END) as currentlyBorrowed, game.name as name, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.idmember={$id}");
+        END) as currentlyBorrowed, game.name as name, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.iduser={$id}");
         return view('accountPage', compact('games', 'user'));
     }
 

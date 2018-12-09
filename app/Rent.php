@@ -12,6 +12,6 @@ class Rent extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = [
-        'idgame', 'idmember', 'startdate', 'enddate'
+        'idgame', 'iduser', 'startdate', 'enddate'
     ];
 }
