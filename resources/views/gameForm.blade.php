@@ -51,11 +51,15 @@
         <label for="platform" class="col-md-4 col-form-label text-md-right">{{ __('Platform') }}</label>
 
         <div class="col-md-6">
-            <input id="platform" type="text" class="form-control{{ $errors->has('platform') ? ' is-invalid' : '' }}" name="platform"
-                value="{{ old('platform', isset($game)? $game->platform : '') }}" required> @if ($errors->has('platform'))
+            <select id="platform" class="form-control" name="platform">
+                    @if(isset($platforms))@foreach($platforms as $p)
+                        <option  value ="{{$p->unnest}}" @if(isset($game) && $game->onplatform==$p->unnest) selected @endif>{{$p->unnest}}</option>
+                        @endforeach @endif
+                    </select> {{-- <input id="platform" type="text" class="form-control{{ $errors->has('platform') ? ' is-invalid' : '' }}"
+                name="platform" value="{{ old('platform', isset($game)? $game->onplatform : '') }}" required> @if ($errors->has('platform'))
             <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('platform') }}</strong>
-                                    </span> @endif
+                                    </span> @endif --}}
         </div>
     </div>
     <div class="form-group row">

@@ -26,8 +26,9 @@ create table user_roles
   foreign key (idRole) references roles (id)
 );
 
--- ALTER TABLE users ADD COLUMN owingGame int;
-CREATE TYPE platform AS ENUM ('PC', 'PS4', 'Xbox One', 'Nintendo Switch');
+CREATE TYPE platform AS ENUM
+('PC', 'PS4', 'Xbox One', 'Nintendo Switch');
+
 create table game
 (
   id serial primary key,
@@ -35,9 +36,8 @@ create table game
   releaseYear INT,
   type varchar(255),
   description varchar(1000),
-  rating decimal(1,1) CHECK (rating<=5.0 and rating>0.0),
-  imageURL varchar(255),
-  recommendedURL varchar(255)
+  rating decimal(1,1) CHECK (rating<=10.0 and rating>0.0),
+  recommendedURL varchar(255),
   onplatform platform,
 );
 
@@ -47,13 +47,13 @@ create table rentals
   iduser serial not null,
   idgame serial,
   startdate timestamp DEFAULT NOW(),
-  enddate timestamp default (NOW() + rules.rentalPeriod),
-  extensions int check (extensions <= rules.extensionLimit) default (0),
+  enddate timestamp,
+  extensions int default 0,
   foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
   foreign key (idgame) references Game (id) on delete set null on update CASCADE
 );
 
-create table violations 
+create table violations
 (
   iduser serial not null,
   violationdate date,
@@ -63,8 +63,6 @@ create table violations
   primary key (iduser),
   foreign key (iduser) references users (id) on delete set null on update cascade
 );
-
-
 
 create table bannedmembers 
 ( 
@@ -86,6 +84,16 @@ create table rules
   ruleVioPeriod interval not null,
   banPeriod interval not null
 );
+
+create or replace view currentrentals
+as
+(SELECT idmember, idgame, startdate, enddate, users.name as username, extensions, startdate+ (extensions+1)* (SELECT rentalperiod
+  FROM rules) as duedate
+from rentals inner join game on rentals.idgame=game.id
+  inner join
+  users
+  on rentals.idmember=users.id
+where enddate is null);
 
 insert into rules
 values(2, '3 weeks', 2, 3, '1 years', '6 months');

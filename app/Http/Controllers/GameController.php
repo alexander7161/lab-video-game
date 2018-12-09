@@ -42,18 +42,22 @@ class GameController extends Controller
     {
         if (ctype_digit($id)) {
             $game = DB::select("SELECT * from game where id={$id}");
-            $renting = DB::select("SELECT idmember, startdate, enddate, users.name as username
+            $renting = DB::select("SELECT idmember, startdate, enddate, username
+                                    from currentrentals
+                                    where idgame={$id} and enddate is null ");
+            $rentalhistory = DB::select("SELECT idmember, startdate, enddate, users.name as username, startdate+ (extensions+1)* (SELECT rentalperiod
+            FROM rules) as duedate
                                     from rentals inner join game on rentals.idgame=game.id
                                     inner join
                                     users
                                     on rentals.idmember=users.id
-                                    where rentals.idgame={$id} and enddate is null ");
+                                    where idgame={$id}");
+            usort($rentalhistory, function ($item1, $item2) {
+                return strtotime($item2->startdate) <=> strtotime($item1->startdate);
+            });
             if (sizeof($game) > 0) {
-                $data = [
-                    'game' => $game[0],
-                    'rents' => $renting
-                ];
-                return view('game', ['data' => $data]);
+                $game = $game[0];
+                return view('game.index', compact('game', 'renting', 'rentalhistory'));
             } else {
                 return redirect()->route('error', ['id' => 3]);
             }
@@ -65,8 +69,10 @@ class GameController extends Controller
     public function editGameView(string $id)
     {
         $game = DB::select("SELECT * from game where id={$id}");
+        $platforms = DB::select("SELECT unnest(enum_range(NULL::platform))");
         if (sizeof($game) > 0) {
-            return view('editGame', ['game' => $game[0]]);
+            $game = $game[0];
+            return view('editGame', compact('game', 'platforms'));
         } else {
             return redirect()->route('error', ['id' => 2]);
         }
@@ -83,7 +89,7 @@ class GameController extends Controller
         'releaseyear'=> $data['releaseyear'],
         'type'=> $data['type'],
         'description'=> $data['description'],
-        'platform'=> $data['platform'],
+        'onplatform'=> $data['platform'],
         'rating'=> $data['rating'],
         'imageurl'=> $data['imageurl']
     ]);
@@ -109,7 +115,7 @@ class GameController extends Controller
             'releaseyear'=> $data['releaseyear'],
             'type'=> $data['type'],
             'description'=> $data['description'],
-            'platform'=> $data['platform'],
+            'onplatform'=> $data['platform'],
             'rating'=> $data['rating'],
             'imageurl'=> $data['imageurl']
         ]);
