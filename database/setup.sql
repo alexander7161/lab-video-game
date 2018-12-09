@@ -47,8 +47,8 @@ create table rentals
   iduser serial not null,
   idgame serial,
   startdate timestamp DEFAULT NOW(),
-  enddate timestamp,
-  extended boolean default false,
+  enddate timestamp default (NOW() + rules.rentalPeriod),
+  extensions int check (extensions <= rules.extensionLimit) default (0),
   foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
   foreign key (idgame) references Game (id) on delete set null on update CASCADE
 );
@@ -57,15 +57,23 @@ create table violations
 (
   iduser serial not null,
   violationdate date,
+  timesviolated int check (timesviolated <= rules.rentGameLimit) default (1),
+  firstviolation timestamp,
+  latestviolation timestamp check (latestviolation - firstviolation < rules.ruleVioPeriod) default now(),
   primary key (iduser),
   foreign key (iduser) references users (id) on delete set null on update cascade
 );
 
+
+
 create table bannedmembers 
 ( 
   iduser serial not null,
-  datebanned date,
+  datebanned timestamp,
+  banperiod interval not null,
+  banneduntil timestamp default null,
   primary key (iduser),
+  foreign key (banperiod) references rules (banPeriod) on delete set null on update cascade,
   foreign key (iduser) references users (id) on delete set null on update cascade
 );
 
@@ -81,3 +89,7 @@ create table rules
 
 insert into rules
 values(2, '3 weeks', 2, 3, '1 years', '6 months');
+
+
+-- create rule bannedperiod as on insert to bannedmembers where ((SELECT(banneduntil) FROM bannedmembers) = null)
+-- do insert into bannedmembers (banneduntil) values((SELECT(datebanned)) + (SELECT (banperiod) FROM rules));
