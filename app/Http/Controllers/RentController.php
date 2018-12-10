@@ -14,7 +14,11 @@ class RentController extends Controller
     public function createRent(Request $request)
     {
         $id =Auth::id();
-        $rentedGames = DB::select("select * from rentals inner join game on rentals.idgame=game.id where rentals.iduser={$id} and enddate is null");
+        $rentedGames = DB::select("select * from rentals
+                                    inner join 
+                                    game
+                                    on rentals.idgame=game.id
+                                    where rentals.iduser={$id} and enddate is null");
         if (sizeof($rentedGames)>=RulesController::getRentGameLimit()) {
             return redirect()->route('error', ['id' => 5]);
         }
@@ -33,7 +37,11 @@ class RentController extends Controller
         $data = $request->all()['data'];
         $memberid = Auth::id();
         $id = $data['idgame'];
-        $rentedGames = DB::select("select * from rentals inner join game on rentals.idgame=game.id where rentals.iduser={$memberid} and rentals.idgame= {$id} and enddate is null");
+        $rentedGames = DB::select("select * from rentals
+                                    inner join
+                                    game
+                                    on rentals.idgame=game.id
+                                    where rentals.iduser={$memberid} and rentals.idgame={$id} and enddate is null");
         if (sizeof($rentedGames) >0) {
             $affected = DB::update("UPDATE rentals SET enddate=NOW() WHERE idgame = ${id} and iduser = ${memberid} and enddate is null");
             return redirect()->back();

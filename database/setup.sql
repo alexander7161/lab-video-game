@@ -62,12 +62,10 @@ create table users
 
   create table violations
   (
+    id serial not null primary key,
     iduser serial not null,
-    violationdate date,
-    timesviolated int check (timesviolated <= rules.rentGameLimit) default (1),
-    firstviolation timestamp,
-    latestviolation timestamp check (latestviolation - firstviolation < rules.ruleVioPeriod) default now(),
-    primary key (iduser),
+    violationdate timestamp not null,
+    reason varchar,
     foreign key (iduser) references users (id) on delete set null on update cascade
   );
 
