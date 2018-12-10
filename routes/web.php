@@ -32,6 +32,7 @@ Route::get('account', 'UserController@getCurrentUser')->middleware('authenticate
 Route::get('account/{id}', 'UserController@getUser')->middleware('authenticated');
 Route::get('account/{id}/ban', 'UserController@banUser')->middleware('volunteer')->name('ban');
 Route::get('account/{id}/unban', 'UserController@unBanUser')->middleware('volunteer')->name('unban');
+Route::get('account/{id}/addviolation', 'UserController@createViolation')->middleware('volunteer')->name('addviolation');
 
 Route::get('rules', 'RulesController@index')->middleware('secretary')->name('rules');
 Route::post('rules', 'RulesController@edit')->middleware('secretary')->name('editRules');

@@ -57,14 +57,15 @@
                                         echo date("Y/m/d - H:i", $timestamp); ?> </td>
                         @if($renting)
                         <td>
+                            @if(isset($r->duedate))
                             <?php 
                             $timestamp = strtotime($r->duedate);
-                                echo date("Y/m/d - H:i", $timestamp); ?> </td>@endif
+                                echo date("Y/m/d - H:i", $timestamp); ?> @else-@endif </td>@endif
                         <td>
                             <?php 
                                     if($r->enddate)  {
                                         $timestamp = strtotime($r->enddate);
-                                    echo date("d-m-Y", $timestamp);
+                                    echo date("Y/m/d - H:i", $timestamp);
                                     }  else {
                                         echo "Currently Renting";
                                     }
