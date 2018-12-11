@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\RulesController;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,6 +45,10 @@ class AppServiceProvider extends ServiceProvider
                 return (sizeof($secretary)>0);
             }
             return false;
+        });
+
+        Blade::if('underrentgamelimit', function ($count) {
+            return RulesController::getRentGameLimit()>=$count;
         });
     }
 
