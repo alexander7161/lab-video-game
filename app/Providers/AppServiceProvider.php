@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('secretary', function () {
             if (auth()->check()) {
                 $id = Auth::user()->id;
-                $secretary = DB::select("select * from user_roles where iduser={$id} and idrole=1 LIMIT 1");
+                $secretary = DB::select("select * from user_roles where iduser={$id} and idrole=2 LIMIT 1");
                 return (sizeof($secretary)>0);
             }
             return false;
