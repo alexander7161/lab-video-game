@@ -32,7 +32,7 @@ class UserController extends Controller
         ELSE
         true
         END) as volunteer, (CASE
-        WHEN idrole = 1 THEN
+        WHEN idrole = 2 THEN
         true
         ELSE
         false
