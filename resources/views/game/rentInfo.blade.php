@@ -12,12 +12,12 @@ if(sizeof($renting)>0) {
 ?>
     <div class="card {{$bg}} text-white" style="margin-bottom:8px;">
         <div class="card-body" style="padding-bottom: 4px;">
-            <h5 class="card-title">@if(sizeof($renting)>0) @useridequals($renting->iduser==Auth::id()) Currently Rented by <a style="color:inherit;"
+            <h5 class="card-title">@if(!$isavailable) @useridequals($renting->iduser==Auth::id()) Currently Rented by <a style="color:inherit;"
                     href="/account">You</a> @else Currently Rented by @volunteer <a style="color:inherit;" href="/account/{{$renting->iduser}}">@endvolunteer
                      {{$renting->username}}
                      @volunteer </a>@endvolunteer @enduseridequals @else Available @endif</h5>
         </div>
-        @if(sizeof($renting)>0)
+        @if(!$isavailable)
         <div class="container">
             <div class="row">
                 <div class="col">
