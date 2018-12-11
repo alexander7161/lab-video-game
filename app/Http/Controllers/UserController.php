@@ -63,7 +63,7 @@ class UserController extends Controller
     private function getUserById($id)
     {
         $user = DB::select("SELECT users.id as id, name, email, created_at, updated_at, banned,  
-        (CASE WHEN id is null 
+        (CASE WHEN idrole is null 
         THEN false ELSE true END) as volunteer,
         (CASE WHEN idrole = 1
         THEN true ELSE false END) as secretary,
@@ -76,9 +76,9 @@ class UserController extends Controller
         true
         ELSE
         false
-        END) as currentlyBorrowed, game.name as name, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.iduser={$id}");
+        END) as currentlyBorrowed, game.name as name, startdate, enddate, extensions, idgame, (CASE WHEN enddate is not null THEN null ELSE startdate+(SELECT rentalperiod FROM rules)+(extensions || ' weeks')::interval END) as duedate from rentals inner join game on rentals.idgame=game.id where rentals.iduser={$id}");
         $violations = DB::select("SELECT violationdate as date, reason, id from violations where iduser={$id}");
-        return view('accountPage', compact('games', 'user', 'violations'));
+        return view('accountPage.index', compact('games', 'user', 'violations'));
     }
 
     public function getCurrentUser()
