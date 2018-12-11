@@ -93,7 +93,7 @@ create table users
   create or replace view currentrentals
 as
   (SELECT iduser, idgame, startdate, enddate, users.name as username, extensions, startdate+ (extensions+1)* (SELECT rentalperiod
-    FROM rules) as duedate
+    FROM rules) as duedate, rentals.id as rentalid
   from rentals inner join game on rentals.idgame=game.id
     inner join
     users

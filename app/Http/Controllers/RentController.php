@@ -49,4 +49,16 @@ class RentController extends Controller
             return redirect()->route('error', ['id' => 6]);
         }
     }
+
+    public function addExtension($id)
+    {
+        $extensions = DB::table('rentals')->where('id', $id)->select('extensions')->first();
+        if ($extensions->extensions<=RulesController::getExtensionLimit()) {
+            DB::table('rentals')->where('id', $id)
+            ->increment('extensions');
+            return redirect()->back();
+        } else {
+            return redirect()->route('error', ['id' => 9]);
+        }
+    }
 }
