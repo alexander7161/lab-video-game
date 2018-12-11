@@ -15,22 +15,17 @@ create table users
   (0) without time zone,
   updated_at timestamp
   (0) without time zone,
-  banned boolean not null default false
+  banned boolean not null default false,
+  idrole int,
+  foreign key
+  (idrole) references roles
+  (id)
 );
 
   create table roles
   (
     id serial not null primary key,
     name varchar(255) not null
-  );
-
-  create table user_roles
-  (
-    idUser serial not null,
-    idRole serial not null,
-    primary key (idUser, idRole),
-    foreign key (idUser) references users (id) on delete CASCADE on update CASCADE,
-    foreign key (idRole) references roles (id)
   );
 
   CREATE TYPE platform AS ENUM
