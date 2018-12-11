@@ -6,12 +6,12 @@ if(sizeof($renting)>0) {
 if(sizeof($renting)>0 && $renting[0]->iduser==Auth::id()) {
     $bg = "bg-dark";
 }
-if(sizeof($renting)>0) {
+if(!$isavailable) {
     $renting = $renting[0];
 }
 ?>
     <div class="card {{$bg}} text-white" style="margin-bottom:8px;">
-        <div class="card-body" style="padding-bottom: 4px;">
+        <div class="card-body" style="padding-bottom: 4px;padding-left:15px;">
             <h5 class="card-title">@if(!$isavailable) @useridequals($renting->iduser==Auth::id()) Currently Rented by <a style="color:inherit;"
                     href="/account">You</a> @else Currently Rented by @volunteer <a style="color:inherit;" href="/account/{{$renting->iduser}}">@endvolunteer
                      {{$renting->username}}
@@ -54,7 +54,7 @@ if(sizeof($renting)>0) {
             </div>
         </div>
         @endif
-        <div class="card-footer" style="color:lightgray;">
+        <div class="card-footer" style="color:lightgray;padding-left:15px;">
             @if(!$isavailable)
             <p style="display:inline-block;margin-bottom:0;"> Due in
                 <?php
@@ -70,11 +70,12 @@ if(sizeof($renting)>0) {
                     @csrf
                     <input class="btn btn-light" {{(!$isavailable? "disabled": "")}} type='submit' value="Rent it!" />
                 </form>
-                @else @useridequals($renting->iduser)
+                @else @useridequals($renting->iduser) @underrentgamelimit($renting->extensions)
                 <form style="display: inline-block;" action="/addextension/{{$renting->rentalid}}" method="GET">
                     @csrf
                     <input class="btn btn-light" type='submit' value="Get Extension" />
                 </form>
+                @endunderrentgamelimit
                 <form style="display: inline-block;" onSubmit="return confirm('Are you sure you want to return this item?');" method="POST"
                     action="{{ route('unrentgame', ['data' => array('idgame'=>$game->id)] ) }}">
                     @csrf
