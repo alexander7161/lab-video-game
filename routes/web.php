@@ -17,6 +17,7 @@ Route::get('game/{id}', 'GameController@getGame');
 
 Route::post('rent', 'RentController@createRent')->name('rentgame');
 Route::post('unrent', 'RentController@deleteRent')->name('unrentgame');
+Route::get('addextension/{id}', 'RentController@addExtension');
 
 Route::get('game/{id}/edit', 'GameController@editGameView')->middleware('volunteer');
 Route::post('game/{id}/edit', 'GameController@editGame')->middleware('volunteer')->name('editGame');

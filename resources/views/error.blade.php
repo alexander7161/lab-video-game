@@ -6,6 +6,7 @@
     <hr class="my-4"> @if(isset($info))
     <p>{{$info}}</p>
     @endif
+    <a class="btn btn-primary btn-lg" role="button" href="{{URL::previous()}}">Go Back</a>
     <a class="btn btn-primary btn-lg" href="/" role="button">Return Home</a>
 </div>
 @endsection

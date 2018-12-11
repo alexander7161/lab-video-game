@@ -42,17 +42,17 @@ class GameController extends Controller
     {
         if (ctype_digit($id)) {
             $game = DB::select("SELECT * from game where id={$id}");
-            $renting = DB::select("SELECT iduser, startdate, enddate, username
-                                    from currentrentals
-                                    where idgame={$id} and enddate is null ");
-            $rentalhistory = DB::select("SELECT iduser, startdate, enddate, users.name as username,
-                                    (CASE WHEN enddate is not null THEN null ELSE startdate+ (extensions+1)*(SELECT rentalperiod
-                                    FROM rules) END) as duedate
+            $renting = DB::select("SELECT rentalid, iduser, startdate, enddate, username,
+                                (CASE WHEN enddate is not null THEN null ELSE startdate+(SELECT rentalperiod FROM rules)+(extensions || ' weeks')::interval END) as duedate,
+                                extensions
+                                from currentrentals
+                                where idgame={$id} and enddate is null ");
+            $rentalhistory = DB::select("SELECT iduser, startdate, enddate, users.name as username, extensions
                                     from rentals inner join game on rentals.idgame=game.id
                                     inner join
                                     users
                                     on rentals.iduser=users.id
-                                    where idgame={$id}");
+                                    where idgame={$id} and enddate is not null");
             usort($rentalhistory, function ($item1, $item2) {
                 return strtotime($item2->startdate) <=> strtotime($item1->startdate);
             });
