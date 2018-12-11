@@ -19,7 +19,7 @@ class Secretary
     {
         return app(Authenticated::class)->handle($request, function ($request) use ($next) {
             $id = Auth::user()->id;
-            $secretary = DB::select("select * from user_roles where iduser={$id} and idrole=1 LIMIT 1");
+            $secretary = DB::select("select * from users where id={$id} and idrole=2 LIMIT 1");
             if (sizeof($secretary)>0) {
                 return $next($request);
             } else {

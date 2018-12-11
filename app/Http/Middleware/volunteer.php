@@ -12,7 +12,7 @@ class Volunteer
     {
         return app(Authenticated::class)->handle($request, function ($request) use ($next) {
             $id = Auth::user()->id;
-            $volunteer = DB::select("select * from user_roles where iduser={$id}");
+            $volunteer = DB::select("select * from users where id={$id} and (idrole=1 or idrole=2)");
             if (sizeof($volunteer)>0) {
                 return $next($request);
             } else {

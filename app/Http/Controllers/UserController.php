@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     private function getVolunteer($id)
     {
-        $volunteer = DB::select("select * from user_roles where iduser={$id}");
+        $volunteer = DB::select("select * from users where id={$id} and (idrole=1 or idrole=2)");
         return (sizeof($volunteer)>0);
     }
 
@@ -23,11 +23,11 @@ class UserController extends Controller
      */
     public function getUsers()
     {
-        $users = DB::select('select id, name, email, created_at, updated_at, banned, volunteer, secretary,
+        $users = DB::select('SELECT id, name, email, created_at, updated_at, banned, volunteer, secretary,
         CASE WHEN currentrentals is NULL THEN 0 ELSE currentrentals END AS currentrentals
         from 
         (select *, (CASE
-        WHEN iduser is null THEN
+        WHEN idrole is null THEN
         false
         ELSE
         true
@@ -36,7 +36,7 @@ class UserController extends Controller
         true
         ELSE
         false
-        END) as secretary from users left join user_roles on users.id=iduser) users
+        END) as secretary from users) users
         LEFT JOIN
         (select iduser,
          count(*) as currentrentals from currentrentals group by iduser) rentals
@@ -63,13 +63,13 @@ class UserController extends Controller
     private function getUserById($id)
     {
         $user = DB::select("SELECT users.id as id, name, email, created_at, updated_at, banned,  
-        (CASE WHEN user_roles.iduser is null 
+        (CASE WHEN id is null 
         THEN false ELSE true END) as volunteer,
         (CASE WHEN idrole = 1
         THEN true ELSE false END) as secretary,
         (CASE WHEN viocount is null
         THEN 0 ELSE vioCount END) as violations
-        from users left join user_roles on users.id=iduser
+        from users
         left  outer join (select iduser, count(*) as vioCount from violations group by iduser) violations on users.id=violations.iduser where users.id={$id}")[0];
         $games = DB::select("SELECT (CASE
         WHEN iduser is not null and enddate is null THEN
@@ -91,12 +91,12 @@ class UserController extends Controller
         $data = $request->all()['data'];
         if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id !=$data["id"]) {
             if (!$data['volunteer']) {
-                DB::table('user_roles')->insert(
-                    ['iduser' => $data["id"], 'idrole' => 2]
-                );
+                DB::table('users')->where('id', $data["id"])
+                ->update(['idrole' => 1]);
                 return redirect()->back();
             } else {
-                DB::table('user_roles')->where('iduser', '=', $data["id"])->delete();
+                DB::table('users')->where('id', $data["id"])
+                ->update(['idrole' => null]);
                 return redirect()->back();
             }
         } else {
@@ -112,11 +112,11 @@ class UserController extends Controller
         $data = $request->all()['data'];
         if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id!=$data["id"]) {
             DB::table('user_roles')->insert(
-                    ['iduser' => $data["id"], 'idrole' => 1]
+                    ['iduser' => $data["id"], 'idrole' => 2]
                 );
             DB::table('user_roles')
             ->where('iduser', Auth::user()->id)
-            ->update(['idrole' => 2]);
+            ->update(['idrole' => 1]);
             return redirect()->back();
         } else {
             return redirect()->route(
