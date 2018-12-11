@@ -77,7 +77,7 @@ class UserController extends Controller
         ELSE
         false
         END) as currentlyBorrowed, game.name as name, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.iduser={$id}");
-        $violations = DB::select("SELECT violationdate as date, reason from violations where iduser={$id}");
+        $violations = DB::select("SELECT violationdate as date, reason, id from violations where iduser={$id}");
         return view('accountPage', compact('games', 'user', 'violations'));
     }
 
@@ -111,12 +111,10 @@ class UserController extends Controller
     {
         $data = $request->all()['data'];
         if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id!=$data["id"]) {
-            DB::table('user_roles')->insert(
-                    ['iduser' => $data["id"], 'idrole' => 2]
-                );
-            DB::table('user_roles')
-            ->where('iduser', Auth::user()->id)
-            ->update(['idrole' => 1]);
+            DB::table('users')->where('id', Auth::user()->id)
+                ->update(['idrole' => 1]);
+            DB::table('users')->where('id', $data["id"])
+                ->update(['idrole' => 2]);
             return redirect()->back();
         } else {
             return redirect()->route(
@@ -134,16 +132,10 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function removeViolation(Request $request)
+    public function removeViolation($id)
     {
-        $data = $request->all()['data'];
-        if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id !=$data["id"]) {
-        } else {
-            return redirect()->route(
-                'error'
-            // ['id' => 0]
-        );
-        }
+        DB::table('violations')->where('id', $id)->delete();
+        return redirect()->back();
     }
 
     public function banUser($id)
