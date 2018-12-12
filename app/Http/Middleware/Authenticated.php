@@ -19,9 +19,6 @@ class Authenticated
     {
         return app(Authenticate::class)->handle($request, function ($request) use ($next) {
             $id = Auth::user()->id;
-
-            // Check rentals for violations
-
             $banned = DB::select("SELECT banned from users where id={$id}");
             if ($banned[0]->banned) {
                 return redirect()->route('error', ['id' => 8]);
