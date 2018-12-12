@@ -14,7 +14,11 @@ class RentController extends Controller
     public function createRent(Request $request)
     {
         $id =Auth::id();
-        $rentedGames = DB::select("select * from rentals inner join game on rentals.idgame=game.id where rentals.idmember={$id} and enddate is null");
+        $rentedGames = DB::select("select * from rentals
+                                    inner join 
+                                    game
+                                    on rentals.idgame=game.id
+                                    where rentals.iduser={$id} and enddate is null");
         if (sizeof($rentedGames)>=RulesController::getRentGameLimit()) {
             return redirect()->route('error', ['id' => 5]);
         }
@@ -22,10 +26,10 @@ class RentController extends Controller
         if (Auth::user()) {
             Rent::create([
                 'idgame' => $data['idgame'],
-                'idmember' => $id
+                'iduser' => $id
             ]);
         }
-        return redirect()->route('index');
+        return redirect()->back();
     }
 
     public function deleteRent(Request $request)
@@ -33,12 +37,28 @@ class RentController extends Controller
         $data = $request->all()['data'];
         $memberid = Auth::id();
         $id = $data['idgame'];
-        $rentedGames = DB::select("select * from rentals inner join game on rentals.idgame=game.id where rentals.idmember={$memberid} and rentals.idgame= {$id} and enddate is null");
+        $rentedGames = DB::select("select * from rentals
+                                    inner join
+                                    game
+                                    on rentals.idgame=game.id
+                                    where rentals.iduser={$memberid} and rentals.idgame={$id} and enddate is null");
         if (sizeof($rentedGames) >0) {
-            $affected = DB::update("UPDATE rentals SET enddate=NOW() WHERE idgame = ${id} and idmember = ${memberid} and enddate is null");
-            return redirect()->route('index');
+            $affected = DB::update("UPDATE rentals SET enddate=NOW() WHERE idgame = ${id} and iduser = ${memberid} and enddate is null");
+            return redirect()->back();
         } else {
             return redirect()->route('error', ['id' => 6]);
+        }
+    }
+
+    public function addExtension($id)
+    {
+        $extensions = DB::table('rentals')->where('id', $id)->select('extensions')->first();
+        if ($extensions->extensions<=RulesController::getExtensionLimit()) {
+            DB::table('rentals')->where('id', $id)
+            ->increment('extensions');
+            return redirect()->back();
+        } else {
+            return redirect()->route('error', ['id' => 9]);
         }
     }
 }

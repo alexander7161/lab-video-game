@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     private function getVolunteer($id)
     {
-        $volunteer = DB::select("select * from user_roles where iduser={$id}");
+        $volunteer = DB::select("select * from users where id={$id} and (idrole=1 or idrole=2)");
         return (sizeof($volunteer)>0);
     }
 
@@ -23,17 +23,24 @@ class UserController extends Controller
      */
     public function getUsers()
     {
-        $users = DB::select('select *, (CASE
-        WHEN iduser is null THEN
+        $users = DB::select('SELECT id, name, email, created_at, updated_at, banned, volunteer, secretary,
+        CASE WHEN currentrentals is NULL THEN 0 ELSE currentrentals END AS currentrentals
+        from 
+        (select *, (CASE
+        WHEN idrole is null THEN
         false
         ELSE
         true
         END) as volunteer, (CASE
-        WHEN idrole = 1 THEN
+        WHEN idrole = 2 THEN
         true
         ELSE
         false
-        END) as secretary from users left join user_roles on users.id=iduser');
+        END) as secretary from users) users
+        LEFT JOIN
+        (select iduser,
+         count(*) as currentrentals from currentrentals group by iduser) rentals
+        ON (users.id = rentals.iduser)');
         sort($users);
         usort($users, function ($item1, $item2) {
             return $item2->secretary <=> $item1->secretary;
@@ -55,24 +62,23 @@ class UserController extends Controller
     
     private function getUserById($id)
     {
-        $user = DB::select("select id, name, email, created_at, updated_at, banned,  (CASE
-        WHEN iduser is null THEN
-        false
-        ELSE
-        true
-        END) as volunteer, (CASE
-        WHEN idrole = 1 THEN
-        true
-        ELSE
-        false
-        END) as secretary from users left join user_roles on users.id=iduser where id={$id}")[0];
+        $user = DB::select("SELECT users.id as id, name, email, created_at, updated_at, banned,  
+        (CASE WHEN idrole is null 
+        THEN false ELSE true END) as volunteer,
+        (CASE WHEN idrole = 1
+        THEN true ELSE false END) as secretary,
+        (CASE WHEN viocount is null
+        THEN 0 ELSE vioCount END) as violations
+        from users
+        left  outer join (select iduser, count(*) as vioCount from violations group by iduser) violations on users.id=violations.iduser where users.id={$id}")[0];
         $games = DB::select("SELECT (CASE
-        WHEN idmember is not null and enddate is null THEN
+        WHEN iduser is not null and enddate is null THEN
         true
         ELSE
         false
-        END) as currentlyBorrowed, game.name as name, startdate, enddate from rentals inner join game on rentals.idgame=game.id where rentals.idmember={$id}");
-        return view('accountPage', compact('games', 'user'));
+        END) as currentlyBorrowed, game.name as name, startdate, enddate, extensions, idgame, (CASE WHEN enddate is not null THEN null ELSE startdate+(SELECT rentalperiod FROM rules)+(extensions || ' weeks')::interval END) as duedate from rentals inner join game on rentals.idgame=game.id where rentals.iduser={$id}");
+        $violations = DB::select("SELECT violationdate as date, reason, id from violations where iduser={$id}");
+        return view('accountPage.index', compact('games', 'user', 'violations'));
     }
 
     public function getCurrentUser()
@@ -85,13 +91,13 @@ class UserController extends Controller
         $data = $request->all()['data'];
         if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id !=$data["id"]) {
             if (!$data['volunteer']) {
-                DB::table('user_roles')->insert(
-                    ['iduser' => $data["id"], 'idrole' => 2]
-                );
-                return redirect()->route('members');
+                DB::table('users')->where('id', $data["id"])
+                ->update(['idrole' => 1]);
+                return redirect()->back();
             } else {
-                DB::table('user_roles')->where('iduser', '=', $data["id"])->delete();
-                return redirect()->route('members');
+                DB::table('users')->where('id', $data["id"])
+                ->update(['idrole' => null]);
+                return redirect()->back();
             }
         } else {
             return redirect()->route(
@@ -105,13 +111,11 @@ class UserController extends Controller
     {
         $data = $request->all()['data'];
         if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id!=$data["id"]) {
-            DB::table('user_roles')->insert(
-                    ['iduser' => $data["id"], 'idrole' => 1]
-                );
-            DB::table('user_roles')
-            ->where('iduser', Auth::user()->id)
-            ->update(['idrole' => 2]);
-            return redirect()->route('members');
+            DB::table('users')->where('id', Auth::user()->id)
+                ->update(['idrole' => 1]);
+            DB::table('users')->where('id', $data["id"])
+                ->update(['idrole' => 2]);
+            return redirect()->back();
         } else {
             return redirect()->route(
                 'error'
@@ -120,28 +124,18 @@ class UserController extends Controller
         }
     }
 
-    public function createViolation(Request $request)
+    public function createViolation($id)
     {
-        $data = $request->all()['data'];
-        if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id !=$data["id"]) {
-        } else {
-            return redirect()->route(
-                'error'
-            // ['id' => 0]
+        DB::table('violations')->insert(
+            ['iduser' => $id, 'violationdate' => 'now()']
         );
-        }
+        return redirect()->back();
     }
 
-    public function removeViolation(Request $request)
+    public function removeViolation($id)
     {
-        $data = $request->all()['data'];
-        if (isset($data["id"]) && ctype_digit($data["id"]) && Auth::user()->id !=$data["id"]) {
-        } else {
-            return redirect()->route(
-                'error'
-            // ['id' => 0]
-        );
-        }
+        DB::table('violations')->where('id', $id)->delete();
+        return redirect()->back();
     }
 
     public function banUser($id)

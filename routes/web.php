@@ -17,6 +17,7 @@ Route::get('game/{id}', 'GameController@getGame');
 
 Route::post('rent', 'RentController@createRent')->name('rentgame');
 Route::post('unrent', 'RentController@deleteRent')->name('unrentgame');
+Route::get('addextension/{id}', 'RentController@addExtension');
 
 Route::get('game/{id}/edit', 'GameController@editGameView')->middleware('volunteer');
 Route::post('game/{id}/edit', 'GameController@editGame')->middleware('volunteer')->name('editGame');
@@ -32,6 +33,8 @@ Route::get('account', 'UserController@getCurrentUser')->middleware('authenticate
 Route::get('account/{id}', 'UserController@getUser')->middleware('authenticated');
 Route::get('account/{id}/ban', 'UserController@banUser')->middleware('volunteer')->name('ban');
 Route::get('account/{id}/unban', 'UserController@unBanUser')->middleware('volunteer')->name('unban');
+Route::get('account/{id}/addviolation', 'UserController@createViolation')->middleware('volunteer')->name('addviolation');
+Route::get('account/removeviolation/{id}', 'UserController@removeViolation')->middleware('volunteer');
 
 Route::get('rules', 'RulesController@index')->middleware('secretary')->name('rules');
 Route::post('rules', 'RulesController@edit')->middleware('secretary')->name('editRules');

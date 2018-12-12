@@ -50,7 +50,10 @@
 <div class="card-columns ">
     @endif
     <?php
-    $buttonStyle =  $g->isavailable? "btn-outline-light " : "btn-outline-dark ";
+    $buttonStyle = $g->isavailable? "btn-outline-light " : "btn-outline-dark ";
+    if(auth()->check() && $g->iduser==Auth::id()) {
+        $buttonStyle ="btn-outline-light ";
+    }
     ?>
         <div class="card ">
             {{-- <img class="card-img-top " src=".../100px180/ " alt="Card image cap "> --}}
@@ -58,9 +61,10 @@
                 <h5 class="card-title "> {{ $g->name }}</h5>
                 <div style="position: absolute; top: 4px; right: 4px; ">
                     <h6>
-                        @if ($g->isavailable)
-                        <span class="badge badge-success ">Available</span> @else
-                        <span class="badge badge-secondary ">Not Available</span> @endif
+                        @if($g->isavailable)
+                        <span class="badge badge-success ">Available</span> @else @useridequals($g->iduser)
+                        <span class="badge badge-dark ">You are Renting</span> @else
+                        <span class="badge badge-secondary ">Not Available</span> @enduseridequals @endif
                     </h6>
                 </div>
                 {{--
@@ -69,7 +73,8 @@
                 </p> --}}
 
             </div>
-            <div class="card-footer @if ($g->isavailable) bg-success text-white @endif" style="padding-right: 8px;
+            <div class="card-footer @useridequals($g->iduser) bg-dark @enduseridequals @if ($g->isavailable)bg-success text-white @endif"
+                style="padding-right: 8px;
     padding-left: 8px;"> {{--
                 <h6>
                     @if ($g->isavailable) Available @else Not available @endif
