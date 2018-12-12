@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class GameController extends Controller
 {
@@ -92,9 +94,26 @@ class GameController extends Controller
         'description'=> $data['description'],
         'onplatform'=> $data['platform'],
         'rating'=> $data['rating'],
-        'imageurl'=> $data['imageurl']
-    ]);
-        return redirect()->route('index');
+        ]);
+
+        // if(!Storage::disk('public_uploads')->put($path, $file_content)) {
+        //     return false;
+        // }
+        // $path = $request->photo->storeAs('images', $data['name'], 'public_uploads');
+
+        return redirect()->route('index')->with('Success','Game added successfully...');
+    }
+
+    public function fileUpload(Request $request)
+    {
+        // $image = $request->file('image');
+        // $input['imagename'] = time(). '.' . $image->getClientOriginalExtension();
+        // $destinationPath = public_path('/img');
+        // $image->move($destinationPat, $input['imagename']);
+        if(!Storage::disk('public_uploads')->put($path, $file_content)) {
+            return false;
+        }
+        $path = $request->photo->storeAs('images', $data['name'], 'public_uploads');
     }
 
     public function deleteGame($id)
@@ -123,6 +142,6 @@ class GameController extends Controller
 
         $game->save();
 
-        return redirect()->route('index');
+        return redirect()->route('index')->with('Success','Game information updated successfully...');
     }
 }

@@ -30,7 +30,7 @@ if($databaseUrl = getenv('DATABASE_URL')) {
 
 $username = "postgres";
 $password = "999259";
-$database = "mysql";
+$database = "mydb";
 $host = "127.0.0.1";
 
 return [

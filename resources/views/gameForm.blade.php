@@ -1,4 +1,4 @@
-<form method="POST" action="{{ $new? route('newGame'): route('editGame', $game->id) }}">
+<form method="POST" action="{{ $new? route('newGame'): route('editGame', $game->id), route('image.add') }}" enctype="multipart/form-data">
     @csrf @if(isset($game))
     <input type="hidden" id="id" name="id" value="{{$game->id}}">@endif
 
@@ -71,6 +71,14 @@
             <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('rating') }}</strong>
                                     </span> @endif
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
+        
+        <div class="col-md-6">
+            <input id="image" type="file" class="form-control" name="image"/>
+            <input type="submit" value=" Save " />
         </div>
     </div>
     <div class="form-group row mb-0">

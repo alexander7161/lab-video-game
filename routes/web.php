@@ -43,6 +43,9 @@ Route::get('error/{id?}', function ($id = 7) {
     return view('error', ['info' => __("errors.{$id}")]);
 })->name('error');
 
-Route::resource('photos', 'PhotoController');
+Route::post('fileUpload',[
+    'as' => 'image.add',
+    'uses' => 'GameController@fileUpload'
+]);
 
 Auth::routes();
