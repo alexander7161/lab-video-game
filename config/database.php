@@ -28,6 +28,11 @@ if($databaseUrl = getenv('DATABASE_URL')) {
     $database = substr($url['path'], 1);
 }
 
+$username = "postgres";
+$password = "999259";
+$database = "mysql";
+$host = "127.0.0.1";
+
 return [
 
     /*
