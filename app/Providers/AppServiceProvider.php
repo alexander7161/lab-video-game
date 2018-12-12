@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::if('underrentgamelimit', function ($count) {
-            return RulesController::getRentGameLimit()>=$count;
+            return RulesController::getRentGameLimit()>$count;
         });
     }
 

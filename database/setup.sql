@@ -68,10 +68,7 @@ create table users
   (
     iduser serial not null,
     datebanned timestamp,
-    banperiod interval not null,
-    banneduntil timestamp default null,
     primary key (iduser),
-    foreign key (banperiod) references rules (banPeriod) on delete set null on update cascade,
     foreign key (iduser) references users (id) on delete set null on update cascade
   );
 
@@ -94,6 +91,14 @@ as
     users
     on rentals.iduser=users.id
   where enddate is null);
+
+  create or replace view currentviolations
+as
+  select iduser, count(*)
+  from violations
+  where violationdate>(NOW()- (SELECT rulevioperiod
+  FROM rules))
+  group by iduser;
 
   insert into rules
   values(2, '3 weeks', 2, 3, '1 years', '6 months');

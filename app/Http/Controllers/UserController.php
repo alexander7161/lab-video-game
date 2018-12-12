@@ -23,24 +23,25 @@ class UserController extends Controller
      */
     public function getUsers()
     {
-        $users = DB::select('SELECT id, name, email, created_at, updated_at, banned, volunteer, secretary,
+        $users = DB::select('SELECT id, name, email, created_at, updated_at, volunteer, secretary,
+        (CASE WHEN isbanned is null THEN false ELSE true END) as banned,
         CASE WHEN currentrentals is NULL THEN 0 ELSE currentrentals END AS currentrentals
         from 
-        (select *, (CASE
-        WHEN idrole is null THEN
-        false
-        ELSE
-        true
-        END) as volunteer, (CASE
-        WHEN idrole = 2 THEN
-        true
-        ELSE
-        false
-        END) as secretary from users) users
+        (select *, 
+        (CASE WHEN idrole is null THEN false ELSE true END) as volunteer,
+        (CASE WHEN idrole = 2 THEN true ELSE false END) as secretary from users) users
         LEFT JOIN
         (select iduser,
-         count(*) as currentrentals from currentrentals group by iduser) rentals
-        ON (users.id = rentals.iduser)');
+        count(*) as currentrentals
+        from currentrentals
+        group by iduser) rentals
+        ON (users.id = rentals.iduser)
+        left outer join
+        (select iduser,
+        count(*) as isbanned
+        from bannedmembers
+        group by iduser) bannedmembers
+        on users.id=bannedmembers.iduser');
         sort($users);
         usort($users, function ($item1, $item2) {
             return $item2->secretary <=> $item1->secretary;
@@ -62,15 +63,18 @@ class UserController extends Controller
     
     private function getUserById($id)
     {
-        $user = DB::select("SELECT users.id as id, name, email, created_at, updated_at, banned,  
+        $user = DB::select("SELECT users.id as id, name, email, created_at, updated_at,  
+        (CASE WHEN isbanned is null THEN false ELSE true END) as banned,
         (CASE WHEN idrole is null 
         THEN false ELSE true END) as volunteer,
-        (CASE WHEN idrole = 1
+        (CASE WHEN idrole = 2
         THEN true ELSE false END) as secretary,
         (CASE WHEN viocount is null
         THEN 0 ELSE vioCount END) as violations
         from users
-        left  outer join (select iduser, count(*) as vioCount from violations group by iduser) violations on users.id=violations.iduser where users.id={$id}")[0];
+        left  outer join (select iduser, count(*) as vioCount from violations group by iduser) violations on users.id=violations.iduser
+        left  outer join (select iduser, count(*) as isbanned from bannedmembers group by iduser) bannedmembers on users.id=bannedmembers.iduser
+        where users.id={$id}")[0];
         $games = DB::select("SELECT (CASE
         WHEN iduser is not null and enddate is null THEN
         true
@@ -78,7 +82,8 @@ class UserController extends Controller
         false
         END) as currentlyBorrowed, game.name as name, startdate, enddate, extensions, idgame, (CASE WHEN enddate is not null THEN null ELSE startdate+(SELECT rentalperiod FROM rules)+(extensions || ' weeks')::interval END) as duedate from rentals inner join game on rentals.idgame=game.id where rentals.iduser={$id}");
         $violations = DB::select("SELECT violationdate as date, reason, id from violations where iduser={$id}");
-        return view('accountPage.index', compact('games', 'user', 'violations'));
+        $ban = DB::select("SELECT datebanned, datebanned+(SELECT banperiod FROM rules) as banenddate from bannedmembers where iduser={$id}");
+        return view('accountPage.index', compact('games', 'user', 'violations', 'ban'));
     }
 
     public function getCurrentUser()
@@ -141,9 +146,7 @@ class UserController extends Controller
     public function banUser($id)
     {
         if (isset($id) && ctype_digit($id) && Auth::user()->id !=$id) {
-            DB::table('users')
-            ->where('id', $id)
-            ->update(['banned' => true]);
+            self::banUserById($id);
             return redirect()->back();
         } else {
             return redirect()->route(
@@ -153,12 +156,22 @@ class UserController extends Controller
         }
     }
 
+    public static function banUserById($id)
+    {
+        DB::table('bannedmembers')->insert(
+            ['iduser' => $id, 'datebanned' => 'NOW()']
+        );
+    }
+
+    public static function unBanUserById($id)
+    {
+        DB::table('bannedmembers')->where('iduser', $id)->delete();
+    }
+
     public function unBanUser($id)
     {
         if (isset($id) && ctype_digit($id) && Auth::user()->id !=$id) {
-            DB::table('users')
-            ->where('id', $id)
-            ->update(['banned' => false]);
+            self::unBanUserById($id);
             return redirect()->back();
         } else {
             return redirect()->route(

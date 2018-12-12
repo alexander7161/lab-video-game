@@ -45,4 +45,9 @@ class RulesController extends Controller
     {
         return DB::select("SELECT extensionlimit from rules")[0]->extensionlimit;
     }
+
+    public static function getViolationLimii()
+    {
+        return DB::select("SELECT ruleviolimitperperiod from rules")[0]->ruleviolimitperperiod;
+    }
 }
