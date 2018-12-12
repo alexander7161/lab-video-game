@@ -35,19 +35,26 @@ class RentController extends Controller
     public function deleteRent(Request $request)
     {
         $data = $request->all()['data'];
-        $memberid = Auth::id();
-        $id = $data['idgame'];
-        $rentedGames = DB::select("select * from rentals
-                                    inner join
-                                    game
-                                    on rentals.idgame=game.id
-                                    where rentals.iduser={$memberid} and rentals.idgame={$id} and enddate is null");
-        if (sizeof($rentedGames) >0) {
-            $affected = DB::update("UPDATE rentals SET enddate=NOW() WHERE idgame = ${id} and iduser = ${memberid} and enddate is null");
+        $id = $data['idrent'];
+        if (self::deleteRentById($id)) {
             return redirect()->back();
         } else {
             return redirect()->route('error', ['id' => 6]);
         }
+    }
+
+    public static function deleteRentById($id)
+    {
+        $rentedGames = DB::select("select * from rentals
+        inner join
+        game
+        on rentals.idgame=game.id
+        where rentals.id={$id} and enddate is null");
+        if (sizeof($rentedGames) >0) {
+            $affected = DB::update("UPDATE rentals SET enddate=NOW() WHERE id = ${id} and enddate is null");
+            return true;
+        }
+        return false;
     }
 
     public function addExtension($id)

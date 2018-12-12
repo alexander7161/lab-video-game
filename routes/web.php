@@ -23,7 +23,7 @@ Route::get('game/{id}/edit', 'GameController@editGameView')->middleware('volunte
 Route::post('game/{id}/edit', 'GameController@editGame')->middleware('volunteer')->name('editGame');
 Route::get('game/{id}/delete', 'GameController@deleteGame')->middleware('volunteer');
 
-Route::view('newGame', 'newGame')->middleware('volunteer');
+Route::get('newGame', 'GameController@newGameView')->middleware('volunteer');
 Route::post('newGame', 'GameController@createGame')->name('newGame')->middleware('volunteer');
 
 Route::get('members', 'UserController@getUsers')->middleware('volunteer');

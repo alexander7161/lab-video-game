@@ -79,6 +79,12 @@ class GameController extends Controller
         }
     }
 
+    public function newGameView()
+    {
+        $platforms = DB::select("SELECT unnest(enum_range(NULL::platform))");
+        return view('newGame', compact('platforms'));
+    }
+
     public function createGame(Request $request)
     {
         $data = $request->all();
