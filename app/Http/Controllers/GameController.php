@@ -51,8 +51,8 @@ class GameController extends Controller
                                 from currentrentals
                                 where idgame={$id} and enddate is null ");
             $rentalhistory = DB::select("SELECT iduser, startdate, enddate, users.name as username, extensions
-                                    from rentals inner join game on rentals.idgame=game.id
-                                    inner join
+                                    from rentals left outer join game on rentals.idgame=game.id
+                                    left outer join
                                     users
                                     on rentals.iduser=users.id
                                     where idgame={$id} and enddate is not null");
