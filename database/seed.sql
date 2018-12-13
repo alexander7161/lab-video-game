@@ -38,6 +38,15 @@ insert into game
     (id,name,releaseYear,type,description,onplatform,rating,recommendedURL)
 values(10, 'Monster Hunter', 2004, 'ARPG', 'Astera acts as a central hub where the player can buy and sell goods, manage their inventory, craft new equipment, and gain new quests. A core facet of Monster Hunter games is the construction and upgrading of armor and weapons at a forge using the monster parts and resources the player has gained from combat.', 'PC', 6.7, 'https://www.metacritic.com/game/playstation-4/monster-hunter-world');
 
+insert into game (id,name,releaseYear,type,description,onplatform,rating,recommendedURL)
+values(11, 'Left 4 Dead 2', 2009, 'Zombies FPS', 'Set in the zombie apocalypse, Left 4 Dead 2 (L4D2) is the highly anticipated sequel to the award-winning Left 4 Dead, the #1 co-op game of 2008. This co-operative action horror FPS takes you and your friends through the cities, swamps and cemeteries of the Deep South, from Savannah to New Orleans.', 'PC', 9.0, 'https://www.metacritic.com/game/pc/left-4-dead-2');
+
+insert into game (id,name,releaseYear,type,description,onplatform,rating,recommendedURL)
+values(12, 'NieR:Automata', 2017, 'Action RPG', 'NieR: Automata tells the story of androids 2B, 9S and A2 and their battle to reclaim the machine-driven dystopia overrun by powerful machines.', 'PS4', 8.9, 'https://www.metacritic.com/game/playstation-4/nier-automata');
+
+insert into game (id,name,releaseYear,type,description,onplatform,rating,recommendedURL)
+values(13, 'Super Smash Bros Ultimate', 2018, 'Fighter', 'Legendary game worlds and fighters collide in the ultimate showdown – a new entry in the Super Smash Bros. series for Nintendo Switch!', 'Nintendo Switch', 9.3, 'https://www.metacritic.com/g00/game/switch/super-smash-bros-ultimate?i10c.encReferrer=&i10c.ua=1&i10c.dv=15');
+
 -- insert into ...
 
 
