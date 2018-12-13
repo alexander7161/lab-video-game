@@ -1,3 +1,4 @@
+{{print_r($game)}}
 <form method="POST" action="{{ $new? route('newGame'): route('editGame', $game->id)}}" enctype="multipart/form-data">
     @csrf @if(isset($game))
     <input type="hidden" id="id" name="id" value="{{$game->id}}">@endif
@@ -55,24 +56,10 @@
                     @if(isset($platforms))@foreach($platforms as $p)
                         <option  value ="{{$p->unnest}}" @if(isset($game) && $game->onplatform==$p->unnest) selected @endif>{{$p->unnest}}</option>
                         @endforeach @endif
-                    </select> {{-- <input id="platform" type="text" class="form-control{{ $errors->has('platform') ? ' is-invalid' : '' }}"
-                name="platform" value="{{ old('platform', isset($game)? $game->onplatform : '') }}" required> @if ($errors->has('platform'))
-            <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('platform') }}</strong>
-                                    </span> @endif --}}
+                    </select>
         </div>
     </div>
-    <div class="form-group row">
-        <label for="review" class="col-md-4 col-form-label text-md-right">{{ __('Review') }}</label>
 
-        <div class="col-md-6">
-            <input id="review" type="text" class="form-control{{ $errors->has('review') ? ' is-invalid' : '' }}" name="review" value="{{ old('review', isset($game)? $game->recommendedURL : '') }}"> 
-            @if ($errors->has('review'))
-            <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('review') }}</strong>
-                                    </span> @endif
-        </div>
-    </div>
     <div class="form-group row">
         <label for="rating" class="col-md-4 col-form-label text-md-right">{{ __('Rating*') }}</label>
 
@@ -84,12 +71,21 @@
                                     </span> @endif
         </div>
     </div>
+    <div class="form-group row">
+        <label for="review" class="col-md-4 col-form-label text-md-right">{{ __('Review URL*') }}</label>
 
+        <div class="col-md-6">
+            <input id="review" type="url" class="form-control{{ $errors->has('review') ? ' is-invalid' : '' }}" name="review" value="{{ old('review', isset($game)? $game->recommendedurl : '') }}">            @if ($errors->has('review'))
+            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('review') }}</strong>
+                                        </span> @endif
+        </div>
+    </div>
     <div class="form-group row">
         <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Image*') }}</label>
-        
+
         <div class="col-md-6">
-            <input id="image" type="file" class="form-control" name="image" required autofocus>
+            <input id="image" type="file" class="form-control" name="image" {{$new? 'required': ''}} autofocus>
         </div>
     </div>
 

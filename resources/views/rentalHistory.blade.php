@@ -14,6 +14,7 @@
                             <th scope="col">End Date</th>
                             <th scope="col">Due Date</th>
                             <th scope="col">Extensions</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,6 +47,12 @@
                             </td>
                             <td>
                                 {{$r->extensions}}
+                            </td>
+                            <td>
+                                <form method="POST" action="{{ route('makeSecretary', ['data' => array('id'=>$r->rentalid)] ) }}" onSubmit="return confirm('Are you sure you want to give up the secretary role?');">
+                                    @csrf
+                                    <input class="btn btn-outline-dark" type='submit' value="Report Broken" />
+                                </form>
                             </td>
                         </tr>
                         @endforeach

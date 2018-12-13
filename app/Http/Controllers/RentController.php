@@ -31,6 +31,12 @@ class RentController extends Controller
                 left outer join game
                 on game.id=rentals.idgame";
         $rentals = DB::select($query);
+        usort($rentals, function ($item1, $item2) {
+            return strtotime($item2->startdate) <=> strtotime($item1->startdate);
+        });
+        usort($rentals, function ($item1, $item2) {
+            return strtotime($item1->enddate) <=> strtotime($item2->enddate);
+        });
         return view('rentalHistory', compact('rentals'));
     }
 
