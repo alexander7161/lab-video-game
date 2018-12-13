@@ -102,7 +102,3 @@ as
 
   insert into rules
   values(2, '3 weeks', 2, 3, '1 years', '6 months');
-
-
--- create rule bannedperiod as on insert to bannedmembers where ((SELECT(banneduntil) FROM bannedmembers) = null)
--- do insert into bannedmembers (banneduntil) values((SELECT(datebanned)) + (SELECT (banperiod) FROM rules));
