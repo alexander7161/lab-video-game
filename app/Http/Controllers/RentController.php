@@ -67,10 +67,10 @@ class RentController extends Controller
         $data = $request->all()['data'];
         $id = $data['idrent'];
         if (self::deleteRentById($id)) {
-            $damaged = DB::select("select gamedamaged from rentals where rentals.id = {$id}");
+            $gameid = DB::select("select idgame from rentals where rentals.id = {$id}");
+            $damaged = DB::select("select damaged from game where game.id = {$gameid}");
             if($damaged) {
                 $userid = DB::select("select iduser from rentals where rentals.id = {$id}");
-                $gameid = DB::select("select idgame from rentals where rentals.id = {$id}");
                 DB::table('damagedrefunds')->insert(
                     ['iduser' => $userid, 'idgame' => $gameid, 'refunded' => 'false']
                 );
