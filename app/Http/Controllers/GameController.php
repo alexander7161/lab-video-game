@@ -103,6 +103,7 @@ class GameController extends Controller
         'description'=> $data['description'],
         'onplatform'=> $data['platform'],
         'rating'=> $data['rating'],
+        'review'=> $data['recommendedURL'],
         ]);
         // Upload image directly in 'public/img/' with same name with game.
         $file = request()->file('image');
@@ -120,6 +121,18 @@ class GameController extends Controller
         DB::update("UPDATE rentals set enddate=now() where idgame={$id}"); // End all rentals with game to delete.
         Game::destroy($id);
         return redirect()->route('index');
+    }
+
+    public function markAsDamaged(Request $request, $id) 
+    {
+        DB::update("UPDATE game set damaged = true where id={$id}");
+        return redirect()->back();
+    }
+
+    public function markAsNotDamaged(Request $request, $id) 
+    {
+        DB::update("UPDATE game set damaged = false where id={$id}");
+        return redirect()->back();
     }
 
     public function editGame(Request $request)
@@ -144,6 +157,7 @@ class GameController extends Controller
             'description'=> $data['description'],
             'onplatform'=> $data['platform'],
             'rating'=> $data['rating'],
+            'review'=> $data['recommendedURL'],
         ]);
 
         $file = request()->file('image');

@@ -7,13 +7,19 @@ create table users
   name varchar(255) not null,
   email varchar(255) not null,
   password varchar(255) not null,
-  email_verified_at timestamp(0) without time zone,
-  remember_token varchar(100),
-  created_at timestamp(0) without time zone,
-  updated_at timestamp(0) without time zone,
+  email_verified_at timestamp(0)
+  without time zone,
+  remember_token varchar
+  (100),
+  created_at timestamp
+  (0) without time zone,
+  updated_at timestamp
+  (0) without time zone,
   banned boolean not null default false,
   idrole int,
-  foreign key(idrole) references roles(id)
+  foreign key
+  (idrole) references roles
+  (id)
 );
 
   create table roles
@@ -35,6 +41,7 @@ create table users
     rating decimal(1,1) CHECK (rating<=10.0 and rating>0.0),
     recommendedURL varchar(255),
     onplatform platform,
+    damaged boolean default false
   );
 
   create table rentals
@@ -64,6 +71,16 @@ create table users
     datebanned timestamp,
     primary key (iduser),
     foreign key (iduser) references users (id) on delete set null on update cascade
+  );
+
+  create table damagedrefunds
+  (
+    id serial not null primary key,
+    iduser int not null,
+    idgame int not null,
+    refunded boolean default false,
+    foreign key (iduser) references users (id) on delete set null on update cascade, 
+    foreign key (idgame) references game (id) on delete set null on update cascade
   );
 
   create table rules
