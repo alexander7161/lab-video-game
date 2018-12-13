@@ -7,7 +7,7 @@
             <h5 class="card-title">Rental History</h5>
         </div>
         <div class="table-responsive">
-            @if(!$isavailable)
+            @if(sizeof($rentalhistory)>0)
             <table class="table table-striped" style="margin-bottom:0;">
                 <thead>
                     <tr>
