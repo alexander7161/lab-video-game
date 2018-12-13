@@ -51,6 +51,7 @@ create table users
     startdate timestamp DEFAULT NOW(),
     enddate timestamp,
     extensions int default 0,
+    gamedamaged boolean default false,
     foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
     foreign key (idgame) references Game (id) on delete set null on update CASCADE
   );
@@ -70,6 +71,16 @@ create table users
     datebanned timestamp,
     primary key (iduser),
     foreign key (iduser) references users (id) on delete set null on update cascade
+  );
+
+  create table damagedrefunds
+  (
+    iduser serial not null,
+    idgame serial not null,
+    refunded boolean default false,
+    primary key (iduser,idgame),
+    foreign key (iduser) references users (id) on delete set null on update cascade, 
+    foreign key (idgame) references game (id) on delete set null on update cascade
   );
 
   create table rules

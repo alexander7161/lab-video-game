@@ -22,6 +22,13 @@ class RentController extends Controller
         if (sizeof($rentedGames)>=RulesController::getRentGameLimit()) {
             return redirect()->route('error', ['id' => 5]);
         }
+
+        $hasDamaged = DB::select("select exists(select 1 from damagedrefunds
+         where damagedrefunds.iduser = {$id} and refunded = false)");
+         if($hasDamaged == true) {
+         return redirect()->route('error', ['id' => 5]);
+         }
+
         $data = $request->all()['data'];
         if (Auth::user()) {
             Rent::create([
@@ -37,7 +44,17 @@ class RentController extends Controller
         $data = $request->all()['data'];
         $id = $data['idrent'];
         if (self::deleteRentById($id)) {
+            $damaged = DB::select("select gamedamaged from rentals where rentals.id = {$id}");
+            if($damaged) {
+                $userid = DB::select("select iduser from rentals where rentals.id = {$id}");
+                $gameid = DB::select("select idgame from rentals where rentals.id = {$id}");
+                DB::table('damagedrefunds')->insert(
+                    ['iduser' => $userid, 'idgame' => $gameid, 'refunded' => 'false']
+                );
+            }
+            else{
             return redirect()->back();
+            }
         } else {
             return redirect()->route('error', ['id' => 6]);
         }
@@ -68,4 +85,5 @@ class RentController extends Controller
             return redirect()->route('error', ['id' => 9]);
         }
     }
+
 }
