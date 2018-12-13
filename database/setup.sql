@@ -7,19 +7,13 @@ create table users
   name varchar(255) not null,
   email varchar(255) not null,
   password varchar(255) not null,
-  email_verified_at timestamp(0)
-  without time zone,
-  remember_token varchar
-  (100),
-  created_at timestamp
-  (0) without time zone,
-  updated_at timestamp
-  (0) without time zone,
+  email_verified_at timestamp(0) without time zone,
+  remember_token varchar(100),
+  created_at timestamp(0) without time zone,
+  updated_at timestamp(0) without time zone,
   banned boolean not null default false,
   idrole int,
-  foreign key
-  (idrole) references roles
-  (id)
+  foreign key(idrole) references roles(id)
 );
 
   create table roles

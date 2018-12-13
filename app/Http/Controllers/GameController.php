@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\File;    
+use Illuminate\Filesystem\Filesystem;
 
 class GameController extends Controller
 {
@@ -81,6 +82,12 @@ class GameController extends Controller
         }
     }
 
+    public function newGameView()
+    {
+        $platforms = DB::select("SELECT unnest(enum_range(NULL::platform))");
+        return view('newGame', compact('platforms'));
+    }
+
     public function createGame(Request $request)
     {
         $data = $request->all();
@@ -95,29 +102,19 @@ class GameController extends Controller
         'onplatform'=> $data['platform'],
         'rating'=> $data['rating'],
         ]);
-
-        // if(!Storage::disk('public_uploads')->put($path, $file_content)) {
-        //     return false;
-        // }
-        // $path = $request->photo->storeAs('images', $data['name'], 'public_uploads');
+        // Upload image directly in 'public/img/' with same name with game.
+        $file = request()->file('image');
+        $fileName = str_replace(' ', '', $request->name).'.jpg';
+        $file->storeAs('img', $fileName, ['disk' => 'public']);
 
         return redirect()->route('index')->with('Success','Game added successfully...');
     }
 
-    public function fileUpload(Request $request)
+    public function deleteGame(Request $request, $id)
     {
-        // $image = $request->file('image');
-        // $input['imagename'] = time(). '.' . $image->getClientOriginalExtension();
-        // $destinationPath = public_path('/img');
-        // $image->move($destinationPat, $input['imagename']);
-        if(!Storage::disk('public_uploads')->put($path, $file_content)) {
-            return false;
-        }
-        $path = $request->photo->storeAs('images', $data['name'], 'public_uploads');
-    }
-
-    public function deleteGame($id)
-    {
+        $game = Game::find($id);
+        $image_path = public_path().'/img/'.str_replace(' ', '', $game->name).'.jpg';
+        unlink($image_path);
         DB::update("UPDATE rentals set enddate=now() where idgame={$id}"); // End all rentals with game to delete.
         Game::destroy($id);
         return redirect()->route('index');
@@ -128,6 +125,14 @@ class GameController extends Controller
         $data = $request->all();
         $game = Game::find($data['id']);
 
+        if($request->hasFile('image'))
+        {
+            $image = $request->file('image');
+            $filename = str_replace(' ', '', $game->name).'.jpg';;
+            $path = public_path('img/' . $filename);
+            unlink($path);
+        }
+
         
         // Log::info(print_r($data));
         $game->fill([
@@ -137,8 +142,11 @@ class GameController extends Controller
             'description'=> $data['description'],
             'onplatform'=> $data['platform'],
             'rating'=> $data['rating'],
-            'imageurl'=> $data['imageurl']
         ]);
+
+        $file = request()->file('image');
+        $fileName = str_replace(' ', '', $game->name).'.jpg';
+        $file->storeAs('img', $fileName, ['disk' => 'public']);
 
         $game->save();
 

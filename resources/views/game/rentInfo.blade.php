@@ -77,7 +77,7 @@ if(!$isavailable) {
                 </form>
                 @endunderrentgamelimit
                 <form style="display: inline-block;" onSubmit="return confirm('Are you sure you want to return this item?');" method="POST"
-                    action="{{ route('unrentgame', ['data' => array('idgame'=>$game->id)] ) }}">
+                    action="{{ route('unrentgame', ['data' => array('idrent'=>$renting->rentalid)] ) }}">
                     @csrf
                     <input class="btn btn-danger" type='submit' value="Send Back!" />
                 </form>

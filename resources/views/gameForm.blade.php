@@ -1,9 +1,9 @@
-<form method="POST" action="{{ $new? route('newGame'): route('editGame', $game->id), route('image.add') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ $new? route('newGame'): route('editGame', $game->id)}}" enctype="multipart/form-data">
     @csrf @if(isset($game))
     <input type="hidden" id="id" name="id" value="{{$game->id}}">@endif
 
     <div class="form-group row">
-        <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+        <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name*') }}</label>
 
         <div class="col-md-6">
             <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name', isset($game)? $game->name : '') }}"
@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group row">
-        <label for="releaseyear" class="col-md-4 col-form-label text-md-right">{{ __('Release Year') }}</label>
+        <label for="releaseyear" class="col-md-4 col-form-label text-md-right">{{ __('Release Year*') }}</label>
 
         <div class="col-md-6">
             <input id="releaseyear" type="number" class="form-control{{ $errors->has('releaseyear') ? ' is-invalid' : '' }}" name="releaseyear"
@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Type') }}</label>
+        <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Type*') }}</label>
 
         <div class="col-md-6">
             <input id="type" type="text" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" value="{{ old('type', isset($game)? $game->type : '') }}"
@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
+        <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description*') }}</label>
 
         <div class="col-md-6">
             <textarea style="min-height: calc(2.19rem + 2px); height: calc(8.19rem + 2px);" id="description" type="text" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="platform" class="col-md-4 col-form-label text-md-right">{{ __('Platform') }}</label>
+        <label for="platform" class="col-md-4 col-form-label text-md-right">{{ __('Platform*') }}</label>
 
         <div class="col-md-6">
             <select id="platform" class="form-control" name="platform">
@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="rating" class="col-md-4 col-form-label text-md-right">{{ __('Rating') }}</label>
+        <label for="rating" class="col-md-4 col-form-label text-md-right">{{ __('Rating*') }}</label>
 
         <div class="col-md-6">
             <input id="rating" type="number" class="form-control{{ $errors->has('rating') ? ' is-invalid' : '' }}" name="rating" value="{{ old('rating', isset($game)? $game->rating : '') }}"
@@ -73,19 +73,21 @@
                                     </span> @endif
         </div>
     </div>
-    <div class="form-group">
-        <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
+
+    <div class="form-group row">
+        <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Image*') }}</label>
         
         <div class="col-md-6">
-            <input id="image" type="file" class="form-control" name="image"/>
-            <input type="submit" value=" Save " />
+            <input id="image" type="file" class="form-control" name="image" required autofocus>
         </div>
     </div>
+
     <div class="form-group row mb-0">
         <div class="col-md-6 offset-md-4">
             <button type="submit" class="btn btn-primary">
-                                    {{ $new? __('Create') : __('Submit') }}
-                                </button>
+                        {{ $new? __('Create') : __('Submit') }}
+            </button>
         </div>
     </div>
+
 </form>

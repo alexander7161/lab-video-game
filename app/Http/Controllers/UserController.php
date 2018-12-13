@@ -124,7 +124,7 @@ class UserController extends Controller
         }
     }
 
-    public function createViolation($id)
+    public static function createViolation($id)
     {
         DB::table('violations')->insert(
             ['iduser' => $id, 'violationdate' => 'now()']
