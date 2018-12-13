@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;    
+use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
 
 class GameController extends Controller
@@ -103,14 +103,14 @@ class GameController extends Controller
         'description'=> $data['description'],
         'onplatform'=> $data['platform'],
         'rating'=> $data['rating'],
-        'review'=> $data['recommendedURL'],
+        'recommendedurl'=> $data['review'],
         ]);
         // Upload image directly in 'public/img/' with same name with game.
         $file = request()->file('image');
         $fileName = str_replace(' ', '', $request->name).'.jpg';
         $file->storeAs('img', $fileName, ['disk' => 'public']);
 
-        return redirect()->route('index')->with('Success','Game added successfully...');
+        return redirect()->route('index')->with('Success', 'Game added successfully...');
     }
 
     public function deleteGame(Request $request, $id)
@@ -123,13 +123,13 @@ class GameController extends Controller
         return redirect()->route('index');
     }
 
-    public function markAsDamaged(Request $request, $id) 
+    public function markAsDamaged(Request $request, $id)
     {
         DB::update("UPDATE game set damaged = true where id={$id}");
         return redirect()->back();
     }
 
-    public function markAsNotDamaged(Request $request, $id) 
+    public function markAsNotDamaged(Request $request, $id)
     {
         DB::update("UPDATE game set damaged = false where id={$id}");
         return redirect()->back();
@@ -139,13 +139,16 @@ class GameController extends Controller
     {
         $data = $request->all();
         $game = Game::find($data['id']);
-
-        if($request->hasFile('image'))
-        {
+        if (isset($data['image'])) {
             $image = $request->file('image');
-            $filename = str_replace(' ', '', $game->name).'.jpg';;
+            $filename = str_replace(' ', '', $game->name).'.jpg';
+            ;
             $path = public_path('img/' . $filename);
             unlink($path);
+
+            $file = request()->file('image');
+            $fileName = str_replace(' ', '', $game->name).'.jpg';
+            $file->storeAs('img', $fileName, ['disk' => 'public']);
         }
 
         
@@ -157,15 +160,12 @@ class GameController extends Controller
             'description'=> $data['description'],
             'onplatform'=> $data['platform'],
             'rating'=> $data['rating'],
-            'review'=> $data['recommendedURL'],
+            'recommendedurl'=> $data['review'],
         ]);
 
-        $file = request()->file('image');
-        $fileName = str_replace(' ', '', $game->name).'.jpg';
-        $file->storeAs('img', $fileName, ['disk' => 'public']);
 
         $game->save();
 
-        return redirect()->route('index')->with('Success','Game information updated successfully...');
+        return redirect()->route('index')->with('Success', 'Game information updated successfully...');
     }
 }
