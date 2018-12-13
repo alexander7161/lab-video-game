@@ -11,6 +11,29 @@ use App\Http\Controllers\RulesController;
 
 class RentController extends Controller
 {
+
+       /**
+     * Show a list of all of the application's users.
+     *
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $query = "SELECT rentals.id as rentalid, rentals.startdate, rentals.enddate,
+                rentals.extensions, duedate, game.name as gamename, game.id as gameid,
+                users.name as username, users.id as userid
+                from rentals
+                left outer join
+                users
+                on users.id=rentals.iduser
+                left outer join currentrentals
+                on rentals.id=currentrentals.rentalid
+                left outer join game
+                on game.id=rentals.idgame";
+        $rentals = DB::select($query);
+        return view('rentalHistory', compact('rentals'));
+    }
+
     public function createRent(Request $request)
     {
         $id =Auth::id();

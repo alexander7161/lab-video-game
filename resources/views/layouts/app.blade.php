@@ -66,7 +66,10 @@
                                      </a>
                                 <a class="dropdown-item" href="/members">
                                          {{ __('Manage Users') }}
-                                     </a> @endvolunteer @secretary
+                                     </a>
+                                <a class="dropdown-item" href="/rentalhistory">
+                                        {{ __('Rental History') }}
+                                    </a>@endvolunteer @secretary
                                 <a class="dropdown-item" href="/rules">
                                         {{ __('Edit Rules') }}
                                     </a> @endsecretary
