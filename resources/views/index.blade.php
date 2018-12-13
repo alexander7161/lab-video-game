@@ -41,6 +41,13 @@
         " aria-label="Search Games " aria-describedby="button-addon2 ">
     <div class="input-group-append ">
         <button class="btn btn-outline-secondary " type="submit " id="button-addon2 "><i class="fa fa-search "></i></button>
+        <button name="dropdown" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+    </div>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Available</a>
+      <a class="dropdown-item" href="#">Borrowed</a>
     </div>
 
 </form>

@@ -24,6 +24,15 @@ class GameController extends Controller
         (select * from rentals where enddate is null) currentrentals
         ON (game.id = currentrentals.idgame)";
 
+        // TODO
+
+        $dropdown = urldecode($request->query('dropdown'))
+        if ($dropdown) {
+            $query .= " concat('%',LOWER('{$dropdown}'),'%') as choice
+                        IF (choice ='Available')
+                            "
+        }
+
         $filter = urldecode($request->query('filter'));
         if ($filter) {
             $query .= " where LOWER(game.name) like concat('%',LOWER('{$filter}'),'%')";
