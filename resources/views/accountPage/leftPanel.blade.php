@@ -49,6 +49,7 @@ $u = $user;
             </div>
         </div>
     </div>
+    @if(!$u->volunteer)
     <div class="card" style="margin-bottom:8px;">
         <div class="card-body">
             <h5 class="card-title" style="display: inline-block;">{{sizeof($violations)>0? "Violations" : "No Violations"}}</h5>
@@ -88,3 +89,4 @@ $u = $user;
             @endif
         </div>
     </div>
+    @endif
