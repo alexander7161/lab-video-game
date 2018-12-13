@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;    
+use Illuminate\Filesystem\Filesystem;
 
 class GameController extends Controller
 {
@@ -100,13 +103,20 @@ class GameController extends Controller
         'description'=> $data['description'],
         'onplatform'=> $data['platform'],
         'rating'=> $data['rating'],
-        'imageurl'=> $data['imageurl']
-    ]);
-        return redirect()->route('index');
+        ]);
+        // Upload image directly in 'public/img/' with same name with game.
+        $file = request()->file('image');
+        $fileName = str_replace(' ', '', $request->name).'.jpg';
+        $file->storeAs('img', $fileName, ['disk' => 'public']);
+
+        return redirect()->route('index')->with('Success','Game added successfully...');
     }
 
-    public function deleteGame($id)
+    public function deleteGame(Request $request, $id)
     {
+        $game = Game::find($id);
+        $image_path = public_path().'/img/'.str_replace(' ', '', $game->name).'.jpg';
+        unlink($image_path);
         DB::update("UPDATE rentals set enddate=now() where idgame={$id}"); // End all rentals with game to delete.
         Game::destroy($id);
         return redirect()->route('index');
@@ -117,6 +127,14 @@ class GameController extends Controller
         $data = $request->all();
         $game = Game::find($data['id']);
 
+        if($request->hasFile('image'))
+        {
+            $image = $request->file('image');
+            $filename = str_replace(' ', '', $game->name).'.jpg';;
+            $path = public_path('img/' . $filename);
+            unlink($path);
+        }
+
         
         // Log::info(print_r($data));
         $game->fill([
@@ -126,11 +144,14 @@ class GameController extends Controller
             'description'=> $data['description'],
             'onplatform'=> $data['platform'],
             'rating'=> $data['rating'],
-            'imageurl'=> $data['imageurl']
         ]);
+
+        $file = request()->file('image');
+        $fileName = str_replace(' ', '', $game->name).'.jpg';
+        $file->storeAs('img', $fileName, ['disk' => 'public']);
 
         $game->save();
 
-        return redirect()->route('index');
+        return redirect()->route('index')->with('Success','Game information updated successfully...');
     }
 }

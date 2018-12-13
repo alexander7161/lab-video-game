@@ -32,7 +32,7 @@ values(8, 'Minecraft', 2011, 'Single-Player Game', 'Minecraft is a 2011 sandbox 
 
 insert into game
     (id,name,releaseYear,type,description,onplatform,rating,recommendedURL)
-values(9, 'HearthStone', 2014, 'CAG', 'The game is a turn-based card game between two opponents, using constructed decks of 30 cards along with a selected hero with a unique power. Players use their limited mana crystals to play abilities or summon minions to attack the opponent, with the goal of destroying the opponents hero.', 'Nintendo Switch', 9, 'https://www.commonsensemedia.org/game-reviews/hearthstone');
+values(9, 'Hearthstone', 2014, 'CAG', 'The game is a turn-based card game between two opponents, using constructed decks of 30 cards along with a selected hero with a unique power. Players use their limited mana crystals to play abilities or summon minions to attack the opponent, with the goal of destroying the opponents hero.', 'Nintendo Switch', 9, 'https://www.commonsensemedia.org/game-reviews/hearthstone');
 
 insert into game
     (id,name,releaseYear,type,description,onplatform,rating,recommendedURL)
