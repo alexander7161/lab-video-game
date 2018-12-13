@@ -101,6 +101,7 @@ class GameController extends Controller
         'description'=> $data['description'],
         'onplatform'=> $data['platform'],
         'rating'=> $data['rating'],
+        'review'=> $data['recommendedURL'],
         ]);
         // Upload image directly in 'public/img/' with same name with game.
         $file = request()->file('image');
@@ -142,6 +143,7 @@ class GameController extends Controller
             'description'=> $data['description'],
             'onplatform'=> $data['platform'],
             'rating'=> $data['rating'],
+            'review'=> $data['recommendedURL'],
         ]);
 
         $file = request()->file('image');

@@ -63,17 +63,14 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="rating" class="col-md-4 col-form-label text-md-right">{{ __('Rating*') }}</label>
-
+        <label for="review" class="col-md-4 col-form-label text-md-right">{{ __('Review') }}</label>
         <div class="col-md-6">
-            <input id="rating" type="number" class="form-control{{ $errors->has('rating') ? ' is-invalid' : '' }}" name="rating" value="{{ old('rating', isset($game)? $game->rating : '') }}"
-                required> @if ($errors->has('rating'))
+            <input id="review" type="text" class="form-control{{ $errors->has('review') ? ' is-invalid' : '' }}" name="review" value="{{ old('review', isset($game)? $game->recommendedURL : '') }}"> @if ($errors->has('review'))
             <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('rating') }}</strong>
+                                        <strong>{{ $errors->first('review') }}</strong>
                                     </span> @endif
         </div>
     </div>
-
     <div class="form-group row">
         <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Image*') }}</label>
         
