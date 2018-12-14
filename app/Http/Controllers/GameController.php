@@ -24,15 +24,13 @@ class GameController extends Controller
         $query = "SELECT id, name, startdate, enddate, iduser, isavailable from currentgames";
 
         $filter = urldecode($request->query('filter'));
-        if ($filter) {
+        $available = $request->query('available');
+        if ($filter && $available=="only") {
+            $query .= " where LOWER(name) like concat('%',LOWER('{$filter}'),'%') and isavailable=true";
+        } elseif ($filter) {
             $query .= " where LOWER(name) like concat('%',LOWER('{$filter}'),'%')";
         }
-        $available = $request->query('available');
 
-
-        if ($available=="only") {
-            $query .= " where isavailable=true";
-        }
         $sort = $request->query('sort');
         if ($sort=="ASC"|| $sort=='DESC') {
             $query .= " order by name ${sort}";
