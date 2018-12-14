@@ -27,9 +27,18 @@ class GameController extends Controller
         if ($filter) {
             $query .= " where LOWER(name) like concat('%',LOWER('{$filter}'),'%')";
         }
+        $available = $request->query('available');
+
+
+        if ($available=="only") {
+            $query .= " where isavailable=true";
+        }
+        $sort = $request->query('sort');
+        if ($sort=="ASC"|| $sort=='DESC') {
+            $query .= " order by name ${sort}";
+        }
         $games = DB::select($query);
-        sort($games);
-        return view('index', compact('games', 'filter'));
+        return view('index', compact('games'));
     }
 
     /**
