@@ -47,6 +47,7 @@
             <input type="hidden" id="sort" name="sort" value="{{ app('request')->input('sort') }}">
             <a class="dropdown-item" href="{{ route('index', array_merge(app('request')->all(), ['sort'=>app('request')->input('sort')=='ASC'?'DESC':'ASC'])) }}">Sort name {{app('request')->input('sort')=="ASC"?"Descending":"Ascending"}} </a>
             <div role="separator" class="dropdown-divider"></div>
+            <input type="hidden" id="available" name="available" value="{{ app('request')->input('available') }}">
             <a class="dropdown-item" href="{{ route('index', array_merge(app('request')->all(), ['available'=>app('request')->input('available')=='only'?'':'only'])) }}">Available Only @if(app('request')->input('available')=='only') <i class='fa fa-check' style='float:right;'></i> @endif </a>
         </div>
         <button class="btn btn-outline-secondary " type="submit " id="button-addon2 "><i class="fa fa-search "></i></button>
