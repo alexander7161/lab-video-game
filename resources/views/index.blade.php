@@ -35,15 +35,27 @@
         }
     }
 </style>
-
 <form class="input-group mb-3 search-bar" method="GET" action="{{ route('index') }}">
-    <input name="filter" id="filter" type="text" class="form-control" value="{{ isset($filter)? $filter:'' }}" placeholder="Search Games...
+    <input name="filter" id="filter" type="text" class="form-control" value="{{ app('request')->input('filter') }}" placeholder="Search Games...
         " aria-label="Search Games " aria-describedby="button-addon2 ">
-    <div class="input-group-append ">
+    <div class="input-group-append">
+        <button name="toggle" type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+        <div class="dropdown-menu">
+            <input type="hidden" id="sort" name="sort" value="{{ app('request')->input('sort') }}">
+            <a class="dropdown-item" href="{{ route('index', array_merge(app('request')->all(), ['sort'=>app('request')->input('sort')=='ASC'?'DESC':'ASC'])) }}">Sort name {{app('request')->input('sort')=="ASC"?"Descending":"Ascending"}} </a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ route('index', array_merge(app('request')->all(), ['available'=>app('request')->input('available')=='only'?'':'only'])) }}">Available Only @if(app('request')->input('available')=='only') <i class='fa fa-check' style='float:right;'></i> @endif </a>
+        </div>
         <button class="btn btn-outline-secondary " type="submit " id="button-addon2 "><i class="fa fa-search "></i></button>
     </div>
 
 </form>
+<div>
+    Sorted by name {{app('request')->input('sort')=="ASC"?"ascending":"descending"}}
+</div>
 @if ($games) @foreach ($games as $g) @if($loop->index%3==0) @if($loop->index!=0)
 </div>
 @endif
