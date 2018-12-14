@@ -19,6 +19,9 @@ Route::get('rentalhistory', 'RentController@index')->middleware('volunteer');
 Route::post('rent', 'RentController@createRent')->name('rentgame');
 Route::post('unrent', 'RentController@deleteRent')->name('unrentgame');
 Route::get('addextension/{id}', 'RentController@addExtension');
+Route::get('newrental', 'RentController@newRentalView')->middleware('volunteer');
+Route::post('createnewrental', 'RentController@newRentalViewPost')->middleware('volunteer')->name('createnewrental');
+Route::post('endrental', 'RentController@endRentalViewPost')->middleware('volunteer')->name('endrental');
 
 Route::get('game/{id}/edit', 'GameController@editGameView')->middleware('volunteer');
 Route::post('game/{id}/edit', 'GameController@editGame')->middleware('volunteer')->name('editGame');

@@ -21,15 +21,11 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
-        $query = "SELECT game.id, name, startdate, enddate, iduser, 
-        (CASE WHEN iduser is not null and enddate is null THEN false ELSE true END) as isavailable FROM game
-        LEFT JOIN
-        (select * from rentals where enddate is null) currentrentals
-        ON (game.id = currentrentals.idgame)";
+        $query = "SELECT id, name, startdate, enddate, iduser, isavailable from currentgames";
 
         $filter = urldecode($request->query('filter'));
         if ($filter) {
-            $query .= " where LOWER(game.name) like concat('%',LOWER('{$filter}'),'%')";
+            $query .= " where LOWER(name) like concat('%',LOWER('{$filter}'),'%')";
         }
         $games = DB::select($query);
         sort($games);

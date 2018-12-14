@@ -23,25 +23,8 @@ class UserController extends Controller
      */
     public function getUsers()
     {
-        $users = DB::select('SELECT id, name, email, created_at, updated_at, volunteer, secretary,
-        (CASE WHEN isbanned is null THEN false ELSE true END) as banned,
-        CASE WHEN currentrentals is NULL THEN 0 ELSE currentrentals END AS currentrentals
-        from 
-        (select *, 
-        (CASE WHEN idrole is null THEN false ELSE true END) as volunteer,
-        (CASE WHEN idrole = 2 THEN true ELSE false END) as secretary from users) users
-        LEFT JOIN
-        (select iduser,
-        count(*) as currentrentals
-        from currentrentals
-        group by iduser) rentals
-        ON (users.id = rentals.iduser)
-        left outer join
-        (select iduser,
-        count(*) as isbanned
-        from bannedmembers
-        group by iduser) bannedmembers
-        on users.id=bannedmembers.iduser');
+        $users = DB::select('SELECT id, name, email, created_at, updated_at, volunteer, secretary, banned, currentrentals
+        from currentusers');
         sort($users);
         usort($users, function ($item1, $item2) {
             return $item2->secretary <=> $item1->secretary;

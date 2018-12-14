@@ -20,10 +20,10 @@ $u = $user;
                             $timestamp = strtotime($u->created_at);
                                 echo date("d/m/Y - H:i", $timestamp); ?>
                                 </dd>
-                                @volunteer<dt>Banned:</dt>
+                                @volunteer @if(!$u->volunteer)<dt>Banned:</dt>
                                 <dd>
                                     {{$u->banned?"True":"False"}}
-                                </dd>@endvolunteer
+                                </dd>@endif @endvolunteer
                             </dl>
                         </div>
                         @if($u->banned)
