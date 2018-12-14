@@ -1,7 +1,10 @@
 @extends('layouts.app') 
 @section('content')
+<a href="/newrental" class="btn btn-dark" style="margin:4px;">New Rental</a>
 <div class="row justify-content-center">
+
     <div class="col-md-12">
+
         <div class="card">
             <div class="table-responsive">
                 <table class="table">
@@ -14,6 +17,7 @@
                             <th scope="col">End Date</th>
                             <th scope="col">Due Date</th>
                             <th scope="col">Extensions</th>
+                            <th scope="col"></th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -49,9 +53,17 @@
                                 {{$r->extensions}}
                             </td>
                             <td>
+                                @if($r->duedate)
+                                <form method="POST" action="{{ route('endrental', ['id'=>$r->rentalid] ) }}" onSubmit="return confirm('Are you sure you want to end the rental of {{$r->gamename}} to {{$r->username}}?');">
+                                    @csrf
+                                    <input class="btn btn-outline-dark" type='submit' value="End Rent" />
+                                </form>
+                                @endif
+                            </td>
+                            <td>
                                 <form method="POST" action="{{ route('makeSecretary', ['data' => array('id'=>$r->rentalid)] ) }}" onSubmit="return confirm('Are you sure you want to give up the secretary role?');">
                                     @csrf
-                                    <input class="btn btn-outline-dark" type='submit' value="Report Broken" />
+                                    <input class="btn btn-outline-danger" type='submit' value="Report Broken" />
                                 </form>
                             </td>
                         </tr>

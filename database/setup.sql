@@ -79,7 +79,7 @@ create table users
     iduser int not null,
     idgame int not null,
     refunded boolean default false,
-    foreign key (iduser) references users (id) on delete set null on update cascade, 
+    foreign key (iduser) references users (id) on delete set null on update cascade,
     foreign key (idgame) references game (id) on delete set null on update cascade
   );
 
@@ -110,6 +110,40 @@ as
   where violationdate>(NOW()- (SELECT rulevioperiod
   FROM rules))
   group by iduser;
+
+  create or replace view currentusers
+  as
+  SELECT id, name, email, created_at, updated_at, volunteer, secretary,
+    (CASE WHEN isbanned is null THEN false ELSE true END) as banned,
+    CASE WHEN currentrentals is NULL THEN 0 ELSE currentrentals END AS currentrentals
+  from
+    (select *,
+      (CASE WHEN idrole is null THEN false ELSE true END) as volunteer,
+      (CASE WHEN idrole = 2 THEN true ELSE false END) as secretary
+    from users) users
+    LEFT JOIN
+    (select iduser,
+      count(*) as currentrentals
+    from currentrentals
+    group by iduser) rentals
+    ON (users.id = rentals.iduser)
+    left outer join
+    (select iduser,
+      count(*) as isbanned
+    from bannedmembers
+    group by iduser) bannedmembers
+    on users.id=bannedmembers.iduser;
+
+  create or replace view currentgames
+    as
+  SELECT game.id, name, startdate, enddate, iduser,
+    (CASE WHEN iduser is not null and enddate is null THEN false ELSE true END) as isavailable
+  FROM game
+    LEFT JOIN
+    (select *
+    from rentals
+    where enddate is null) currentrentals
+    ON (game.id = currentrentals.idgame);
 
   insert into rules
   values(2, '3 weeks', 2, 3, '1 years', '6 months');
