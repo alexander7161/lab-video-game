@@ -30,7 +30,7 @@ class GameController extends Controller
         } elseif ($filter) {
             $query .= " where LOWER(name) like concat('%',LOWER('{$filter}'),'%')";
         } elseif ($available=="only") {
-            $query .= " where and isavailable=true";
+            $query .= " where isavailable=true";
         }
 
         $sort = $request->query('sort');
