@@ -1,4 +1,3 @@
-{{print_r($game)}}
 <form method="POST" action="{{ $new? route('newGame'): route('editGame', $game->id)}}" enctype="multipart/form-data">
     @csrf @if(isset($game))
     <input type="hidden" id="id" name="id" value="{{$game->id}}">@endif

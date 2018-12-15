@@ -40,8 +40,7 @@ create table users
     description varchar(1000),
     rating decimal(1,1) CHECK (rating<=10.0 and rating>0.0),
     recommendedURL varchar(255),
-    onplatform platform,
-    damaged boolean default false
+    onplatform platform
   );
 
   create table rentals
@@ -53,7 +52,7 @@ create table users
     enddate timestamp,
     extensions int default 0,
     foreign key (iduser) references users (id) on delete CASCADE on update CASCADE,
-    foreign key (idgame) references Game (id) on delete set null on update CASCADE
+    foreign key (idgame) references Game (id) on delete cascade on update CASCADE
   );
 
   create table violations
@@ -62,7 +61,7 @@ create table users
     iduser serial not null,
     violationdate timestamp not null,
     reason varchar,
-    foreign key (iduser) references users (id) on delete set null on update cascade
+    foreign key (iduser) references users (id) on delete cascade on update cascade
   );
 
   create table bannedmembers
@@ -70,17 +69,19 @@ create table users
     iduser serial not null,
     datebanned timestamp,
     primary key (iduser),
-    foreign key (iduser) references users (id) on delete set null on update cascade
+    foreign key (iduser) references users (id) on delete cascade on update cascade
   );
 
   create table damagedrefunds
   (
     id serial not null primary key,
+    idrent int not null,
     iduser int not null,
     idgame int not null,
-    refunded boolean default false,
+    refunded boolean not null default false,
+    foreign key (idrent) references rentals (id) on delete set null on update cascade,
     foreign key (iduser) references users (id) on delete set null on update cascade,
-    foreign key (idgame) references game (id) on delete set null on update cascade
+    foreign key (idgame) references game (id) on delete cascade on update cascade
   );
 
   create table rules
@@ -113,15 +114,16 @@ as
 
   create or replace view currentusers
   as
-  SELECT id, name, email, created_at, updated_at, volunteer, secretary,
+  SELECT users.id, name, email, created_at, updated_at, volunteer, secretary,
     (CASE WHEN isbanned is null THEN false ELSE true END) as banned,
-    CASE WHEN currentrentals is NULL THEN 0 ELSE currentrentals END AS currentrentals
+    CASE WHEN currentrentals is NULL THEN 0 ELSE currentrentals END AS currentrentals,
+    CASE WHEN refunded is NULL THEN false ELSE not refunded END AS brokengame
   from
     (select *,
       (CASE WHEN idrole is null THEN false ELSE true END) as volunteer,
       (CASE WHEN idrole = 2 THEN true ELSE false END) as secretary
     from users) users
-    LEFT JOIN
+    LEFT outer JOIN
     (select iduser,
       count(*) as currentrentals
     from currentrentals
@@ -132,18 +134,34 @@ as
       count(*) as isbanned
     from bannedmembers
     group by iduser) bannedmembers
-    on users.id=bannedmembers.iduser;
+    on users.id=bannedmembers.iduser
+    left outer join
+    damagedrefunds
+    on damagedrefunds.iduser=users.id;
 
   create or replace view currentgames
     as
-  SELECT game.id, name, startdate, enddate, iduser,
-    (CASE WHEN iduser is not null and enddate is null THEN false ELSE true END) as isavailable
+  SELECT game.id, name, startdate, enddate, currentrentals.iduser,
+    (CASE WHEN currentrentals.iduser is not null and enddate is null THEN false ELSE true END) as isavailable,
+    (CASE WHEN damagedrefunds.refunded is null THEN false ELSE (not damagedrefunds.refunded)
+  END) as broken
   FROM game
-    LEFT JOIN
-    (select *
-    from rentals
-    where enddate is null) currentrentals
-    ON (game.id = currentrentals.idgame);
+    LEFT outer JOIN
+  (select *
+  from rentals
+  where enddate is null)
+  currentrentals
+    ON
+  (game.id = currentrentals.idgame)
+    left outer join
+    damagedrefunds
+    on damagedrefunds.idgame=game.id;
+
+  create or replace view currentdamaged
+    as
+  select id, iduser, idgame, idrent
+  from damagedrefunds
+  where refunded=false;
 
   insert into rules
   values(2, '3 weeks', 2, 3, '1 years', '6 months');

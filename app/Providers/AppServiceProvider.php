@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('secretary', function () {
             if (auth()->check()) {
                 $id = Auth::user()->id;
-                $secretary = DB::select("select * from users where id={$id} and idrole=2 LIMIT 1");
+                $secretary = DB::select("SELECT * from users where id={$id} and idrole=2 LIMIT 1");
                 return (sizeof($secretary)>0);
             }
             return false;
@@ -49,6 +49,17 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::if('underrentgamelimit', function ($count) {
             return RulesController::getRentGameLimit()>$count;
+        });
+
+        Blade::if('broken', function ($id) {
+            $broken = DB::select("SELECT * from currentdamaged where idgame=${id}");
+            return (sizeof($broken)>0);
+        });
+
+        Blade::if('userowesrefund', function () {
+            $id = Auth::user()->id;
+            $broken = DB::select("SELECT * from currentdamaged where iduser=${id}");
+            return (sizeof($broken)>0);
         });
     }
 
