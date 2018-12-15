@@ -26,6 +26,8 @@ Route::post('endrental', 'RentController@endRentalViewPost')->middleware('volunt
 Route::get('game/{id}/edit', 'GameController@editGameView')->middleware('volunteer');
 Route::post('game/{id}/edit', 'GameController@editGame')->middleware('volunteer')->name('editGame');
 Route::get('game/{id}/delete', 'GameController@deleteGame')->middleware('volunteer');
+Route::get('damaged', 'GameController@markAsDamaged')->middleware('volunteer');
+Route::get('notdamaged', 'GameController@markAsNotDamaged')->middleware('volunteer');
 
 Route::get('newGame', 'GameController@newGameView')->middleware('volunteer');
 Route::post('newGame', 'GameController@createGame')->name('newGame')->middleware('volunteer');

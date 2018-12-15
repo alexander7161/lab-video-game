@@ -61,7 +61,7 @@
                                 @endif
                             </td>
                             <td>
-                                <form method="POST" action="{{ route('makeSecretary', ['data' => array('id'=>$r->rentalid)] ) }}" onSubmit="return confirm('Are you sure you want to give up the secretary role?');">
+                                <form method="POST" action="{{ route('damaged', ['id=>$r->idgame'])}}">
                                     @csrf
                                     <input class="btn btn-outline-danger" type='submit' value="Report Broken" />
                                 </form>
