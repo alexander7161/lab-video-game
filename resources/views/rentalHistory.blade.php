@@ -60,11 +60,18 @@
                                 </form>
                                 @endif
                             </td>
-                            <td>
-                                <form method="POST" action="{{ route('damaged', ['id=>$r->idgame'])}}">
+                            <td class=" @if($r->damaged)table-danger @endif">
+                                @if($r->damaged)
+                                <form method="POST" action="{{ route('markrefunded', ['idgame'=>$r->gameid,'iduser'=>$r->userid, 'idrent'=>$r->rentalid])}}">
+                                    @csrf
+                                    <input class="btn btn-outline-dark" type='submit' value="Mark refunded" />
+                                </form>
+                                @else
+                                <form method="POST" action="{{ route('markdamaged', ['idgame'=>$r->gameid,'iduser'=>$r->userid, 'idrent'=>$r->rentalid])}}">
                                     @csrf
                                     <input class="btn btn-outline-danger" type='submit' value="Report Broken" />
                                 </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

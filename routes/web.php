@@ -22,12 +22,12 @@ Route::get('addextension/{id}', 'RentController@addExtension');
 Route::get('newrental', 'RentController@newRentalView')->middleware('volunteer');
 Route::post('createnewrental', 'RentController@newRentalViewPost')->middleware('volunteer')->name('createnewrental');
 Route::post('endrental', 'RentController@endRentalViewPost')->middleware('volunteer')->name('endrental');
+Route::post('damaged', 'RentController@markAsDamaged')->middleware('volunteer')->name('markdamaged');
+Route::post('notdamaged', 'RentController@markAsRefunded')->middleware('volunteer')->name('markrefunded');
 
 Route::get('game/{id}/edit', 'GameController@editGameView')->middleware('volunteer');
 Route::post('game/{id}/edit', 'GameController@editGame')->middleware('volunteer')->name('editGame');
 Route::get('game/{id}/delete', 'GameController@deleteGame')->middleware('volunteer');
-Route::get('damaged', 'GameController@markAsDamaged')->middleware('volunteer');
-Route::get('notdamaged', 'GameController@markAsNotDamaged')->middleware('volunteer');
 
 Route::get('newGame', 'GameController@newGameView')->middleware('volunteer');
 Route::post('newGame', 'GameController@createGame')->name('newGame')->middleware('volunteer');

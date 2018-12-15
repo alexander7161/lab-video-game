@@ -65,6 +65,7 @@ if(!$isavailable) {
         ?>
             </p> @endif
             <div style="float:right;display:inline-block;">
+                @broken($game->id) The item is broken and must be refunded @else @userowesrefund You must refund your broken game first @else
                 @member @if($isavailable)
                 <form style="display: inline-block;" method="POST" action="{{ route('rentgame', ['data' => array('idgame'=>$game->id)] ) }}">
                     @csrf
@@ -81,7 +82,7 @@ if(!$isavailable) {
                     @csrf
                     <input class="btn btn-danger" type='submit' value="Send Back!" />
                 </form>
-                @enduseridequals @endif @endmember
+                @enduseridequals @endif @endmember @enduserowesrefund @endbroken
             </div>
         </div>
     </div>

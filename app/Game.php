@@ -12,6 +12,6 @@ class Game extends Model
     protected $fillable = [
         'name', 'releaseyear', 'type',
         'description', 'onplatform',
-        'rating', 'recommendedurl', 'damaged'
+        'rating', 'recommendedurl'
     ];
 }

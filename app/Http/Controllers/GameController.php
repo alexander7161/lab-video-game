@@ -128,18 +128,6 @@ class GameController extends Controller
         return redirect()->route('index');
     }
 
-    public function markAsDamaged(Request $request, $id)
-    {
-        DB::update("UPDATE game set damaged = true where id={$id}");
-        return redirect()->back();
-    }
-
-    public function markAsNotDamaged(Request $request, $id)
-    {
-        DB::update("UPDATE game set damaged = false where id={$id}");
-        return redirect()->back();
-    }
-
     public function editGame(Request $request)
     {
         $data = $request->all();

@@ -21,7 +21,8 @@ class RentController extends Controller
     {
         $query = "SELECT rentals.id as rentalid, rentals.startdate, rentals.enddate,
                 rentals.extensions, duedate, game.name as gamename, game.id as gameid,
-                users.name as username, users.id as userid
+                users.name as username, users.id as userid,
+                (CASE WHEN damagedrefunds.refunded is null THEN false ELSE (not damagedrefunds.refunded) END) as damaged
                 from rentals
                 left outer join
                 users
@@ -30,6 +31,9 @@ class RentController extends Controller
                 on rentals.id=currentrentals.rentalid
                 left outer join game
                 on game.id=rentals.idgame
+                left join
+                damagedrefunds
+                on damagedrefunds.idrent=rentals.id
                 order by enddate DESC, rentals.startdate DESC";
         $rentals = DB::select($query);
         return view('rentalHistory', compact('rentals'));
@@ -47,19 +51,11 @@ class RentController extends Controller
             return redirect()->route('error', ['id' => 5]);
         }
 
-        // $hasDamaged = DB::select("select exists(select 1 from damagedrefunds
-        //  where damagedrefunds.iduser = {$id} and refunded = false)");
-        // if ($hasDamaged == true) {
-        //     return redirect()->route('error', ['id' => 5]);
-        // }
-
         $data = $request->all()['data'];
-        if (Auth::user()) {
-            Rent::create([
-                'idgame' => $data['idgame'],
-                'iduser' => $id
-            ]);
-        }
+        Rent::create([
+            'idgame' => $data['idgame'],
+            'iduser' => $id
+        ]);
         return redirect()->back();
     }
 
@@ -68,14 +64,6 @@ class RentController extends Controller
         $data = $request->all()['data'];
         $id = $data['idrent'];
         if (self::deleteRentById($id)) {
-            $gameid = DB::select("select idgame from rentals where rentals.id = {$id}");
-            // $damaged = DB::select("select damaged from game where game.id = {$gameid}");
-            // if ($damaged) {
-            //     $userid = DB::select("select iduser from rentals where rentals.id = {$id}");
-            //     DB::table('damagedrefunds')->insert(
-            //         ['iduser' => $userid, 'idgame' => $gameid, 'refunded' => 'false']
-            //     );
-            // }
             return redirect()->back();
         } else {
             return redirect()->route('error', ['id' => 6]);
@@ -134,6 +122,33 @@ class RentController extends Controller
     {
         $data = $request->all();
         self::deleteRentById($data['id']);
+        return redirect()->back();
+    }
+
+    public function markAsDamaged(Request $request)
+    {
+        $data = $request->all();
+        $idrent = $data['idrent'];
+        $damaged = DB::select("SELECT *
+                            FROM damagedrefunds
+                            where idrent=${idrent}");
+        if ($damaged) {
+            DB::table('damagedrefunds')->where('idrent', $idrent)
+            ->update(['refunded' => false]);
+        } else {
+            DB::table('damagedrefunds')->insert(
+                                    ['iduser' => $data['iduser'], 'idgame' => $data['idgame'], 'idrent' => $data['idrent']]
+                                );
+        }
+        
+        return redirect()->back();
+    }
+
+    public function markAsRefunded(Request $request)
+    {
+        $data = $request->all();
+        DB::table('damagedrefunds')->where('idgame', $data["idgame"])->where('iduser', $data["iduser"])
+        ->update(['refunded' => true]);
         return redirect()->back();
     }
 }
